@@ -121,6 +121,8 @@ remarkPlugins={[remarkGfm]}
     <div className="container">
       <div className="card">
         <h1>AI Stock Analyzer</h1>
+        <p>Enter stock symbols in textfield below separated by comma(,).</p>
+        <p>Results are from <b>Finnhub Api</b> and analysis from <b>Cohere</b>.</p>
         <input
           value={symbols}
           onChange={(e) => setSymbols(e.target.value)}

@@ -55,6 +55,7 @@ const BestDayTradingDeals: React.FC = () => {
     <div className="container">
       <div className="header">
         <h1>🔥 Best Day Trading Deals</h1>
+        <h5>Returns top five stocks using Yahoo finance quote api and Cohere AI for the analysis.</h5>
         <button onClick={fetchDeals} disabled={loading}>
           {loading ? "Loading..." : "Get Latest Deals"}
         </button>

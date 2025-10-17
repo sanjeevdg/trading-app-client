@@ -15,7 +15,8 @@ interface TradeDeal {
   reason: string;
 }
 
-const BASE_URL = "https://trading-app-server-35kc.onrender.com";
+//const BASE_URL = "http://localhost:4000";
+const BASE_URL =  "https://trading-app-server-35kc.onrender.com";
 
 
 const BestDayTradingDeals: React.FC = () => {
@@ -25,11 +26,21 @@ const BestDayTradingDeals: React.FC = () => {
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [symbols, setSymbols] = useState("AAPL,MSFT,GOOG");
+
   const fetchDeals = async () => {
     setLoading(true);
+
+//const syms = symbols.split(",").map((s) => s.trim());
+
+console.log('sending symbols array...............',symbols);
+
+
     try {
       const res = await fetch(BASE_URL + "/api/daytrading-deals", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({"symbols":symbols})
       });
       const data = await res.json();
       console.log('DATARETUED',data);
@@ -37,7 +48,7 @@ const BestDayTradingDeals: React.FC = () => {
       console.log('SUMMARYRETUED',data.summary.substring(data.summary.indexOf('**Summary Paragraph:**')+27,data.summary.length));
 
       setDeals(data.deals || []);
-      setSummary(data.summary.substring(data.summary.indexOf('**Summary Paragraph:**')+22,data.summary.length) || "No summary available.");
+      setSummary(data.summary.substring(data.summary.indexOf('**Summary Paragraph:**'),data.summary.length) || "No summary available.");
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
@@ -55,11 +66,25 @@ const BestDayTradingDeals: React.FC = () => {
     <div className="container">
       <div className="header">
         <h1>🔥 Best Day Trading Deals</h1>
-        <h5>Returns top five stocks using Yahoo finance quote api and Cohere AI for the analysis.</h5>
-        <button onClick={fetchDeals} disabled={loading}>
+        <h5>Fetches stock quotes from Yahoo finance quote api and Cohere AI for analysis.</h5>
+        
+      </div>
+
+ <div className="summary">
+          <h3>📊 Enter stock symbols here</h3>
+       
+ <input
+          value={symbols}
+          onChange={(e) => setSymbols(e.target.value)}
+          className="border rounded p-2 w-full mb-4"
+          placeholder="Enter comma-separated symbols (e.g., AAPL,MSFT,GOOG)"
+        />
+       &emsp;&emsp;&emsp;
+<button onClick={fetchDeals} disabled={loading}>
           {loading ? "Loading..." : "Get Latest Deals"}
         </button>
-      </div>
+
+</div>
 
       <div className="grid">
 {deals.map((deal) => (

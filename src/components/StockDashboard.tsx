@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const BASE_URL = "https://trading-app-server-35kc.onrender.com";
+
 export default function StockDashboard() {
   const [symbols, setSymbols] = useState("QCOM,TXN,CSCO,HPQ,MCHP");
   const [data, setData] = useState<any[]>([]);
@@ -20,7 +22,7 @@ export default function StockDashboard() {
   const fetchStocks = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:4000/api/sdhstocks", {
+      const res = await fetch(BASE_URL + "/api/sdhstocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbols: symbols.split(",").map((s) => s.trim()) }),

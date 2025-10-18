@@ -11,8 +11,8 @@ import rehypeSanitize from "rehype-sanitize"; // prevents XSS
 
 import loading from '../assets/loading.gif';
 
-//const BASE_URL = "https://trading-app-server-35kc.onrender.com";
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = "https://trading-app-server-35kc.onrender.com";
+//const BASE_URL = "http://localhost:4000";
 
 
 export default function StockAnalyzer() {

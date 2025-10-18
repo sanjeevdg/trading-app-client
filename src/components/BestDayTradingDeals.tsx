@@ -15,8 +15,8 @@ interface TradeDeal {
   reason: string;
 }
 
-const BASE_URL = "http://localhost:4000";
-//const BASE_URL =  "https://trading-app-server-35kc.onrender.com";
+//const BASE_URL = "http://localhost:4000";
+const BASE_URL =  "https://trading-app-server-35kc.onrender.com";
 
 
 const BestDayTradingDeals: React.FC = () => {

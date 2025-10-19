@@ -18,11 +18,18 @@ interface StockData {
   dividendYields: { date: string; yield: string }[];
 }
 
+
+
 export default function StockDashboardCandlestick() {
   const [symbols, setSymbols] = useState("AAPL,MSFT,NVDA,AMZN,META");
   const [data, setData] = useState<StockData[]>([]);
   const [loading, setLoading] = useState(false);
   const chartRefs = useRef<Record<string, IChartApi>>({});
+
+  const BASE_URL = "https://trading-app-server-35kc.onrender.com"; 
+
+//http://localhost:4000
+
 
   const statRow = (label: string, value: any, color?: string) => (
     <div
@@ -40,7 +47,7 @@ export default function StockDashboardCandlestick() {
   const fetchStocks = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/cdsstocks", {
+      const response = await fetch(BASE_URL + "/api/cdsstocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbols: symbols.split(",").map((s) => s.trim()) }),

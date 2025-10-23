@@ -7,9 +7,13 @@ import BestDayTradingDeals from "./components/BestDayTradingDeals";
 import StockAnalyzer from "./components/StockAnalyzer";
 import StockDashboard from './components/StockDashboard';
 import StockDashboardCandlestick from './components/StockDashboardCandlestick';
+//import StockDashboardSyncfusion from './components/StockDashboardSyncfusion';
+import StockDashboardRfc from './components/StockDashboardRfc';
+import StockDashboardTradingView from './components/StockDashboardTradingView';
 
 
-
+//     <Link to="/StockDashboardSyncfusion">StockDashboardSyncfusion</Link>
+//          <Route path="/StockDashboardSyncfusion" element={<StockDashboardSyncfusion />} />
 const App: React.FC = () => {
   return (
 
@@ -19,19 +23,23 @@ const App: React.FC = () => {
         <Link to="/BestDayTradingDeals">BestDayTradingDeals</Link>
         <Link to="/StockDashboard">StockDashboard</Link>
         <Link to="/StockDashboardCandlestick">StockDashboardCandlestick</Link>
+        <Link to="/StockDashboardTradingView">StockDashboardTradingView</Link>   
+        <Link to="/StockDashboardRfc">StockDashboardRfc</Link>
+        
       </nav>
 
       <Routes>
+
         <Route path="/StockAnalyzer" element={<StockAnalyzer />} />
         <Route path="/BestDayTradingDeals" element={<BestDayTradingDeals />} />
         <Route path="/StockDashboard" element={<StockDashboard />} />
         <Route path="/StockDashboardCandlestick" element={<StockDashboardCandlestick />} />
-
+        <Route path="/StockDashboardRfc" element={<StockDashboardRfc />} />
+        <Route path="/StockDashboardTradingView" element={<StockDashboardTradingView />} />
 
       </Routes>
-    </Router>
-
-  );
+      </Router>
+          );
 
 };
 

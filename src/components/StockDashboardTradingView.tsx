@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
+const BASE_URL = "https://trading-app-server-35kc.onrender.com";
 
 interface StockData {
   symbol: string;
@@ -18,7 +19,7 @@ export default function StockDashboardTradingView() {
   const fetchStocks = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/cdsstocks", {
+      const response = await fetch(BASE_URL + "/api/cdsstocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbols: symbols.split(",").map((s) => s.trim()) }),

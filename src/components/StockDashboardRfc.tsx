@@ -14,6 +14,7 @@ import {
 import { scaleTime } from "d3-scale";
 import { timeFormat } from "d3-time-format";
 import { format } from "d3-format";
+const BASE_URL = "https://trading-app-server-35kc.onrender.com";
 
 interface Candle {
   time: string;
@@ -41,7 +42,7 @@ export default function StockDashboardRfc() {
   const fetchStocks = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/cdsstocks", {
+      const response = await fetch(BASE_URL + "/api/cdsstocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbols: symbols.split(",").map((s) => s.trim()) }),

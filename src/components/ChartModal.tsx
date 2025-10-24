@@ -33,7 +33,7 @@ const ChartModal: React.FC<Props> = ({ symbol, onClose }) => {
           height: "80%",
         }}
       >
-        <h3>{symbol} Chart</h3>
+       
         <AdvancedRealTimeChart
           theme="light"
           symbol={symbol}

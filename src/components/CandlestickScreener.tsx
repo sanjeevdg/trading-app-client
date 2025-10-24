@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Pattern, ScreenerResult } from "../types";
+
+import PatternResults from "./PatternResults";
+
 import ChartModal from "./ChartModal";
+
+
 
 const availablePatterns: Pattern[] = [
   { key: "bullishEngulfing", name: "Bullish Engulfing" },
@@ -10,6 +15,8 @@ const availablePatterns: Pattern[] = [
   { key: "morningStar", name: "Morning Star" },
   { key: "shootingStar", name: "Shooting Star" },
 ];
+
+
 
 interface Props {
   backendUrl: string;
@@ -33,8 +40,9 @@ const CandlestickScreener: React.FC<Props> = ({ backendUrl }) => {
     try {
       const { data } = await axios.post(backendUrl, {
         symbols: symbols.split(",").map((s) => s.trim()),
-        patterns: selectedPatterns,
+        patterns: selectedPatterns ,
       });
+      console.log('retuened-data========',data);
       setResults(data);
     } catch (err) {
       console.error(err);
@@ -74,7 +82,7 @@ const CandlestickScreener: React.FC<Props> = ({ backendUrl }) => {
         {loading ? "Scanning..." : "Run Screener"}
       </button>
 
-      <div style={{ marginTop: 20 }}>
+ <div style={{ marginTop: 20 }}>
         <h3>Results ({results.length})</h3>
         <table border={1} cellPadding={6} style={{ width: "100%", cursor: "pointer" }}>
           <thead>
@@ -103,8 +111,19 @@ const CandlestickScreener: React.FC<Props> = ({ backendUrl }) => {
       {chartSymbol && (
         <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol(null)} />
       )}
+     
+
+
     </div>
   );
 };
 
 export default CandlestickScreener;
+
+
+
+/*
+{loading ?  <p>Loading...</p> :<PatternResults results={results} />}
+
+
+*/

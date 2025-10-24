@@ -10,7 +10,7 @@ import StockDashboardCandlestick from './components/StockDashboardCandlestick';
 //import StockDashboardSyncfusion from './components/StockDashboardSyncfusion';
 import StockDashboardRfc from './components/StockDashboardRfc';
 import StockDashboardTradingView from './components/StockDashboardTradingView';
-
+import CandlestickScreener from './components/CandlestickScreener'
 
 //     <Link to="/StockDashboardSyncfusion">StockDashboardSyncfusion</Link>
 //          <Route path="/StockDashboardSyncfusion" element={<StockDashboardSyncfusion />} />
@@ -25,7 +25,12 @@ const App: React.FC = () => {
         <Link to="/StockDashboardCandlestick">StockDashboardCandlestick</Link>
         <Link to="/StockDashboardTradingView">StockDashboardTradingView</Link>   
         <Link to="/StockDashboardRfc">StockDashboardRfc</Link>
-        
+        <Link to="/CandlestickScreener">CandlestickScreener</Link>
+    
+
+
+
+
       </nav>
 
       <Routes>
@@ -36,6 +41,8 @@ const App: React.FC = () => {
         <Route path="/StockDashboardCandlestick" element={<StockDashboardCandlestick />} />
         <Route path="/StockDashboardRfc" element={<StockDashboardRfc />} />
         <Route path="/StockDashboardTradingView" element={<StockDashboardTradingView />} />
+<Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />} />
+
 
       </Routes>
       </Router>

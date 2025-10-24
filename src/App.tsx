@@ -45,7 +45,7 @@ const App: React.FC = () => {
         <Route path="/StockDashboardCandlestick" element={<StockDashboardCandlestick />} />
         <Route path="/StockDashboardRfc" element={<StockDashboardRfc />} />
         <Route path="/StockDashboardTradingView" element={<StockDashboardTradingView />} />
-        <Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="http://trading-app-server-35kc.onrender.com/api/screen" />} />
+        <Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />} />
 
 
       </Routes>

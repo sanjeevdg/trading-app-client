@@ -3,6 +3,10 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 //import reportWebVitals from './reportWebVitals';
+import { registerLicense } from '@syncfusion/ej2-base';
+
+
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH9cdHVUR2hZV0RwV0FWYUo=');
 
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

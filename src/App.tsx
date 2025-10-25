@@ -7,13 +7,16 @@ import BestDayTradingDeals from "./components/BestDayTradingDeals";
 import StockAnalyzer from "./components/StockAnalyzer";
 import StockDashboard from './components/StockDashboard';
 import StockDashboardCandlestick from './components/StockDashboardCandlestick';
-//import StockDashboardSyncfusion from './components/StockDashboardSyncfusion';
+import StockDashboardSyncfusion from './components/StockDashboardSyncfusion';
 import StockDashboardRfc from './components/StockDashboardRfc';
 import StockDashboardTradingView from './components/StockDashboardTradingView';
-import CandlestickScreener from './components/CandlestickScreener'
+import CandlestickScreener from './components/CandlestickScreener';
 
-//     <Link to="/StockDashboardSyncfusion">StockDashboardSyncfusion</Link>
-//          <Route path="/StockDashboardSyncfusion" element={<StockDashboardSyncfusion />} />
+import CandleScreener2 from './components/CandleScreener2';
+
+
+//     
+//          
 
 //trading-app-server-35kc.onrender.com
 // localhost:4000
@@ -22,15 +25,16 @@ const App: React.FC = () => {
   return (
 
 <Router>
-      <nav style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
+      <nav style={{ display: "flex", flexWrap: "wrap", gap: "1rem", padding: "1rem" }}>
         <Link to="/StockAnalyzer">StockAnalyzer</Link>
         <Link to="/BestDayTradingDeals">BestDayTradingDeals</Link>
         <Link to="/StockDashboard">StockDashboard</Link>
         <Link to="/StockDashboardCandlestick">StockDashboardCandlestick</Link>
         <Link to="/StockDashboardTradingView">StockDashboardTradingView</Link>   
         <Link to="/StockDashboardRfc">StockDashboardRfc</Link>
-        <Link to="/CandlestickScreener">CandlestickScreener</Link>
-    
+        <Link to="/CandlestickScreener">CandlestickScreener</Link> 
+        <Link to="/StockDashboardSyncfusion">StockDashboardSyncfusion</Link>
+     <Link to="/CandleScreener2">CandleScreener2</Link>
 
 
 
@@ -45,7 +49,9 @@ const App: React.FC = () => {
         <Route path="/StockDashboardCandlestick" element={<StockDashboardCandlestick />} />
         <Route path="/StockDashboardRfc" element={<StockDashboardRfc />} />
         <Route path="/StockDashboardTradingView" element={<StockDashboardTradingView />} />
-        <Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />} />
+        <Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="http://localhost:4000/api/screen" />} /> 
+<Route path="/StockDashboardSyncfusion" element={<StockDashboardSyncfusion />} />
+<Route path="/CandleScreener2" element={<CandleScreener2 />} />
 
 
       </Routes>

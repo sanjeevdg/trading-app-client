@@ -4,9 +4,13 @@ import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
 interface Props {
   symbol: string;
   onClose: () => void;
-}
+  }
 
-const ChartModal: React.FC<Props> = ({ symbol, onClose }) => {
+const ChartModal: React.FC<Props> = ({ symbol, onClose  }) => {
+
+
+
+
   return (
     <div
       style={{
@@ -40,6 +44,7 @@ const ChartModal: React.FC<Props> = ({ symbol, onClose }) => {
           autosize
           interval="D"
         />
+
       </div>
     </div>
   );

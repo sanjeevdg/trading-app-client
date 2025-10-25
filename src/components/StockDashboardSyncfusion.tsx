@@ -38,7 +38,7 @@ export default function StockDashboardSyncfusion() {
   const fetchStocks = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/api/cdsstocks", {
+      const response = await fetch("https://trading-app-server-35kc.onrender.com/api/cdsstocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbols: symbols.split(",").map((s) => s.trim()) }),

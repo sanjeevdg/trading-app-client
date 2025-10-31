@@ -1,65 +1,158 @@
-import React from "react";
-
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
 
 import BestDayTradingDeals from "./components/BestDayTradingDeals";
 import StockAnalyzer from "./components/StockAnalyzer";
-import StockDashboard from './components/StockDashboard';
-import StockDashboardCandlestick from './components/StockDashboardCandlestick';
-import StockDashboardSyncfusion from './components/StockDashboardSyncfusion';
-import StockDashboardRfc from './components/StockDashboardRfc';
-import StockDashboardTradingView from './components/StockDashboardTradingView';
-import CandlestickScreener from './components/CandlestickScreener';
+import StockDashboard from "./components/StockDashboard";
+import StockDashboardCandlestick from "./components/StockDashboardCandlestick";
+import StockDashboardSyncfusion from "./components/StockDashboardSyncfusion";
+import StockDashboardRfc from "./components/StockDashboardRfc";
+import StockDashboardTradingView from "./components/StockDashboardTradingView";
+import CandlestickScreener from "./components/CandlestickScreener";
+import CandleScreener2 from "./components/CandleScreener2";
+import BreakoutsDashboard from "./components/BreakoutsDashboard";
 
-import CandleScreener2 from './components/CandleScreener2';
-
-
-//     
-//          
-
-//trading-app-server-35kc.onrender.com
-// localhost:4000
+import MyScreener from './components/MyScreener';
 
 const App: React.FC = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  const sidebarLinks = [
+    { path: "/MyScreener", label: "My Screener" },
+    { path: "/CandlestickScreener", label: "Candlestick Screener" },
+    { path: "/CandleScreener2", label: "Screener 2" },
+    { path: "/BreakoutsDashboard", label: "Breakouts Dashboard" },
+    
+    
+    
+  ];
+
   return (
+    <Router>
+      {/* Header */}
+      <header
+        style={{
+          background: "linear-gradient(90deg, #1e3a8a, #2563eb)",
+          color: "white",
+          padding: "0.75rem 1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontFamily: "Inter, sans-serif",
+          fontWeight: 600,
+          fontSize: "1.25rem",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          position: "relative",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          {/* Hamburger Menu Button */}
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "white",
+              fontSize: "1.5rem",
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+            }}
+          >
+            ☰
+          </button>
+          <div>📈 Trading Intelligence Dashboard</div>
+        </div>
+      </header>
 
-<Router>
-      <nav style={{ display: "flex", flexWrap: "wrap", gap: "1rem", padding: "1rem" }}>
-        <Link to="/StockAnalyzer">StockAnalyzer</Link>
-        <Link to="/BestDayTradingDeals">BestDayTradingDeals</Link>
-        <Link to="/StockDashboard">StockDashboard</Link>
-        <Link to="/StockDashboardCandlestick">StockDashboardCandlestick</Link>
-        <Link to="/StockDashboardTradingView">StockDashboardTradingView</Link>   
-        <Link to="/StockDashboardRfc">StockDashboardRfc</Link>
-        <Link to="/CandlestickScreener">CandlestickScreener</Link> 
-        <Link to="/StockDashboardSyncfusion">StockDashboardSyncfusion</Link>
-     <Link to="/CandleScreener2">CandleScreener2</Link>
+      {/* Layout Container */}
+      <div
+        style={{
+          display: "flex",
+          height: "calc(100vh - 64px)",
+          fontFamily: "Inter, sans-serif",
+          transition: "all 0.3s ease-in-out",
+        }}
+      >
+        {/* Sidebar */}
+        <aside
+          style={{
+            width: sidebarOpen ? "240px" : "0",
+            background: "#f3f4f6",
+            borderRight: sidebarOpen ? "1px solid #e5e7eb" : "none",
+            padding: sidebarOpen ? "1rem" : "0",
+            overflowY: "auto",
+            transition: "all 0.3s ease-in-out",
+            boxShadow: sidebarOpen ? "2px 0 5px rgba(0,0,0,0.05)" : "none",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {sidebarOpen && (
+            <>
+              <h3 style={{ color: "#1f2937", marginBottom: "1rem", fontSize: "1rem" }}>
+                🧭 Navigation
+              </h3>
+              <nav
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {sidebarLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      borderRadius: "8px",
+                      color: "#1e3a8a",
+                      textDecoration: "none",
+                      fontWeight: 500,
+                      transition: "background 0.2s ease",
+                    }}
+                    onMouseOver={(e) => {
+                      (e.target as HTMLElement).style.background = "#e0e7ff";
+                    }}
+                    onMouseOut={(e) => {
+                      (e.target as HTMLElement).style.background = "transparent";
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
+            </>
+          )}
+        </aside>
 
-
-
-
-      </nav>
-
-      <Routes>
-
-        <Route path="/StockAnalyzer" element={<StockAnalyzer />} />
-        <Route path="/BestDayTradingDeals" element={<BestDayTradingDeals />} />
-        <Route path="/StockDashboard" element={<StockDashboard />} />
-        <Route path="/StockDashboardCandlestick" element={<StockDashboardCandlestick />} />
-        <Route path="/StockDashboardRfc" element={<StockDashboardRfc />} />
-        <Route path="/StockDashboardTradingView" element={<StockDashboardTradingView />} />
-        <Route path="/CandlestickScreener" element={<CandlestickScreener  backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />} /> 
-<Route path="/StockDashboardSyncfusion" element={<StockDashboardSyncfusion />} />
-<Route path="/CandleScreener2" element={<CandleScreener2 />} />
-
-
-      </Routes>
-      </Router>
-          );
-
+        {/* Main Content */}
+        <main
+          style={{
+            flex: 1,
+            background: "#ffffff",
+            padding: "1.5rem",
+            overflowY: "auto",
+            transition: "margin-left 0.3s ease-in-out",
+          }}
+        >
+          <Routes>
+            <Route
+              path="/CandlestickScreener"
+              element={
+                <CandlestickScreener backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />
+              }
+            />
+            <Route path="/MyScreener" element={<MyScreener />} />
+            <Route path="/CandleScreener2" element={<CandleScreener2 />} />
+            <Route path="/BreakoutsDashboard" element={<BreakoutsDashboard />} />
+            
+            
+          </Routes>
+        </main>
+      </div>
+    </Router>
+  );
 };
 
-
 export default App;
-    

@@ -42,6 +42,7 @@ const ChartModal: React.FC<Props> = ({ symbol, onClose  }) => {
           theme="light"
           symbol={symbol}
           autosize
+          studies={["RSI@tv-basicstudies", "MACD@tv-basicstudies"]}
           interval="D"
         />
 

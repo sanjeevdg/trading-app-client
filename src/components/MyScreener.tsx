@@ -37,7 +37,7 @@ const [chartSymbol, setChartSymbol] = useState<string | null>(null);
 
 
 async function fetchExtras(symbol: string) {
-  const res = await fetch(`http://localhost:5000/api/stock_extras?symbol=${symbol}`);
+  const res = await fetch(`https://candlestick-screener.onrender.com/api/stock_extras?symbol=${symbol}`);
  const data: StockExtras = await res.json();
     console.log("returning extras data ===", data);
     setExtras(data);
@@ -58,7 +58,7 @@ const handleClick = async (s: any) => {
       setError(null);
       try {
         //candlestick-screener.onrender.com
-        const res = await fetch(`http://localhost:5000/api/screener?type=${type}`);
+        const res = await fetch(`https://candlestick-screener.onrender.com/api/screener?type=${type}`);
         const json = await res.json();
         setStocks(json.data);
       } catch (err) {

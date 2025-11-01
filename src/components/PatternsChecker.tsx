@@ -18,7 +18,7 @@ const PatternsChecker = () => {
     setPatterns([]);
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/patterns?symbols=${symbols}`);
+      const res = await fetch(`https://candlestick-screener.onrender.com/api/patterns?symbols=${symbols}`);
       const data = await res.json();
 
       if (data.error) {
@@ -39,7 +39,7 @@ const PatternsChecker = () => {
   async function loadMostActives() {
     try {
       setLoading(true);
-      const res = await fetch("http://127.0.0.1:5000/api/most_active_symbols");
+      const res = await fetch("https://candlestick-screener.onrender.com/api/most_active_symbols");
       const data = await res.json();
 
       if (data.symbols) {
@@ -58,7 +58,7 @@ const PatternsChecker = () => {
 async function loadDayGainers() {
     try {
       setLoading(true);
-      const res = await fetch("http://127.0.0.1:5000/api/day_gainers");
+      const res = await fetch("https://candlestick-screener.onrender.com/api/day_gainers");
       const data = await res.json();
 
       if (data.symbols) {
@@ -77,7 +77,7 @@ async function loadDayGainers() {
 async function loadDayLosers() {
     try {
       setLoading(true);
-      const res = await fetch("http://127.0.0.1:5000/api/day_losers");
+      const res = await fetch("https://candlestick-screener.onrender.com/api/day_losers");
       const data = await res.json();
 
       if (data.symbols) {

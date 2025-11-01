@@ -10,18 +10,23 @@ import StockDashboardRfc from "./components/StockDashboardRfc";
 import StockDashboardTradingView from "./components/StockDashboardTradingView";
 import CandlestickScreener from "./components/CandlestickScreener";
 import CandleScreener2 from "./components/CandleScreener2";
-import BreakoutsDashboard from "./components/BreakoutsDashboard";
+
 
 import MyScreener from './components/MyScreener';
+import StockPatternChecker from './components/StockPatternChecker';
+import PatternsChecker from './components/PatternsChecker';
+
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const sidebarLinks = [
     { path: "/MyScreener", label: "My Screener" },
+    { path: "/PatternsChecker", label: "Patterns Checker" },    
+    { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
     { path: "/CandlestickScreener", label: "Candlestick Screener" },
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/BreakoutsDashboard", label: "Breakouts Dashboard" },
+    
     
     
     
@@ -144,8 +149,10 @@ const App: React.FC = () => {
               }
             />
             <Route path="/MyScreener" element={<MyScreener />} />
+            <Route path="/PatternsChecker" element={<PatternsChecker />} />            
+            <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
             <Route path="/CandleScreener2" element={<CandleScreener2 />} />
-            <Route path="/BreakoutsDashboard" element={<BreakoutsDashboard />} />
+            
             
             
           </Routes>

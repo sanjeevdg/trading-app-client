@@ -12,9 +12,13 @@ import CandlestickScreener from "./components/CandlestickScreener";
 import CandleScreener2 from "./components/CandleScreener2";
 
 
+
 import MyScreener from './components/MyScreener';
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
+import MostActiveStocks from './components/MostActiveStocks';
+
+
 
 
 const App: React.FC = () => {
@@ -23,9 +27,11 @@ const App: React.FC = () => {
   const sidebarLinks = [
     { path: "/MyScreener", label: "My Screener" },
     { path: "/PatternsChecker", label: "Patterns Checker" },    
+    { path: "/MostActiveStocks", label: "100 Most Active Stocks" },
     { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
     { path: "/CandlestickScreener", label: "Candlestick Screener" },
     { path: "/CandleScreener2", label: "Screener 2" },
+
     
     
     
@@ -152,7 +158,7 @@ const App: React.FC = () => {
             <Route path="/PatternsChecker" element={<PatternsChecker />} />            
             <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
             <Route path="/CandleScreener2" element={<CandleScreener2 />} />
-            
+            <Route path="/MostActiveStocks" element={<MostActiveStocks />} />
             
             
           </Routes>

@@ -21,6 +21,9 @@ const PatternsChecker = () => {
       const res = await fetch(`https://candlestick-screener.onrender.com/api/patterns?symbols=${symbols}`);
       const data = await res.json();
 
+console.log('my-data====',data);
+
+
       if (data.error) {
         setError(data.error);
       } else {
@@ -54,7 +57,27 @@ const PatternsChecker = () => {
       setLoading(false);
     }
   }
+async function load100MostActives() {
+    try {
+      setLoading(true);
+      //candlestick-screener.onrender.com
+      const res = await fetch("https://candlestick-screener.onrender.com/api/most_active_symbols_100");
+      const data = await res.json();
 
+console.log('ret-data====',data);
+
+      if (data.symbols) {
+        setSymbolsInput(data.symbols.join(", "));
+      } else {
+        alert("Could not fetch most active symbols.");
+      }
+    } catch (err) {
+      console.error("Error fetching most actives:", err);
+      alert("Failed to fetch symbols.");
+    } finally {
+      setLoading(false);
+    }
+  }
 async function loadDayGainers() {
     try {
       setLoading(true);
@@ -111,7 +134,7 @@ async function loadDayLosers() {
           value={symbolsInput}
           onChange={(e) => setSymbolsInput(e.target.value)}
           placeholder="Enter comma-separated symbols, e.g. AAPL, MSFT, TSLA"
-          rows={3}
+          rows={8}
           style={{
             width: "100%",
             padding: "8px",
@@ -124,7 +147,22 @@ async function loadDayLosers() {
 
       <div style={{ marginBottom: "20px" }}>
         <button
-          onClick={loadMostActives}
+          onClick={load100MostActives}
+          style={{
+            backgroundColor: "#2563eb",
+            color: "white",
+            border: "none",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            cursor: "pointer",
+            marginRight: "10px",
+          }}
+        >
+          🔥 Load 100 Most Actives
+        </button>
+
+ <button
+          onClick={load100MostActives}
           style={{
             backgroundColor: "#2563eb",
             color: "white",
@@ -137,6 +175,8 @@ async function loadDayLosers() {
         >
           🔥 Load Most Actives
         </button>
+
+
 
         <button
           onClick={loadDayGainers}

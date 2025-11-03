@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/yahoo-fin-app/static/css/main.85d73347.css",
+    "main.js": "/yahoo-fin-app/static/js/main.81a2ae3c.js",
+    "index.html": "/yahoo-fin-app/index.html",
+    "main.85d73347.css.map": "/yahoo-fin-app/static/css/main.85d73347.css.map",
+    "main.81a2ae3c.js.map": "/yahoo-fin-app/static/js/main.81a2ae3c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.85d73347.css",
+    "static/js/main.81a2ae3c.js"
+  ]
+}

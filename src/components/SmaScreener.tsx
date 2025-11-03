@@ -11,7 +11,7 @@ const SmaScreener: React.FC = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`http://127.0.0.1:4000/api/sma?symbols=${symbols}`);
+      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/sma?symbols=${symbols}`);
       const json = await res.json();
       setData(json);
     } catch (err: any) {

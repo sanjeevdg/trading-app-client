@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.1",
+  "homepage": "https://sanjeevdg.github.io/trading-app-client",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -30,6 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -57,6 +60,7 @@
     "@types/d3-format": "^3.0.4",
     "@types/d3-time-format": "^4.0.3",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2"
+    "@types/react-dom": "^19.2.2",
+    "gh-pages": "^6.3.0"
   }
 }

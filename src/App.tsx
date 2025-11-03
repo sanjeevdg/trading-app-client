@@ -18,7 +18,7 @@ import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
 import MostActiveStocks from './components/MostActiveStocks';
 import TradingScreenerWidget from './components/TradingScreenerWidget';
-
+import SmaScreener from './components/SmaScreener';
 
 
 
@@ -30,6 +30,7 @@ const App: React.FC = () => {
     { path: "/MyScreener", label: "My Screener" },
     { path: "/PatternsChecker", label: "Patterns Checker" },    
     { path: "/MostActiveStocks", label: "100 Most Active Stocks" },
+    { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
     { path: "/CandlestickScreener", label: "Candlestick Screener" },
     { path: "/CandleScreener2", label: "Screener 2" },
@@ -165,6 +166,7 @@ const App: React.FC = () => {
         height={700}
         colorTheme="light"
       />} />
+         <Route path="/SmaScreener" element={<SmaScreener />} />
          
 
 

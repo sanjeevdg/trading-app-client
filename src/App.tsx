@@ -17,6 +17,7 @@ import MyScreener from './components/MyScreener';
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
 import MostActiveStocks from './components/MostActiveStocks';
+import TradingScreenerWidget from './components/TradingScreenerWidget';
 
 
 
@@ -25,13 +26,14 @@ const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const sidebarLinks = [
+    { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
     { path: "/MyScreener", label: "My Screener" },
     { path: "/PatternsChecker", label: "Patterns Checker" },    
     { path: "/MostActiveStocks", label: "100 Most Active Stocks" },
     { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
     { path: "/CandlestickScreener", label: "Candlestick Screener" },
     { path: "/CandleScreener2", label: "Screener 2" },
-
+  
     
     
     
@@ -159,8 +161,15 @@ const App: React.FC = () => {
             <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
             <Route path="/CandleScreener2" element={<CandleScreener2 />} />
             <Route path="/MostActiveStocks" element={<MostActiveStocks />} />
-            
-            
+              <Route path="/TradingScreenerWidget" element={<TradingScreenerWidget
+        height={700}
+        colorTheme="light"
+      />} />
+         
+
+
+
+
           </Routes>
         </main>
       </div>

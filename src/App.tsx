@@ -165,9 +165,10 @@ const App: React.FC = () => {
               <Route path="/TradingScreenerWidget" element={<TradingScreenerWidget
         height={700}
         colorTheme="light"
+         market="america"
       />} />
          <Route path="/SmaScreener" element={<SmaScreener />} />
-         
+
 
 
 

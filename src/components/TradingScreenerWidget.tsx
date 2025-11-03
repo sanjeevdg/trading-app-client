@@ -6,42 +6,25 @@ interface TradingScreenerWidgetProps {
   height?: string | number;
   colorTheme?: ColorTheme;
   locale?: Locales;
+  market?: string; // 👈 accept plain string for flexibility
 }
 
 /**
- * A TradingView Screener component with tab switching
- * between multiple market views (Top Gainers, Top Losers, Most Actives)
+ * TradingView Screener Widget for Stock Markets
  */
 const TradingScreenerWidget: React.FC<TradingScreenerWidgetProps> = ({
   width = "100%",
   height = 600,
   colorTheme = "dark",
   locale = "en",
+  market = "america", // 👈 default: U.S. stock market
 }) => {
-  const [activeScreen, setActiveScreen] = useState<
-    | "top_gainers"
-    | "top_losers"
-    | "general"
-    | "ath"
-    | "atl"
-    | "above_52wk_high"
-    | "below_52wk_low"
-    | "monthly_high"
-    | "monthly_low"
-    | "most_volatile"
-    | "overbought"
-    | "oversold"
-    | "gap_up"
-    | "gap_down"
-    | string
-  >("top_gainers");
-
-  const handleScreenChange = (screen: string) => setActiveScreen(screen);
+  const [activeScreen, setActiveScreen] = useState<string>("top_gainers");
 
   const tabs = [
     { label: "Top Gainers", value: "top_gainers" },
     { label: "Top Losers", value: "top_losers" },
-    { label: "Most Actives", value: "most_actives" }, // custom label (not in TS)
+    { label: "Most Actives", value: "most_actives" },
   ];
 
   return (
@@ -54,7 +37,7 @@ const TradingScreenerWidget: React.FC<TradingScreenerWidgetProps> = ({
         backgroundColor: colorTheme === "dark" ? "#111" : "#f8f9fa",
       }}
     >
-      {/* Tabs */}
+      {/* ---- Tabs ---- */}
       <div
         style={{
           display: "flex",
@@ -68,7 +51,7 @@ const TradingScreenerWidget: React.FC<TradingScreenerWidgetProps> = ({
         {tabs.map((tab) => (
           <button
             key={tab.value}
-            onClick={() => handleScreenChange(tab.value)}
+            onClick={() => setActiveScreen(tab.value)}
             style={{
               flex: 1,
               padding: "12px 0",
@@ -98,7 +81,7 @@ const TradingScreenerWidget: React.FC<TradingScreenerWidgetProps> = ({
         ))}
       </div>
 
-      {/* Screener */}
+      {/* ---- Screener Widget ---- */}
       <div
         style={{
           width: "100%",
@@ -108,7 +91,8 @@ const TradingScreenerWidget: React.FC<TradingScreenerWidgetProps> = ({
         <Screener
           width="100%"
           height="100%"
-          defaultScreen={activeScreen as any} // casting fixes non-listed values like "most_actives"
+          defaultScreen={activeScreen as any} // 👈 bypass union type limitation
+          market={market as any} // 👈 FIX: cast to any so we can use "america", "europe", etc.
           colorTheme={colorTheme}
           locale={locale}
         />

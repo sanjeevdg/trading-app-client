@@ -9,7 +9,7 @@ const [chartSymbol, setChartSymbol] = useState<string | null>(null);
 
 
   useEffect(() => {
-    fetch("https://candlestick-screener.onrender.com/api/trending")
+    fetch("https://trading-app-server-35kc.onrender.com/api/trending")
       .then((res) => res.json())
       .then((data) => {
         setSymbols(data);

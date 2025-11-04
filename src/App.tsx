@@ -13,13 +13,13 @@ import CandleScreener2 from "./components/CandleScreener2";
 
 
 
-import MyScreener from './components/MyScreener';
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
-import MostActiveStocks from './components/MostActiveStocks';
+
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
-
+import TrendingSymbols from './components/TrendingSymbols';
+import SmallCapGainers from './components/SmallCapGainers';
 
 
 const App: React.FC = () => {
@@ -27,14 +27,13 @@ const App: React.FC = () => {
 
   const sidebarLinks = [
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
-    { path: "/MyScreener", label: "My Screener" },
+    { path: "/TrendingSymbols", label: "Day Gainers" },
+  { path: "/SmallCapGainers", label: "Small Cap Gainers" },
     { path: "/PatternsChecker", label: "Patterns Checker" },    
-    { path: "/MostActiveStocks", label: "100 Most Active Stocks" },
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
     { path: "/CandlestickScreener", label: "Candlestick Screener" },
     { path: "/CandleScreener2", label: "Screener 2" },
-  
     
     
     
@@ -157,19 +156,18 @@ const App: React.FC = () => {
                 <CandlestickScreener backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />
               }
             />
-            <Route path="/MyScreener" element={<MyScreener />} />
             <Route path="/PatternsChecker" element={<PatternsChecker />} />            
             <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
             <Route path="/CandleScreener2" element={<CandleScreener2 />} />
-            <Route path="/MostActiveStocks" element={<MostActiveStocks />} />
+            
               <Route path="/TradingScreenerWidget" element={<TradingScreenerWidget
         height={700}
         colorTheme="light"
          market="america"
       />} />
          <Route path="/SmaScreener" element={<SmaScreener />} />
-
-
+<Route path="/TrendingSymbols" element={<TrendingSymbols />} />
+<Route path="/SmallCapGainers" element={<SmallCapGainers />} />
 
 
 

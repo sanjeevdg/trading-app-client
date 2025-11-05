@@ -9,7 +9,8 @@ const ScreenByCriteria = () => {
     max_price: 500,
     min_change: 0.001,
     min_eodvolume: 1000,
-    max_eodvolume: 100000
+    max_eodvolume: 100000,
+    limit:25
   });
 
   const [results, setResults] = useState([]);
@@ -26,7 +27,8 @@ const [chartSymbol, setChartSymbol] = useState("");
     setError("");
     try {
       const query = new URLSearchParams(params);
-      const res = await axios.get(`https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`);
+      //candlestick-screener.onrender.com
+      const res = await axios.get(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`);
       setResults(res.data);
     } catch (err) {
       console.error(err);
@@ -48,6 +50,7 @@ const [chartSymbol, setChartSymbol] = useState("");
           { name: "min_change", label: "Min % Change" },
           { name: "min_eodvolume", label: "Min Volume" },
           { name: "max_eodvolume", label: "Max Volume" },
+          { name: "limit", label: "Limit" },
         ].map((field) => (
           <div key={field.name}>
             <label className="block text-sm font-medium text-gray-600 mb-1">

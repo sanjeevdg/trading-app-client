@@ -41,6 +41,14 @@ if (type==='small_cap_gainers') {
 url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
 setHdrLabel('50 Top Small Cap Gainers');
 }
+if (type==='growth_technology_stocks') {
+url = "http://localhost:4000/api/growth_technology_stocks";
+setHdrLabel('25 Top Growth Technology Stocks');
+}
+if (type==='undervalued_large_caps') {
+url = "http://localhost:4000/api/undervalued_large_caps";
+setHdrLabel('50 Top undervalued large caps');
+}
 
     fetch(url)
       .then((res) => res.json())
@@ -64,6 +72,8 @@ setHdrLabel('50 Top Small Cap Gainers');
           <option value="day_gainers">Top Gainers</option>
           <option value="day_losers">Top Losers</option>
           <option value="small_cap_gainers">Small Cap Gainers</option>
+          <option value="growth_technology_stocks">Growth Technology Stocks </option>
+          <option value="undervalued_large_caps">Undervalued Large Caps </option>
         </select>
       </div>
 

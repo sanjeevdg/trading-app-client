@@ -26,7 +26,7 @@ let url = '';
 
 
 if (type==='most_actives') {
-url = "http://localhost:4000/api/most_actives";
+url = "https://trading-app-server-35kc.onrender.com/api/most_actives";
 setHdrLabel('100 Most Active');
 }
 if (type==='day_gainers') {
@@ -34,7 +34,7 @@ url = "https://trading-app-server-35kc.onrender.com/api/trending";
 setHdrLabel('50 Top Day Gainers');
 }
 if (type==='day_losers') {
-url = "http://localhost:4000/api/day_losers";
+url = "https://trading-app-server-35kc.onrender.com/api/day_losers";
 setHdrLabel('50 Top Day Losers');
 }
 if (type==='small_cap_gainers') {
@@ -42,11 +42,11 @@ url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
 setHdrLabel('50 Top Small Cap Gainers');
 }
 if (type==='growth_technology_stocks') {
-url = "http://localhost:4000/api/growth_technology_stocks";
+url = "https://trading-app-server-35kc.onrender.com/api/growth_technology_stocks";
 setHdrLabel('25 Top Growth Technology Stocks');
 }
 if (type==='undervalued_large_caps') {
-url = "http://localhost:4000/api/undervalued_large_caps";
+url = "https://trading-app-server-35kc.onrender.com/api/undervalued_large_caps";
 setHdrLabel('50 Top undervalued large caps');
 }
 

@@ -6,7 +6,7 @@ type Stock = {
   symbol: string;
   name: string;
   price: number;
-  change: number;
+  changePercent: number;
   volume: number;
 };
 
@@ -15,22 +15,59 @@ const MostActiveStocks: React.FC = () => {
   const [loading, setLoading] = useState(true);
 const [chartSymbol, setChartSymbol] = useState<string | null>(null);
 
+const [type, setType] = useState('most_actives');
+
+const [hdrLabel, setHdrLabel] = useState('100 Most Active');
+
 //trading-app-server-35kc.onrender.com
   useEffect(() => {
-    fetch("http://localhost:4000/api/most_actives")
+
+let url = '';
+
+
+if (type==='most_actives') {
+url = "http://localhost:4000/api/most_actives";
+setHdrLabel('100 Most Active');
+}
+if (type==='day_gainers') {
+url = "https://trading-app-server-35kc.onrender.com/api/trending";
+setHdrLabel('50 Top Day Gainers');
+}
+if (type==='day_losers') {
+url = "http://localhost:4000/api/day_losers";
+setHdrLabel('50 Top Day Losers');
+}
+if (type==='small_cap_gainers') {
+url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
+setHdrLabel('50 Top Small Cap Gainers');
+}
+
+    fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        setStocks(data.data);
+        setStocks(data);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [type]);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>100 Most Active Stocks</h2>
+      <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>{hdrLabel} </h2>
+<div style={{ marginBottom: "10px",display:'flex',alignItems:'center',justifyContent:'flex-start',flexDirection:"row" }}>
+<h5>Select Criteria</h5>
+ 
+        <select style={{height:30,marginLeft:20}} value={type} onChange={e => setType(e.target.value)}>
+          <option value="most_actives">Most Active</option>
+          <option value="day_gainers">Top Gainers</option>
+          <option value="day_losers">Top Losers</option>
+          <option value="small_cap_gainers">Small Cap Gainers</option>
+        </select>
+      </div>
+
+
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ background: "#f3f4f6", textAlign: "left" }}>
@@ -51,10 +88,10 @@ const [chartSymbol, setChartSymbol] = useState<string | null>(null);
               <td
                 style={{
                   padding: "8px",
-                  color: s.change >= 0 ? "green" : "red",
+                  color: s.changePercent >= 0 ? "green" : "red",
                 }}
               >
-                {s.change?.toFixed(2)}%
+                {s.changePercent}%
               </td>
               <td style={{ padding: "8px" }}>
                 {s.volume?.toLocaleString("en-US")}

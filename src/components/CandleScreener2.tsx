@@ -50,8 +50,8 @@ function CandleScreener2() {
     if (to) params.append("to", to);
     if (type) params.append("type", type);
     if (selectedPatterns.length > 0) params.append("patterns", selectedPatterns.join(","));
-
-    const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params.toString()}`);
+//trading-app-server-35kc.onrender.com
+    const res = await fetch(`http://localhost:4000/api/screener?${params.toString()}`);
     const data = await res.json();
     setResults(data);
 

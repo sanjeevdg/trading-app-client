@@ -18,22 +18,21 @@ import PatternsChecker from './components/PatternsChecker';
 
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
-import TrendingSymbols from './components/TrendingSymbols';
-import SmallCapGainers from './components/SmallCapGainers';
-
+//import TrendingSymbols from './components/TrendingSymbols';
+//import SmallCapGainers from './components/SmallCapGainers';
+import MostActiveStocks from './components/MostActiveStocks';
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const sidebarLinks = [
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
-    { path: "/TrendingSymbols", label: "Day Gainers" },
-  { path: "/SmallCapGainers", label: "Small Cap Gainers" },
-    { path: "/PatternsChecker", label: "Patterns Checker" },    
+  { path: "/MostActiveStocks", label: "Stocks by criteria" },
+    { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
-    { path: "/StockPatternChecker", label: "Stock Pattern Checker" },    
-    { path: "/CandlestickScreener", label: "Candlestick Screener" },
+    { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
+    { path: "/CandlestickScreener", label: "Screener 3" },
     
     
     
@@ -166,9 +165,8 @@ const App: React.FC = () => {
          market="america"
       />} />
          <Route path="/SmaScreener" element={<SmaScreener />} />
-<Route path="/TrendingSymbols" element={<TrendingSymbols />} />
-<Route path="/SmallCapGainers" element={<SmallCapGainers />} />
 
+<Route path="/MostActiveStocks" element={<MostActiveStocks />} />
 
 
           </Routes>

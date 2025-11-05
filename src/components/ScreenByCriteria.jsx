@@ -28,7 +28,7 @@ const [chartSymbol, setChartSymbol] = useState("");
     try {
       const query = new URLSearchParams(params);
       //candlestick-screener.onrender.com
-      const res = await axios.get(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`);
+      const res = await axios.get(`https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`);
       setResults(res.data);
     } catch (err) {
       console.error(err);

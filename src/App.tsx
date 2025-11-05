@@ -11,6 +11,8 @@ import StockDashboardTradingView from "./components/StockDashboardTradingView";
 import CandlestickScreener from "./components/CandlestickScreener";
 import CandleScreener2 from "./components/CandleScreener2";
 
+import ScreenByCriteria from "./components/ScreenByCriteria";
+
 
 
 import StockPatternChecker from './components/StockPatternChecker';
@@ -27,12 +29,14 @@ const App: React.FC = () => {
 
   const sidebarLinks = [
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
-  { path: "/MostActiveStocks", label: "Stocks by criteria" },
+    { path: "/MostActiveStocks", label: "Screen by category" },
+    { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
     { path: "/CandlestickScreener", label: "Screener 3" },
+    
     
     
     
@@ -167,6 +171,7 @@ const App: React.FC = () => {
          <Route path="/SmaScreener" element={<SmaScreener />} />
 
 <Route path="/MostActiveStocks" element={<MostActiveStocks />} />
+<Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 
 
           </Routes>

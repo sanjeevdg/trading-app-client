@@ -13,6 +13,9 @@ import CandleScreener2 from "./components/CandleScreener2";
 
 import ScreenByCriteria from "./components/ScreenByCriteria";
 
+import LiveScreener from "./components/LiveScreener";
+import LiveTracker from "./components/LiveTracker";
+
 
 
 import StockPatternChecker from './components/StockPatternChecker';
@@ -31,16 +34,12 @@ const App: React.FC = () => {
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
     { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
+    { path: "/LiveTracker", label: "Live Tracker" },    
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/CandlestickScreener", label: "Screener 3" },
-    
-    
-    
-    
-    
+    { path: "/CandlestickScreener", label: "Screener 3" }
   ];
 
   return (
@@ -172,6 +171,8 @@ const App: React.FC = () => {
 
 <Route path="/MostActiveStocks" element={<MostActiveStocks />} />
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
+
+<Route path="/LiveTracker" element={<LiveTracker />} />
 
 
           </Routes>

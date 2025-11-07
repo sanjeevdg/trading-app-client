@@ -44,7 +44,7 @@ console.log('typeof MYDATA===>>>',typeof data);
         setLoading(false);
       }); 
 */
-      const res = await axios.get(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`);
+      const res = await axios.get(`https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`);
       // console.log('MYRES>>>>>',res.data);
       // console.log('tyepof MYRES>>>>>',typeof res.data);
       console.log('MYRES>>>>>',Array.isArray(res.data));

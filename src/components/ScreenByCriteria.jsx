@@ -28,10 +28,32 @@ const [chartSymbol, setChartSymbol] = useState("");
     try {
       const query = new URLSearchParams(params);
       //candlestick-screener.onrender.com
-      const res = await axios.get(`https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`);
+      /*
+     fetch(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`)
+      .then((res) => res.json())
+      .then((data) => {
+
+console.log('MYDATA===>>>',data);
+console.log('typeof MYDATA===>>>',typeof data);
+
+        setResults(data);
+        setLoading(false);
+      })
+         .catch((err) => {
+        console.error("my Error:", err);
+        setLoading(false);
+      }); 
+*/
+      const res = await axios.get(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`);
+      // console.log('MYRES>>>>>',res.data);
+      // console.log('tyepof MYRES>>>>>',typeof res.data);
+      console.log('MYRES>>>>>',Array.isArray(res.data));
+      console.log('tyepof MYRES>>>>>',typeof res.data);
+  //    const parsedData = JSON.parse(res.data);
       setResults(res.data);
+
     } catch (err) {
-      console.error(err);
+      console.error('error occurrla',err);
       setError("Failed to fetch screener data");
     } finally {
       setLoading(false);
@@ -79,7 +101,7 @@ const [chartSymbol, setChartSymbol] = useState("");
       {/* Error */}
       {error && <p className="text-red-500 mt-3">{error}</p>}
 
-      {/* Results Table */}
+      
       <div className="mt-6 overflow-x-auto">
         {results.length > 0 ? (
           <table className="min-w-full border border-gray-300 rounded-lg">

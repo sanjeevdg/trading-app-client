@@ -14,7 +14,7 @@ const LiveTracker = () => {
 
   // connect to server-sent events stream
   useEffect(() => {
-  const es = new EventSource("http://localhost:5000/api/stream");
+  const es = new EventSource("https://candlestick-screener.onrender.com/api/stream");
   es.onmessage = (event) => {
     const update = JSON.parse(event.data);
     setResults((prev) => {

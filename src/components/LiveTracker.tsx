@@ -35,7 +35,7 @@ const LiveTracker = () => {
   const handleAdd = async () => {
     if (!symbolInput) return;
     try {
-      await fetch("http://localhost:5000/api/add_symbol", {
+      await fetch("https://candlestick-screener.onrender.com/api/add_symbol", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbol: symbolInput }),

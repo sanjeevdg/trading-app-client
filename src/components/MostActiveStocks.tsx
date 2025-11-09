@@ -27,27 +27,32 @@ let url = '';
 
 if (type==='most_actives') {
 url = "https://trading-app-server-35kc.onrender.com/api/most_actives";
-setHdrLabel('100 Most Active');
+setHdrLabel('Most Active');
 }
 if (type==='day_gainers') {
 url = "https://trading-app-server-35kc.onrender.com/api/trending";
-setHdrLabel('50 Top Day Gainers');
+setHdrLabel('Top Day Gainers');
 }
+//trading-app-server-35kc.onrender.com
+/*
 if (type==='day_losers') {
-url = "https://trading-app-server-35kc.onrender.com/api/day_losers";
-setHdrLabel('50 Top Day Losers');
-}
+url = "http://localhost:4000/api/day_losers";
+setHdrLabel('Top Day Losers');
+
+<option value="day_losers">Top Losers</option>
+
+} */
 if (type==='small_cap_gainers') {
 url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
-setHdrLabel('50 Top Small Cap Gainers');
+setHdrLabel('Top Small Cap Gainers');
 }
 if (type==='growth_technology_stocks') {
 url = "https://trading-app-server-35kc.onrender.com/api/growth_technology_stocks";
-setHdrLabel('25 Top Growth Technology Stocks');
+setHdrLabel('Top Growth Technology Stocks');
 }
 if (type==='undervalued_large_caps') {
 url = "https://trading-app-server-35kc.onrender.com/api/undervalued_large_caps";
-setHdrLabel('50 Top undervalued large caps');
+setHdrLabel('Top undervalued large caps');
 }
 
     fetch(url)
@@ -69,8 +74,7 @@ setHdrLabel('50 Top undervalued large caps');
  
         <select style={{height:30,marginLeft:20}} value={type} onChange={e => setType(e.target.value)}>
           <option value="most_actives">Most Active</option>
-          <option value="day_gainers">Top Gainers</option>
-          <option value="day_losers">Top Losers</option>
+          <option value="day_gainers">Top Gainers</option>          
           <option value="small_cap_gainers">Small Cap Gainers</option>
           <option value="growth_technology_stocks">Growth Technology Stocks </option>
           <option value="undervalued_large_caps">Undervalued Large Caps </option>

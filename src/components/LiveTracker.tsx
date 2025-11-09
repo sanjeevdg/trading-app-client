@@ -14,7 +14,7 @@ const LiveTracker = () => {
 
   // connect to server-sent events stream
   useEffect(() => {
-  const es = new EventSource("https://candlestick-screener.onrender.com/api/stream");
+  const es = new EventSource("http://localhost:5000/api/stream");
   es.onmessage = (event) => {
     const update = JSON.parse(event.data);
     setResults((prev) => {
@@ -35,7 +35,7 @@ const LiveTracker = () => {
   const handleAdd = async () => {
     if (!symbolInput) return;
     try {
-      await fetch("https://candlestick-screener.onrender.com/api/add_symbol", {
+      await fetch("http://localhost:5000/api/add_symbol", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ symbol: symbolInput }),

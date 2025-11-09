@@ -10,7 +10,7 @@ const ScreenByCriteria = () => {
     min_change: 0.001,
     min_eodvolume: 1000,
     max_eodvolume: 100000,
-    limit:25
+    limit:10
   });
 
   const [results, setResults] = useState([]);

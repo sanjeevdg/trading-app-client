@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import ChartModal from "./ChartModal";
 
 type Stock = {
@@ -13,74 +12,99 @@ type Stock = {
 const MostActiveStocks: React.FC = () => {
   const [stocks, setStocks] = useState<Stock[]>([]);
   const [loading, setLoading] = useState(true);
-const [chartSymbol, setChartSymbol] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
+  const [chartSymbol, setChartSymbol] = useState<string | null>(null);
+  const [type, setType] = useState("most_actives");
+  const [hdrLabel, setHdrLabel] = useState("100 Most Active");
 
-const [type, setType] = useState('most_actives');
-
-const [hdrLabel, setHdrLabel] = useState('100 Most Active');
-
-//trading-app-server-35kc.onrender.com
   useEffect(() => {
+    let url = "";
 
-let url = '';
+    if (type === "most_actives") {
+      url = "https://trading-app-server-35kc.onrender.com/api/most_actives";
+      setHdrLabel("Most Active");
+    }
+    if (type === "day_gainers") {
+      url = "https://trading-app-server-35kc.onrender.com/api/trending";
+      setHdrLabel("Top Day Gainers");
+    }
+    if (type === "small_cap_gainers") {
+      url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
+      setHdrLabel("Top Small Cap Gainers");
+    }
+    if (type === "growth_technology_stocks") {
+      url =
+        "https://trading-app-server-35kc.onrender.com/api/growth_technology_stocks";
+      setHdrLabel("Top Growth Technology Stocks");
+    }
+    if (type === "undervalued_large_caps") {
+      url =
+        "https://trading-app-server-35kc.onrender.com/api/undervalued_large_caps";
+      setHdrLabel("Top Undervalued Large Caps");
+    }
 
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
 
-if (type==='most_actives') {
-url = "https://trading-app-server-35kc.onrender.com/api/most_actives";
-setHdrLabel('Most Active');
-}
-if (type==='day_gainers') {
-url = "https://trading-app-server-35kc.onrender.com/api/trending";
-setHdrLabel('Top Day Gainers');
-}
-//trading-app-server-35kc.onrender.com
-/*
-if (type==='day_losers') {
-url = "http://localhost:4000/api/day_losers";
-setHdrLabel('Top Day Losers');
+      try {
+        const res = await fetch(url);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const errMsg =
+            errData.error ||
+            `❌ Failed to fetch data: ${res.status} ${res.statusText}`;
+          throw new Error(errMsg);
+        }
 
-<option value="day_losers">Top Losers</option>
-
-} */
-if (type==='small_cap_gainers') {
-url = "https://trading-app-server-35kc.onrender.com/api/small_cap_gainers";
-setHdrLabel('Top Small Cap Gainers');
-}
-if (type==='growth_technology_stocks') {
-url = "https://trading-app-server-35kc.onrender.com/api/growth_technology_stocks";
-setHdrLabel('Top Growth Technology Stocks');
-}
-if (type==='undervalued_large_caps') {
-url = "https://trading-app-server-35kc.onrender.com/api/undervalued_large_caps";
-setHdrLabel('Top undervalued large caps');
-}
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setStocks(data);
+        const data = await res.json();
+        setStocks(Array.isArray(data) ? data : []);
+      } catch (err: any) {
+        console.error("❌ Error fetching screener:", err);
+        setError(err.message || "❌ Failed to fetch screener data");
+        setStocks([]);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchData();
   }, [type]);
 
   if (loading) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>{hdrLabel} </h2>
-<div style={{ marginBottom: "10px",display:'flex',alignItems:'center',justifyContent:'flex-start',flexDirection:"row" }}>
-<h5>Select Criteria</h5>
- 
-        <select style={{height:30,marginLeft:20}} value={type} onChange={e => setType(e.target.value)}>
+      <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>{hdrLabel}</h2>
+
+      <div
+        style={{
+          marginBottom: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          flexDirection: "row",
+        }}
+      >
+        <h5>Select Criteria</h5>
+
+        <select
+          style={{ height: 30, marginLeft: 20 }}
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        >
           <option value="most_actives">Most Active</option>
-          <option value="day_gainers">Top Gainers</option>          
+          <option value="day_gainers">Top Gainers</option>
           <option value="small_cap_gainers">Small Cap Gainers</option>
-          <option value="growth_technology_stocks">Growth Technology Stocks </option>
-          <option value="undervalued_large_caps">Undervalued Large Caps </option>
+          <option value="growth_technology_stocks">
+            Growth Technology Stocks
+          </option>
+          <option value="undervalued_large_caps">Undervalued Large Caps</option>
         </select>
       </div>
 
+      {/* 🧠 Show error message */}
+      {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
 
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
@@ -94,34 +118,41 @@ setHdrLabel('Top undervalued large caps');
           </tr>
         </thead>
         <tbody>
-          {stocks.map((s) => (
-            <tr key={s.symbol} style={{ borderBottom: "1px solid #e5e7eb" }}>
-              <td style={{ padding: "8px", fontWeight: 600 }}>{s.symbol}</td>
-              <td style={{ padding: "8px" }}>{s.name}</td>
-              <td style={{ padding: "8px" }}>{s.price?.toFixed(2)}</td>
-              <td
-                style={{
-                  padding: "8px",
-                  color: s.changePercent >= 0 ? "green" : "red",
-                }}
-              >
-                {s.changePercent}%
+          {stocks.length > 0 ? (
+            stocks.map((s) => (
+              <tr key={s.symbol} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                <td style={{ padding: "8px", fontWeight: 600 }}>{s.symbol}</td>
+                <td style={{ padding: "8px" }}>{s.name}</td>
+                <td style={{ padding: "8px" }}>{s.price?.toFixed(2)}</td>
+                <td
+                  style={{
+                    padding: "8px",
+                    color: s.changePercent >= 0 ? "green" : "red",
+                  }}
+                >
+                  {s.changePercent}%
+                </td>
+                <td style={{ padding: "8px" }}>
+                  {s.volume?.toLocaleString("en-US")}
+                </td>
+                <td style={{ padding: "8px" }}>
+                  <button onClick={() => setChartSymbol(s.symbol)}>📈 Chart</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} style={{ padding: "8px", textAlign: "center" }}>
+                No data available.
               </td>
-              <td style={{ padding: "8px" }}>
-                {s.volume?.toLocaleString("en-US")}
-              </td>
-              <td style={{padding: "8px"}}  >
-      <button onClick={() => setChartSymbol(s.symbol)}>📈 Chart</button>
-   </td>   
-
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
+
       {chartSymbol && (
         <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol(null)} />
       )}
-
     </div>
   );
 };

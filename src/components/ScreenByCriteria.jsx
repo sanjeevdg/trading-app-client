@@ -25,39 +25,24 @@ const [chartSymbol, setChartSymbol] = useState("");
   const fetchResults = async () => {
     setLoading(true);
     setError("");
-    try {
-      const query = new URLSearchParams(params);
+     try {
       //candlestick-screener.onrender.com
-      /*
-     fetch(`http://localhost:5000/api/screen_by_criteria?${query.toString()}`)
-      .then((res) => res.json())
-      .then((data) => {
+  const query = new URLSearchParams(params);
+  const res = await axios.get(
+    `http://localhost:5000/api/screen_by_criteria?${query.toString()}`
+  );
+  setResults(res.data);
+} catch (err) {
+  console.error("error occurred", err);
+  if (err.response && err.response.data && err.response.data.error) {
+    setError(err.response.data.error); // show backend error message
+  } else {
+    setError("❌ Failed to fetch screener data");
+  }
+} finally {
+  setLoading(false);
+}
 
-console.log('MYDATA===>>>',data);
-console.log('typeof MYDATA===>>>',typeof data);
-
-        setResults(data);
-        setLoading(false);
-      })
-         .catch((err) => {
-        console.error("my Error:", err);
-        setLoading(false);
-      }); 
-*/
-      const res = await axios.get(`https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`);
-      // console.log('MYRES>>>>>',res.data);
-      // console.log('tyepof MYRES>>>>>',typeof res.data);
-      console.log('MYRES>>>>>',Array.isArray(res.data));
-      console.log('tyepof MYRES>>>>>',typeof res.data);
-  //    const parsedData = JSON.parse(res.data);
-      setResults(res.data);
-
-    } catch (err) {
-      console.error('error occurrla',err);
-      setError("Failed to fetch screener data");
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (

@@ -4,7 +4,7 @@ interface StockData {
   symbol: string;
   price: number;
   percentchange: number;
-  volume: number;
+  change: number;
 }
 
 
@@ -17,9 +17,13 @@ const LiveTracker = () => {
     //candlestick-screener.onrender.com
   const es = new EventSource("https://candlestick-screener.onrender.com/api/stream");
 
+  es.onopen = () => console.log("Connected to live stream");
+  es.onerror = () => console.warn("Stream disconnected");
+
   es.onmessage = (event) => {
     console.log("message:", event.data);
     const update = JSON.parse(event.data);
+     if (update.heartbeat) return; // ignore heartbeats
     setResults((prev) => {
       const idx = prev.findIndex((r) => r.symbol === update.symbol);
       if (idx !== -1) {
@@ -84,8 +88,8 @@ evtSource.onmessage = e => console.log("message:", e.data);
           <tr>
             <th className="border p-2">Symbol</th>
             <th className="border p-2">Price</th>
-            <th className="border p-2">% Change</th>
-            <th className="border p-2">Volume</th>
+            <th className="border p-2">Change</th>
+            <th className="border p-2">Change %</th>
           </tr>
         </thead>
         <tbody>
@@ -95,12 +99,19 @@ evtSource.onmessage = e => console.log("message:", e.data);
               <td className="border p-2">{r.price}</td>
               <td
                 className={`border p-2 ${
+                  r.change > 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {r.change?.toFixed?.(2)}
+              </td>
+              <td
+                className={`border p-2 ${
                   r.percentchange > 0 ? "text-green-600" : "text-red-600"
                 }`}
               >
                 {r.percentchange?.toFixed?.(2)}%
               </td>
-              <td className="border p-2">{r.volume}</td>
+              
             </tr>
           ))}
         </tbody>

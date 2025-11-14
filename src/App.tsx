@@ -26,12 +26,19 @@ import SmaScreener from './components/SmaScreener';
 //import TrendingSymbols from './components/TrendingSymbols';
 //import SmallCapGainers from './components/SmallCapGainers';
 import MostActiveStocks from './components/MostActiveStocks';
+import TopGainers from './components/TopGainers';
+
+
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const sidebarLinks = [
-    { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
+
+
+
+
+    { path: "/TopGainers", label: "Top Gainers New" },
     { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
@@ -39,7 +46,8 @@ const App: React.FC = () => {
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/CandlestickScreener", label: "Screener 3" }
+    { path: "/CandlestickScreener", label: "Screener 3" },
+    { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
   ];
 
   return (
@@ -173,6 +181,7 @@ const App: React.FC = () => {
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
+<Route path="/TopGainers" element={<TopGainers />} />
 
 
           </Routes>

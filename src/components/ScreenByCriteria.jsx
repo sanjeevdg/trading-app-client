@@ -29,7 +29,7 @@ const [chartSymbol, setChartSymbol] = useState("");
       //candlestick-screener.onrender.com
   const query = new URLSearchParams(params);
   const res = await axios.get(
-    `https://candlestick-screener.onrender.com/api/screen_by_criteria?${query.toString()}`
+    `http://localhost:5000/api/screen_by_criteria_finnhub?${query.toString()}`
   );
   setResults(res.data);
 } catch (err) {
@@ -108,6 +108,15 @@ const [chartSymbol, setChartSymbol] = useState("");
                   <td className="px-3 py-2 text-right">{stock.price?.toFixed?.(2) ?? "-"}</td>
                   <td
                     className={`px-3 py-2 text-right ${
+                      stock.change > 0
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {stock.change?.toFixed?.(2)}
+                  </td>
+                  <td
+                    className={`px-3 py-2 text-right ${
                       stock.percentchange > 0
                         ? "text-green-600"
                         : "text-red-600"
@@ -115,9 +124,7 @@ const [chartSymbol, setChartSymbol] = useState("");
                   >
                     {stock.percentchange?.toFixed?.(2)}%
                   </td>
-                  <td className="px-3 py-2 text-right">
-                    {stock.volume?.toLocaleString?.() ?? "-"}
-                  </td>
+                  
                    <td className="px-3 py-2 text-right">
       <button onClick={() => setChartSymbol(stock.symbol)}>📈 Chart</button>
    </td>   

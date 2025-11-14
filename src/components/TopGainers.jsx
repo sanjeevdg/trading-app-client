@@ -3,8 +3,8 @@ import ChartModal from "./ChartModal";
 
 
 const ENDPOINTS = {
-  sp500: "https://trading-app-server-35kc.onrender.com/api/top_gainers_sp500",
-  nasdaq100: "https://trading-app-server-35kc.onrender.com/api/top_gainers_nasdaq100",
+  sp500: "https://candlestick-screener.onrender.com/api/top_gainers_sp500",
+  nasdaq100: "https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100",
 };
 
 const TopGainers = () => {

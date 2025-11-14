@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
 import ChartModal from "./ChartModal";
 
-
-const ENDPOINTS = {
-  sp500: "https://candlestick-screener.onrender.com/api/top_gainers_sp500",
-  nasdaq100: "https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100",
-};
+//https://candlestick-screener.onrender.com
+//http://localhost:5000
 
 const TopGainers = () => {
+
+
+
   const [index, setIndex] = useState("sp500");
+   const [force, setForce] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [chartSymbol, setChartSymbol] = useState("");
+
+  
+const ENDPOINTS = {
+  sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
+  nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
+};
+
+
+
 
   const fetchData = async (selectedIndex) => {
     try {
@@ -43,11 +53,22 @@ const TopGainers = () => {
       <select
         value={index}
         onChange={(e) => setIndex(e.target.value)}
-        style={{ padding: "8px", marginBottom: "15px" }}
+        style={{ padding: "8px",marginRight:"20px", marginBottom: "15px" }}
       >
         <option value="sp500">S&P 500</option>
         <option value="nasdaq100">Nasdaq 100</option>
       </select>
+
+
+       <label style={{ marginRight: "10px" }}>
+        <input
+          type="checkbox"
+          checked={force}
+          onChange={(e) => setForce(e.target.checked)}
+        />{" "}
+        Force (skip cache)
+      </label>
+      <button onClick={() => fetchData(index)} > Submit</button>
 
       {/* Loading state */}
       {loading && <p>Loading data...</p>}

@@ -4,11 +4,11 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import BestDayTradingDeals from "./components/BestDayTradingDeals";
 import StockAnalyzer from "./components/StockAnalyzer";
 import StockDashboard from "./components/StockDashboard";
-import StockDashboardCandlestick from "./components/StockDashboardCandlestick";
+//import StockDashboardCandlestick from "./components/StockDashboardCandlestick";
 import StockDashboardSyncfusion from "./components/StockDashboardSyncfusion";
 import StockDashboardRfc from "./components/StockDashboardRfc";
 import StockDashboardTradingView from "./components/StockDashboardTradingView";
-import CandlestickScreener from "./components/CandlestickScreener";
+//import CandlestickScreener from "./components/CandlestickScreener";
 import CandleScreener2 from "./components/CandleScreener2";
 
 import ScreenByCriteria from "./components/ScreenByCriteria";
@@ -25,7 +25,7 @@ import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
 //import TrendingSymbols from './components/TrendingSymbols';
 //import SmallCapGainers from './components/SmallCapGainers';
-import MostActiveStocks from './components/MostActiveStocks';
+//import MostActiveStocks from './components/MostActiveStocks';
 import TopGainers from './components/TopGainers';
 
 
@@ -39,14 +39,14 @@ const App: React.FC = () => {
 
 
     { path: "/TopGainers", label: "Top Gainers New" },
-    { path: "/MostActiveStocks", label: "Screen by category" },
+//    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/CandlestickScreener", label: "Screener 3" },
+  //  { path: "/CandlestickScreener", label: "Screener 3" },
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
   ];
 
@@ -160,12 +160,12 @@ const App: React.FC = () => {
           }}
         >
           <Routes>
-            <Route
+          {/*  <Route
               path="/CandlestickScreener"
               element={
                 <CandlestickScreener backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />
               }
-            />
+            />*/}
             <Route path="/PatternsChecker" element={<PatternsChecker />} />            
             <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
             <Route path="/CandleScreener2" element={<CandleScreener2 />} />
@@ -177,7 +177,7 @@ const App: React.FC = () => {
       />} />
          <Route path="/SmaScreener" element={<SmaScreener />} />
 
-<Route path="/MostActiveStocks" element={<MostActiveStocks />} />
+{/*<Route path="/MostActiveStocks" element={<MostActiveStocks />} />*/} 
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 
 <Route path="/LiveTracker" element={<LiveTracker />} />

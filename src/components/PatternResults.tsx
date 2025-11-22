@@ -6,7 +6,8 @@ import ChartModal from "./ChartModal";
 export default function PatternResults({ results }: { results: any[] }) {
   const [selected, setSelected] = useState<any | null>(null);
 const [chartSymbol, setChartSymbol] = useState<string>('');
-
+const [chartPatterns, setChartPatterns]= useState<[]>([]);
+const [chartCandles, setChartCandles]= useState<[]>([]);
 
 
   return (
@@ -81,7 +82,8 @@ const [chartSymbol, setChartSymbol] = useState<string>('');
     cursor: "pointer",
     textDecoration: "underline",
   }}
-  onClick={() => setChartSymbol(r.symbol)}
+  onClick={() => {setChartSymbol(r.symbol);setChartPatterns(r.patterns);setChartCandles(r.candles); } }
+
   onMouseOver={(e) => {
     const target = e.currentTarget as HTMLElement;
     target.style.color = "#1d4ed8";

@@ -25,6 +25,9 @@ function CandleScreener2() {
   const [to, setTo] = useState("");
   const [type, setType] = useState("all");
   const [selectedPatterns, setSelectedPatterns] = useState<string[]>([]);
+const [error, setError] = useState("");
+
+
 
 
 
@@ -36,6 +39,31 @@ function CandleScreener2() {
         : [...prev, pattern]
     );
   };
+
+  async function populateSymbols() {
+
+
+ try {
+     // setLoading(true);
+      setError("");
+
+      const res = await fetch("http://localhost:5000/api/symbol_list_sp500");
+      if (!res.ok) throw new Error("Failed to fetch data");
+
+      const json = await res.json();
+      setSymbols(json.symbols);
+    } catch (err:any) {
+      setError(err.error || "Something went wrong");
+    } finally {
+    //  setLoading(false);
+    }
+
+
+
+
+  } 
+
+
 
   const loadData = async () => {
     if (!symbols.trim()) {
@@ -54,7 +82,7 @@ function CandleScreener2() {
     const res = await fetch(`http://localhost:4000/api/screener?${params.toString()}`);
     const data = await res.json();
     setResults(data);
-
+//http://localhost:4000/api/screener?symbols=AAPL%2CMSFT%2CGOOG&type=all
 console.log('mydatafrom server>>>>>>>>>>',data);
 
     setLoading(false);
@@ -106,18 +134,19 @@ console.log('mydatafrom server>>>>>>>>>>',data);
       >
         Stock Symbols
       </label>
-      <input
-        type="text"
+      <textarea
         placeholder="e.g. AAPL,MSFT,TSLA"
         value={symbols}
         onChange={(e) => setSymbols(e.target.value)}
         style={{
           border: "1px solid #ccc",
-          padding: "8px",
+          padding: "8px",height:"100px",
           borderRadius: "6px",
           minWidth: "250px",
         }}
       />
+      <button onClick={() => populateSymbols()}>Fetch cached symbols</button>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
 
     <div style={{ display: "flex", flexDirection: "column" }}>

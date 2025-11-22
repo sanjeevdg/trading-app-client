@@ -8,6 +8,8 @@ const TopGainers = () => {
 
 
 
+
+
   const [index, setIndex] = useState("sp500");
    const [force, setForce] = useState(false);
   const [data, setData] = useState([]);
@@ -17,8 +19,8 @@ const TopGainers = () => {
 
   
 const ENDPOINTS = {
-  sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
-  nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
+  sp500: `http://localhost:5000/api/top_gainers_sp500?force=${force ? 1 : 0}`,
+  nasdaq100: `http://localhost:5000/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
 };
 
 
@@ -45,6 +47,8 @@ const ENDPOINTS = {
     fetchData(index);
   }, [index]);
 
+
+ 
   return (
     <div style={{ padding: "20px" }}>
       <h2>Top Gainers</h2>
@@ -106,7 +110,7 @@ const ENDPOINTS = {
                     color: item.change_6m_pct >= 0 ? "green" : "red",
                   }}>{item.change_6m_pct}</td>
                <td style={{ padding: "8px" }}>
-                  <button onClick={() => setChartSymbol(item.symbol)}>📈 Chart</button>
+                  <button onClick={() => { setChartSymbol(item.symbol);} }>📈 Chart</button>
                 </td>    
               </tr>
             ))}

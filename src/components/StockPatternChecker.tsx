@@ -39,6 +39,10 @@ const StockPatternChecker: React.FC = () => {
     }
   }
 
+//curl 'http://127.0.0.1:5000/api/patterns?symbols="GOOGL","GOOG","IVZ","APA","ANET","BIIB","A","COR","MRK","TPR","LDOS","COIN","DHI","FOX","AES","NEE","DG","CVX","D","LW"'
+
+
+
   return (
     <div
       style={{

@@ -47,7 +47,7 @@ const [error, setError] = useState("");
      // setLoading(true);
       setError("");
 
-      const res = await fetch("http://localhost:5000/api/symbol_list_sp500");
+      const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
       if (!res.ok) throw new Error("Failed to fetch data");
 
       const json = await res.json();
@@ -79,7 +79,7 @@ const [error, setError] = useState("");
     if (type) params.append("type", type);
     if (selectedPatterns.length > 0) params.append("patterns", selectedPatterns.join(","));
 //trading-app-server-35kc.onrender.com
-    const res = await fetch(`http://localhost:4000/api/screener?${params.toString()}`);
+    const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params.toString()}`);
     const data = await res.json();
     setResults(data);
 //http://localhost:4000/api/screener?symbols=AAPL%2CMSFT%2CGOOG&type=all

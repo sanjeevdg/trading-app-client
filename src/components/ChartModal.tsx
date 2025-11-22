@@ -39,7 +39,7 @@ const ChartModal: React.FC<Props> = ({ symbol,onClose  }) => {
       params.append("symbols", symbol);
       params.append("type", "all");
 
-      const res = await fetch(`http://localhost:4000/api/screener?${params}`);
+      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params}`);
       const data = await res.json();
 
 

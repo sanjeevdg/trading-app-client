@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/trading-app-client/static/css/main.96e333b3.css",
-    "main.js": "/trading-app-client/static/js/main.46bbc054.js",
+    "main.css": "/trading-app-client/static/css/main.57d2e9a7.css",
+    "main.js": "/trading-app-client/static/js/main.1b0b4bb4.js",
     "index.html": "/trading-app-client/index.html",
-    "main.96e333b3.css.map": "/trading-app-client/static/css/main.96e333b3.css.map",
-    "main.46bbc054.js.map": "/trading-app-client/static/js/main.46bbc054.js.map"
+    "main.57d2e9a7.css.map": "/trading-app-client/static/css/main.57d2e9a7.css.map",
+    "main.1b0b4bb4.js.map": "/trading-app-client/static/js/main.1b0b4bb4.js.map"
   },
   "entrypoints": [
-    "static/css/main.96e333b3.css",
-    "static/js/main.46bbc054.js"
+    "static/css/main.57d2e9a7.css",
+    "static/js/main.1b0b4bb4.js"
   ]
 }

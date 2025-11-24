@@ -1,5 +1,7 @@
 import React, {useRef, useEffect,useState} from "react";
 // import { AdvancedRealTimeChart  } from "react-ts-tradingview-widgets";
+import { useParams } from "react-router-dom";
+
 import {
   createChart,
   ColorType,
@@ -15,13 +17,20 @@ type Pattern = {
   rsi?: number;   // 🔥 MAKE OPTIONAL
   macd?: number;  // 🔥 MAKE OPTIONAL
 };
+// ADD THESE TYPES
+type StockInfo = {
+  floatShares?: number;   // e.g., 120000000
+};
+
 
 type Candle = {
+  time: string;
   date: string;
   open: number;
   high: number;
   low: number;
   close: number;
+  volume: number; 
 };
 
 interface Props {
@@ -35,8 +44,11 @@ type Marker = {
   color: string;
   text: string;
 };
+//{ symbol,onClose  }
+const ChartModal: React.FC = () => {
 
-const ChartModal: React.FC<Props> = ({ symbol,onClose  }) => {
+
+ const { symbol } = useParams<{ symbol: string }>();
 
 
  const chartContainerRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +58,9 @@ const ChartModal: React.FC<Props> = ({ symbol,onClose  }) => {
  const [chartCandles, setChartCandles] = useState<Candle[]>([]);
   const [chartPatterns, setChartPatterns] = useState<Pattern[]>([]);
 
-
+const [showRSI, setShowRSI] = useState(true);
+const [showMACD, setShowMACD] = useState(true);
+const [showVolume, setShowVolume] = useState(true);
 
 // ---- RSI & MACD CALCULATION HELPERS ----
 function calculateRSI(data: any[], period = 14) {
@@ -115,9 +129,10 @@ function calculateMACD(data: { date: string; close: number }[]) {
  useEffect(() => {
     async function loadHistoricalData() {
       const params = new URLSearchParams();
-      params.append("symbols", symbol);
+      params.append("symbols", symbol || "");
       params.append("type", "all");
-
+//trading-app-server-35kc.onrender.com
+      //localhost:4000
       const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params}`);
       const data = await res.json();
 
@@ -145,18 +160,32 @@ console.log('chart-[patt]',chartPatterns.length);
   if (chartRef.current) {
     chartRef.current.remove();
   }
+  // Assuming you already fetched OHLCV data and stock info:
+const stockInfo: StockInfo = {
+  floatShares: 125000000,  // example
+};
 
-  const chart = createChart(chartContainerRef.current, {
-    width: chartContainerRef.current.clientWidth,
-    height: 380,
-  });
-  chartRef.current = chart;
+
+const chart = createChart(chartContainerRef.current, {
+  width: chartContainerRef.current.clientWidth,
+  height: 500, // ⬆ taller for 3 panes
+  layout: { background: { color: "#ffffff" }, textColor: "#333" },
+  rightPriceScale: { visible: true },
+});
+chartRef.current = chart;
+
+const activePaneCount = 1 + (showRSI ? 1 : 0) + (showMACD ? 1 : 0) + (showVolume ? 1 : 0);
+
+chart.resize(
+  chartContainerRef.current.clientWidth,
+  activePaneCount * 200     // 200px each pane
+);
 
 /*
 chart.priceScale('macd').applyOptions({
   scaleMargins: { top: 0.7, bottom: 0 },
 });
-*/
+
   const candleSeries = chart.addCandlestickSeries({
     upColor: "#22c55e",
     downColor: "#ef4444",
@@ -165,21 +194,41 @@ chart.priceScale('macd').applyOptions({
     wickUpColor: "#22c55e",
     wickDownColor: "#ef4444",
   });
+*/
+// =============================================================
+// 1️⃣ PRICE PANE  (Top)  → occupies TOP 60% of screen
+// =============================================================
+const candleSeries = chart.addCandlestickSeries({ priceScaleId: 'price' });
+chart.priceScale('price').applyOptions({
+  scaleMargins: { top: 0, bottom: 0.40 },  // 👈 Leaves space for next panes
+});
+candleSeries.setData(chartCandles.map(c => ({
+  time: c.date,
+  open: c.open,
+  high: c.high,
+  low: c.low,
+  close: c.close,
+  volume:c.volume
+})));
 
+
+console.log("chartCandles[0]==", chartCandles[0]);
+/*
   // 👉 DO NOT CHECK length === 0
   if (chartCandles.length > 0) {
     candleSeries.setData(
       chartCandles.map((c) => ({
-        time: c.date.split("T")[0],
+        time: c.date,
         open: c.open,
         high: c.high,
         low: c.low,
         close: c.close,
+        volume:c.volume
       }))
     );
     console.log('SET DATA SUCCESS');
   }
-
+*/
   // Set markers after data loads
   if (chartPatterns.length > 0) {
     candleSeries.setMarkers(
@@ -263,14 +312,13 @@ chart.priceScale('macd').applyOptions({
     }
   });
 
-
+if (showRSI) {
 // ---- ADD RSI SERIES ----
 const rsiSeries = chart.addLineSeries({ color: 'purple', lineWidth: 1 });
 const rsiData = calculateRSI(chartCandles);
 rsiSeries.setData(rsiData);
-
-
-
+}
+/*
 
 // ---- 🧠 MACD IN SEPARATE VISUAL PANE ----
 const macdPane = chart.addLineSeries({
@@ -313,6 +361,16 @@ macdSignal.setData(
 const macdHistogram = chart.addHistogramSeries({
   priceScaleId: 'macd',   // stays in MACD pane
 });
+// 🛠 Apply `priceFormat` to the histogram series itself
+macdHistogram.applyOptions({
+  priceFormat: { type: 'price', precision: 4 },
+});
+
+// 📏 Apply `scaleMargins` to the MACD pane (priceScale)
+chart.priceScale('macd').applyOptions({
+  scaleMargins: { top: 0.7, bottom: 0 },
+});
+
 
 macdHistogram.setData(
   macdData.map((d) => ({
@@ -322,7 +380,7 @@ macdHistogram.setData(
   }))
 );
 
-
+*/
 
 
 
@@ -413,20 +471,121 @@ histogramSeries.setData(macdData.map(d => ({
     chartContainerRef.current.appendChild(legend);
 
 
-//  return () => chart.remove();
+
+// =============================================================
+// 2️⃣ VOLUME PANE  (Middle) → takes 20% of height
+// =============================================================
+    if (showVolume) {
+const volumeSeries = chart.addHistogramSeries({
+  priceScaleId: 'volume',
+});
+chart.priceScale('volume').applyOptions({
+  scaleMargins: { top: 0.65, bottom: 0.25 }, // between price & MACD
+});
+volumeSeries.applyOptions({ priceFormat: { type: 'volume' } });
+volumeSeries.setData(
+  chartCandles.map(c => ({
+    time: c.date,
+    value: c.volume,
+    color: c.close > c.open ? '#4caf50' : '#ff5252',
+  }))
+);
+
+}
+
+// =============================================================
+// 3️⃣ MACD PANE  (Bottom) → takes last 20% of screen
+// =============================================================
+
+
+if (showMACD) {
+
+// MACD LINE
+const macdLine = chart.addLineSeries({ priceScaleId: 'macd', lineWidth: 2 });
+
+chart.priceScale('macd').applyOptions({
+  scaleMargins: { top: 0.85, bottom: 0 }, // 👈 bottom-most pane
+});
+
+// MACD SIGNAL
+const macdSignal = chart.addLineSeries({ priceScaleId: 'macd', lineWidth: 1 });
+// HISTOGRAM
+const macdHistogram = chart.addHistogramSeries({ priceScaleId: 'macd' });
+
+const macdData = calculateMACD(chartCandles);
+macdLine.setData(macdData.map(d => ({ time: d.time, value: d.macd })));
+macdSignal.setData(macdData.map(d => ({ time: d.time, value: d.signal })));
+
+macdHistogram.applyOptions({ priceFormat: { type: 'price', precision: 4 } });
+macdHistogram.setData(
+  macdData.map(d => ({
+    time: d.time,
+    value: d.hist,
+    color: d.hist >= 0 ? 'green' : 'red',
+  }))
+);
+
+}
+
+/*
+// ---------------- Volume Pane (NEW) ----------------
+//const volumePane = chart.addPane();
+const volumeSeries = chart.addHistogramSeries({
+  priceScaleId: 'volume',
+});
+
+// AFTER the series is created → apply options to its price scale
+chart.priceScale('volume').applyOptions({
+  scaleMargins: { top: 0.85, bottom: 0 }, // pushes panel down
+});
+
+volumeSeries.applyOptions({
+  priceFormat: { type: 'volume' }, // THIS must be applied to the series
+});
+
+volumeSeries.setData(
+  chartCandles.map((c) => ({
+    time: c.date,
+    value: c.volume,
+    color: c.close > c.open ? '#4caf50' : '#ff5252', // green/red bars
+  }))
+);
+*/
+
+// ---------------- FLOAT DISPLAY (NEW) ----------------
+if (stockInfo?.floatShares) {
+  const floatText = `Float: ${(stockInfo.floatShares / 1_000_000).toFixed(1)}M shares`;
+
+  const floatLabel = document.createElement("div");
+  floatLabel.style.position = "absolute";
+  floatLabel.style.top = "10%";
+  floatLabel.style.left = "50%";
+  floatLabel.style.padding = "4px 10px";
+  floatLabel.style.borderRadius = "5px";
+  floatLabel.style.background = "#222";
+  floatLabel.style.color = "white";
+  floatLabel.style.fontSize = "12px";
+  floatLabel.innerText = floatText;
+chartContainerRef.current.style.position = "relative";  // REQUIRED
+  chartContainerRef.current.appendChild(floatLabel);
+}
+
+
+
+
+
+  
 };
 
 
+//return () => chart.remove();
 
 
-
-  }, [symbol]); // 🔁 refetch if symbol changes
-
+  }, [symbol,showMACD,showRSI,showVolume]); // 🔁 refetch if symbol changes
 
 
-
-  return (
-    <div
+/*
+<div
       style={{
         position: "fixed",
         top: 0,
@@ -439,25 +598,40 @@ histogramSeries.setData(macdData.map(d => ({
         alignItems: "center",
         zIndex: 999,          
       }}
-      onClick={onClose}
+    //  onClick={onClose}
     >
+    </div>
+
+    */
+
+  return (
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
           background: "#fff",
           borderRadius: 8,
           padding: 10,
-          width: "90%",
-          height: "90%",            
+          width: "100%",
+          height: "100%",            
         }}
       >
-        
+       
+<div style={{
+    display: "flex",
+    gap: "10px",
+    marginBottom: "10px",
+}}>
+  <label><input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} /> RSI</label>
+  <label><input type="checkbox" checked={showMACD} onChange={() => setShowMACD(!showMACD)} /> MACD</label>
+  <label><input type="checkbox" checked={showVolume} onChange={() => setShowVolume(!showVolume)} /> Volume</label>
+</div>
+
  <div ref={chartContainerRef} style={{ marginTop: 0, width: "100%", height: "100%", position: "relative" }} />
 
  
 
       </div>
-    </div>
+    
   );
 };
 

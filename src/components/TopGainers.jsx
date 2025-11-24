@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import ChartModal from "./ChartModal";
-
+//import ChartModal from "./ChartModal";
+import { useNavigate } from "react-router-dom";
 //https://candlestick-screener.onrender.com
 //http://localhost:5000
 
-const TopGainers = () => {
+const TopGainers: React.FC = () => {
+// = ({route,navigation}) => {
 
 
 
 
+const navigate = useNavigate();
 
   const [index, setIndex] = useState("sp500");
    const [force, setForce] = useState(false);
@@ -17,7 +19,8 @@ const TopGainers = () => {
   const [error, setError] = useState("");
   const [chartSymbol, setChartSymbol] = useState("");
 
-  
+  // candlestick-screener.onrender.com
+  //localhost:5000
 const ENDPOINTS = {
   sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
   nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
@@ -110,7 +113,7 @@ const ENDPOINTS = {
                     color: item.change_6m_pct >= 0 ? "green" : "red",
                   }}>{item.change_6m_pct}</td>
                <td style={{ padding: "8px" }}>
-                  <button onClick={() => { setChartSymbol(item.symbol);} }>📈 Chart</button>
+                  <button onClick={() => {navigate(`/chart/${item.symbol}`)  }}>📈 Chart</button>
                 </td>    
               </tr>
             ))}
@@ -120,10 +123,10 @@ const ENDPOINTS = {
       )}
 
 
-{chartSymbol && (
+{/* chartSymbol && (
         <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol(null)} />
         
-      )}  
+      ) */ }  
 
 
       {/* No data */}

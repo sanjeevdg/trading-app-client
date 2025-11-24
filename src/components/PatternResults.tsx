@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CandlestickChart from "./CandlestickChart";
 
-import ChartModal from "./ChartModal";
+//import ChartModal from "./ChartModal";
 
 export default function PatternResults({ results }: { results: any[] }) {
   const [selected, setSelected] = useState<any | null>(null);
@@ -101,9 +101,9 @@ const [chartCandles, setChartCandles]= useState<[]>([]);
     </tbody>
   </table>
 
-  {chartSymbol && (
+  {/* chartSymbol && (
     <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol("")} />
-  )}
+  ) */ }
 </div>
 
   );

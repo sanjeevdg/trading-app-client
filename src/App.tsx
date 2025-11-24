@@ -16,7 +16,7 @@ import ScreenByCriteria from "./components/ScreenByCriteria";
 import LiveScreener from "./components/LiveScreener";
 import LiveTracker from "./components/LiveTracker";
 
-
+import ChartModal from "./components/ChartModal";
 
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
@@ -46,6 +46,7 @@ const App: React.FC = () => {
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
     { path: "/CandleScreener2", label: "Screener 2" },
+    { path: "/ChartModal", label: "Chart Modal" },
   //  { path: "/CandlestickScreener", label: "Screener 3" },
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
   ];
@@ -182,7 +183,7 @@ const App: React.FC = () => {
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
 <Route path="/TopGainers" element={<TopGainers />} />
-
+<Route path="/chart/:symbol" element={<ChartModal />} />
 
           </Routes>
         </main>

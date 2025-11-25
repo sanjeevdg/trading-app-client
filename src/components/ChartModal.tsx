@@ -212,7 +212,7 @@ candleSeries.setData(chartCandles.map(c => ({
 })));
 
 
-console.log("chartCandles[0]==", chartCandles[0]);
+//console.log("chartCandles[0]==", chartCandles[0]);
 /*
   // 👉 DO NOT CHECK length === 0
   if (chartCandles.length > 0) {
@@ -412,8 +412,8 @@ histogramSeries.setData(macdData.map(d => ({
 const rsiData = calculateRSI(chartCandles);    // [{ time, value }]
 const macdData = calculateMACD(chartCandles);  // [{ time, macd, signal, histogram }]
 
-console.log('RSIDATA==',rsiData);
-console.log('MACDDATA==',macdData);
+//console.log('RSIDATA==',rsiData);
+//console.log('MACDDATA==',macdData);
 
 
 // safe helper to format numeric values

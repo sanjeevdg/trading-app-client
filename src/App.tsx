@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 import BestDayTradingDeals from "./components/BestDayTradingDeals";
@@ -32,6 +32,24 @@ import TopGainers from './components/TopGainers';
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+const [winLoc, setWinLoc ] = useState(window.location.pathname);
+
+useEffect(() => { 
+
+console.log('window.location===',window.location);
+
+  if (winLoc.includes('chart')) {
+
+    setSidebarOpen(false);
+  }
+
+
+
+}, [winLoc] )
+
+
+
 
   const sidebarLinks = [
 
@@ -123,8 +141,7 @@ const App: React.FC = () => {
                   gap: "0.5rem",
                 }}
               >
-                {sidebarLinks.map((link) => (
-                  <Link
+                {sidebarLinks.map((link) => <Link
                     key={link.path}
                     to={link.path}
                     style={{
@@ -143,8 +160,8 @@ const App: React.FC = () => {
                     }}
                   >
                     {link.label}
-                  </Link>
-                ))}
+                  </Link> 
+                )}
               </nav>
             </>
           )}

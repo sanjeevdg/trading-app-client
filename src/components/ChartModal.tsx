@@ -1,7 +1,7 @@
 import React, {useRef, useEffect,useState} from "react";
 // import { AdvancedRealTimeChart  } from "react-ts-tradingview-widgets";
 import { useParams } from "react-router-dom";
-
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import {
   createChart,
   ColorType,
@@ -47,7 +47,7 @@ type Marker = {
 //{ symbol,onClose  }
 const ChartModal: React.FC = () => {
 
-
+ const handle = useFullScreenHandle();
  const { symbol } = useParams<{ symbol: string }>();
 
 
@@ -132,8 +132,7 @@ function calculateMACD(data: { date: string; close: number }[]) {
       params.append("symbols", symbol || "");
       params.append("type", "all");
 //trading-app-server-35kc.onrender.com
-      //localhost:4000
-      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params}`);
+      const res = await fetch(`http://localhost:4000/api/screener?${params}`);
       const data = await res.json();
 
 
@@ -168,7 +167,7 @@ const stockInfo: StockInfo = {
 
 const chart = createChart(chartContainerRef.current, {
   width: chartContainerRef.current.clientWidth,
-  height: 500, // ⬆ taller for 3 panes
+  height: 400, // ⬆ taller for 3 panes
   layout: { background: { color: "#ffffff" }, textColor: "#333" },
   rightPriceScale: { visible: true },
 });
@@ -200,7 +199,7 @@ chart.priceScale('macd').applyOptions({
 // =============================================================
 const candleSeries = chart.addCandlestickSeries({ priceScaleId: 'price' });
 chart.priceScale('price').applyOptions({
-  scaleMargins: { top: 0, bottom: 0.40 },  // 👈 Leaves space for next panes
+  scaleMargins: { top: 0, bottom: 0.50 },  // 👈 Leaves space for next panes
 });
 candleSeries.setData(chartCandles.map(c => ({
   time: c.date,
@@ -408,22 +407,98 @@ histogramSeries.setData(macdData.map(d => ({
 })));
 */
 
-// =====================================================
-    //          TOOLTIP — RSI + MACD INCLUDED
-    // =====================================================
-    const tooltip2 = document.createElement("div");
-    tooltip2.style.position = "absolute";
+// assume these exist and are arrays of { time: 'YYYY-MM-DD', ... }
+const rsiData = calculateRSI(chartCandles);    // [{ time, value }]
+const macdData = calculateMACD(chartCandles);  // [{ time, macd, signal, histogram }]
+
+console.log('RSIDATA==',rsiData);
+console.log('MACDDATA==',macdData);
+
+
+// safe helper to format numeric values
+//const fmt = (v: any) => (Number.isFinite(v) ? (v as number).toFixed(2) : "-");
+
+// create tooltip element (if not already created)
+const tooltip2 = document.createElement("div");
+Object.assign(tooltip2.style, {
+  position: "absolute",
+  display: "none",
+  pointerEvents: "none",
+  background: "rgba(0,0,0,0.8)",
+  color: "#fff",
+  padding: "6px 12px",
+  borderRadius: "8px",
+  fontSize: "12px",
+  zIndex: "1000",
+});
+chartContainerRef.current?.appendChild(tooltip2);
+
+// helper: safe number formatting
+const fmt = (v: any) => (Number.isFinite(v) ? v.toFixed(2) : "-");
+
+chart.subscribeCrosshairMove((param: any) => {
+  if (!param?.point || !param?.time) {
     tooltip2.style.display = "none";
-    tooltip2.style.pointerEvents = "none";
-    tooltip2.style.background = "rgba(0, 0, 0, 0.8)";
-    tooltip2.style.color = "#fff";
-    tooltip2.style.padding = "6px 12px";
-    tooltip2.style.borderRadius = "8px";
-    tooltip2.style.fontSize = "12px";
-    tooltip2.style.zIndex = "1000";
+    return;
+  }
 
-    chartContainerRef.current.appendChild(tooltip2);
+  // --- normalize time format to "YYYY-MM-DD" ---
+  let dateStr = "";
+  if (typeof param.time === "string") {
+    dateStr = param.time;
+  } else if (typeof param.time === "number") {
+    dateStr = new Date(param.time * 1000).toISOString().split("T")[0];
+  } else if (param.time.year) {
+    const mm = String(param.time.month).padStart(2, "0");
+    const dd = String(param.time.day).padStart(2, "0");
+    dateStr = `${param.time.year}-${mm}-${dd}`;
+  }
 
+  // --- find data for this date ---
+  const pattern = chartPatterns.find((p) => p.date.split("T")[0] === dateStr);
+  const rsiPoint = rsiData.find((r) => r.time === dateStr);
+  const macdPoint = macdData.find((m) => m.time === dateStr);
+
+  // --- position the tooltip ---
+  tooltip2.style.left = param.point.x + 10 + "px";
+  tooltip2.style.top = param.point.y - 20 + "px";
+
+  // --- CASE 1: Pattern exists ---
+  if (pattern) {
+    tooltip2.style.display = "block";
+    tooltip2.innerHTML = `
+      <strong>${pattern.name}</strong><br/>
+      Type: ${pattern.type}<br/>
+      ${pattern.name === "Doji" ? "⚠️ Market Indecision<br/>" : ""}
+      <hr style="border: 0; border-top: 1px solid #555; margin: 6px 0">
+      RSI: ${fmt(rsiPoint?.value)}<br/>
+      MACD: ${fmt(macdPoint?.macd)}<br/>
+      Signal: ${fmt(macdPoint?.signal)}<br/>
+      Histogram: ${fmt(macdPoint?.hist)}
+    `;
+    return;
+  }
+
+  // --- CASE 2: NO pattern but RSI/MACD available ---
+  if (rsiPoint || macdPoint) {
+    tooltip2.style.display = "block";
+    tooltip2.innerHTML = `
+      <strong>${dateStr}</strong><br/>
+      RSI: ${fmt(rsiPoint?.value)}<br/>
+      MACD: ${fmt(macdPoint?.macd)}<br/>
+      Signal: ${fmt(macdPoint?.signal)}<br/>
+      Histogram: ${fmt(macdPoint?.hist)}
+    `;
+    return;
+  }
+
+  // --- CASE 3: Nothing available ---
+  tooltip2.style.display = "none";
+});
+
+
+
+/*
     chart.subscribeCrosshairMove((param: any) => {
       if (!param.point || !param.time) {
         tooltip2.style.display = "none";
@@ -449,6 +524,9 @@ histogramSeries.setData(macdData.map(d => ({
         tooltip2.style.display = "none";
       }
     });
+*/
+
+
 
     // =====================================================
     //                  LEGEND ON CHART
@@ -612,7 +690,8 @@ chartContainerRef.current.style.position = "relative";  // REQUIRED
           borderRadius: 8,
           padding: 10,
           width: "100%",
-          height: "100%",            
+          height: "100%", 
+          paddingBottom:100,           
         }}
       >
        
@@ -623,11 +702,15 @@ chartContainerRef.current.style.position = "relative";  // REQUIRED
 }}>
   <label><input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} /> RSI</label>
   <label><input type="checkbox" checked={showMACD} onChange={() => setShowMACD(!showMACD)} /> MACD</label>
-  <label><input type="checkbox" checked={showVolume} onChange={() => setShowVolume(!showVolume)} /> Volume</label>
+  <label><input type="checkbox" checked={showVolume} onChange={() => setShowVolume(!showVolume)} /> Volume</label>  
+<button onClick={handle.enter}>
+        Enter fullscreen
+      </button>
+ 
 </div>
-
+<FullScreen handle={handle}>
  <div ref={chartContainerRef} style={{ marginTop: 0, width: "100%", height: "100%", position: "relative" }} />
-
+</FullScreen>
  
 
       </div>

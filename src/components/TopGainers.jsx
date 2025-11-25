@@ -21,8 +21,8 @@ const navigate = useNavigate();
 
   // candlestick-screener.onrender.com
 const ENDPOINTS = {
-  sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
-  nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
+  sp500: `http://localhost:5000/api/top_gainers_sp500?force=${force ? 1 : 0}`,
+  nasdaq100: `http://localhost:5000/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
 };
 
 

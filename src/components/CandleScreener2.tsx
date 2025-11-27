@@ -16,6 +16,9 @@ const AVAILABLE_PATTERNS = [
 ];
 
 function CandleScreener2() {
+
+
+
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -79,6 +82,7 @@ const [error, setError] = useState("");
     if (type) params.append("type", type);
     if (selectedPatterns.length > 0) params.append("patterns", selectedPatterns.join(","));
 //trading-app-server-35kc.onrender.com
+    //localhost:4000
     const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params.toString()}`);
     const data = await res.json();
     setResults(data);

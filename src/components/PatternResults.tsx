@@ -1,10 +1,14 @@
 import { useState } from "react";
 import CandlestickChart from "./CandlestickChart";
+import { useNavigate } from "react-router-dom";
 
 //import ChartModal from "./ChartModal";
 
 export default function PatternResults({ results }: { results: any[] }) {
-  const [selected, setSelected] = useState<any | null>(null);
+
+const navigate = useNavigate();
+
+const [selected, setSelected] = useState<any | null>(null);
 const [chartSymbol, setChartSymbol] = useState<string>('');
 const [chartPatterns, setChartPatterns]= useState<[]>([]);
 const [chartCandles, setChartCandles]= useState<[]>([]);
@@ -82,7 +86,7 @@ const [chartCandles, setChartCandles]= useState<[]>([]);
     cursor: "pointer",
     textDecoration: "underline",
   }}
-  onClick={() => {setChartSymbol(r.symbol);setChartPatterns(r.patterns);setChartCandles(r.candles); } }
+  onClick={() => {navigate(`/chart/${r.symbol}`)  }}
 
   onMouseOver={(e) => {
     const target = e.currentTarget as HTMLElement;

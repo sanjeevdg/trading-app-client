@@ -19,6 +19,11 @@ const navigate = useNavigate();
   const [error, setError] = useState("");
   const [chartSymbol, setChartSymbol] = useState("");
 
+const [symbols,setSymbols] = useState("");
+
+const [zacksInfo , setZacksInfo] = useState([]);
+
+
   // candlestick-screener.onrender.com
   //localhost:5000
 const ENDPOINTS = {
@@ -26,8 +31,53 @@ const ENDPOINTS = {
   nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
 };
 
+//        -H "Content-Type: application/json"         -d '["AAPL","TSLA","ADI","CNC","IR","EMR","GLW","CPAY","FCX","NXPI","ALLE","BBY","MRNA","COO","TSN","JBHT","ARE","ELV","ALB","BKNG","AMD"]'
+
+async function getZacksBulk(symbolsString) {
+
+const symbols = symbolsString.split(",").map(s => s.replace(/"/g, "").trim());
 
 
+ try {
+      const res = await fetch("https://trading-app-server-35kc.onrender.com/api/zacks/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(symbols),
+      });
+      const data = await res.json();
+      console.log('zacksinfo',data);
+      setZacksInfo(data);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+
+}    
+async function fetchSymbols() {
+
+
+ try {
+     // setLoading(true);
+      setError("");
+
+      const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
+      if (!res.ok) throw new Error("Failed to fetch data");
+
+      const json = await res.json();
+      console.log('fetched symbols===', json.symbols);
+      setSymbols(json.symbols);
+      await getZacksBulk(json.symbols);
+    } catch (err) {
+      setError(err.error || "Something went wrong");
+    } finally {
+    //  setLoading(false);
+    }
+
+
+
+
+  } 
 
   const fetchData = async (selectedIndex) => {
     try {
@@ -39,6 +89,8 @@ const ENDPOINTS = {
 
       const json = await res.json();
       setData(json);
+      await fetchSymbols();
+      console.log('mydata====',json);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -51,7 +103,17 @@ const ENDPOINTS = {
   }, [index]);
 
 
- 
+const getZacksRankColor = (rank) => {
+  switch (rank) {
+    case "1": return "#009900"; // Strong Buy → bright green
+    case "2": return "#33CC33"; // Buy → green
+    case "3": return "#FF9900"; // Hold → orange
+    case "4": return "#FF5555"; // Sell → light red
+    case "5": return "#CC0000"; // Strong Sell → dark red
+    default:  return "gray";    // Unknown → gray
+  }
+};
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Top Gainers</h2>
@@ -95,6 +157,8 @@ const ENDPOINTS = {
           <thead>
             <tr>
               <th style={thStyle}>Symbol</th>
+              <th style={thStyle}>1W Change (%)</th>
+              <th style={thStyle}>ZacksRank</th>
               <th style={thStyle}>3M Change (%)</th>
               <th style={thStyle}>6M Change (%)</th>
               <th style={thStyle}>Chart</th>
@@ -103,8 +167,15 @@ const ENDPOINTS = {
           <tbody>
             {data.map((item) => (
               <tr key={item.symbol}>
-                <td style={tdStyle}>{item.symbol}</td>
-                <td style={{
+                <td style={tdStyle}>{item.symbol}</td>                
+                  <td style={{
+                    padding: "8px",
+                    color: item.change_1w_pct >= 0 ? "green" : "red",
+                  }}>{item.change_1w_pct}</td>
+
+                  <td style={{ padding: "8px", color: getZacksRankColor(zacksInfo[item.symbol].zacksRank) }}>{zacksInfo[item.symbol].zacksRankText} </td>
+
+                  <td style={{
                     padding: "8px",
                     color: item.change_3m_pct >= 0 ? "green" : "red",
                   }}>{item.change_3m_pct}</td>

@@ -27,26 +27,21 @@ import SmaScreener from './components/SmaScreener';
 //import SmallCapGainers from './components/SmallCapGainers';
 //import MostActiveStocks from './components/MostActiveStocks';
 import TopGainers from './components/TopGainers';
-
+import { useLocation } from "react-router-dom";
 
 
 const App: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const location = useLocation();
+//const [winLoc, setWinLoc ] = useState(window.location.pathname);
 
-const [winLoc, setWinLoc ] = useState(window.location.pathname);
-
-useEffect(() => { 
-
-console.log('window.location===',window.location);
-
-  if (winLoc.includes('chart')) {
-
-    setSidebarOpen(false);
-  }
-
-
-
-}, [winLoc] )
+ useEffect(() => {
+    if (location.pathname.includes("chart")) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  }, [location.pathname]);
 
 
 
@@ -57,21 +52,21 @@ console.log('window.location===',window.location);
 
 
     { path: "/TopGainers", label: "Top Gainers New" },
+    { path: "/CandleScreener2", label: "Screener 2" },
 //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
-    { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },        
-    { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/ChartModal", label: "Chart Modal" },
+    { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },            
+    // { path: "/ChartModal", label: "Chart Modal" },
   //  { path: "/CandlestickScreener", label: "Screener 3" },
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
   ];
-
+//<Router>
   return (
-    <Router>
-      {/* Header */}
+    
+      <>
       <header
         style={{
           background: "linear-gradient(90deg, #1e3a8a, #2563eb)",
@@ -205,7 +200,7 @@ console.log('window.location===',window.location);
           </Routes>
         </main>
       </div>
-    </Router>
+    </>
   );
 };
 

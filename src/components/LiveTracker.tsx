@@ -41,6 +41,7 @@ const LiveTracker = () => {
 const test_stream = async () => {
 
 //candlestick-screener.onrender.com
+  //candlestick-screener.onrender.com
 const evtSource = new EventSource("https://candlestick-screener.onrender.com/api/stream");
 evtSource.onmessage = e => console.log("message:", e.data);
 
@@ -53,6 +54,7 @@ evtSource.onmessage = e => console.log("message:", e.data);
     if (!symbolInput) return;
     try {
       //candlestick-screener.onrender.com
+      //localhost:5000
       await fetch("https://candlestick-screener.onrender.com/api/add_symbol", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

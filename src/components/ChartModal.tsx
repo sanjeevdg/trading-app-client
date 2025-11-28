@@ -1,5 +1,6 @@
 import React, {useRef, useEffect,useState} from "react";
 // import { AdvancedRealTimeChart  } from "react-ts-tradingview-widgets";
+
 import { useParams } from "react-router-dom";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import {
@@ -132,8 +133,9 @@ function calculateMACD(data: { date: string; close: number }[]) {
       params.append("symbols", symbol || "");
       params.append("type", "all");
 //trading-app-server-35kc.onrender.com
+
       //localhost:4000
-      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params}`);
+      const res = await fetch(`http://localhost:4000/api/screener?${params}`);
       const data = await res.json();
 
 

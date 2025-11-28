@@ -27,8 +27,8 @@ const [zacksInfo , setZacksInfo] = useState([]);
   // candlestick-screener.onrender.com
   //localhost:5000
 const ENDPOINTS = {
-  sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
-  nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
+  sp500: `http://localhost:5000/api/top_gainers_sp500?force=${force ? 1 : 0}`,
+  nasdaq100: `http://localhost:5000/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
 };
 
 //        -H "Content-Type: application/json"         -d '["AAPL","TSLA","ADI","CNC","IR","EMR","GLW","CPAY","FCX","NXPI","ALLE","BBY","MRNA","COO","TSN","JBHT","ARE","ELV","ALB","BKNG","AMD"]'
@@ -37,9 +37,9 @@ async function getZacksBulk(symbolsString) {
 
 const symbols = symbolsString.split(",").map(s => s.replace(/"/g, "").trim());
 
-
+//trading-app-server-35kc.onrender.com
  try {
-      const res = await fetch("https://trading-app-server-35kc.onrender.com/api/zacks/bulk", {
+      const res = await fetch("http://localhost:4000/api/zacks/bulk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(symbols),
@@ -60,8 +60,8 @@ async function fetchSymbols() {
  try {
      // setLoading(true);
       setError("");
-
-      const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
+//candlestick-screener.onrender.com
+      const res = await fetch("http://localhost:5000/api/symbol_list_sp500");
       if (!res.ok) throw new Error("Failed to fetch data");
 
       const json = await res.json();
@@ -140,7 +140,7 @@ const getZacksRankColor = (rank) => {
       <button onClick={() => fetchData(index)} > Submit</button>
 
       {/* Loading state */}
-      {loading && <p>Loading data...</p>}
+      {loading && <p>Loading data...please be patient</p>}
 
       {/* Error state */}
       {error && <p style={{ color: "red" }}>{error}</p>}

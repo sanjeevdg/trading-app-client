@@ -1,0 +1,12 @@
+.chart-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #ccc;
+  padding: 6px 8px;
+  font-size: 12px;
+  pointer-events: none;
+  display: none;        /* will be toggled in JS */
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}

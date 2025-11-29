@@ -14,6 +14,10 @@ import CandleScreener2 from "./components/CandleScreener2";
 import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
+
+import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
+
+
 import LiveTracker from "./components/LiveTracker";
 
 import ChartModal from "./components/ChartModal";
@@ -28,6 +32,8 @@ import SmaScreener from './components/SmaScreener';
 //import MostActiveStocks from './components/MostActiveStocks';
 import TopGainers from './components/TopGainers';
 import { useLocation } from "react-router-dom";
+
+
 
 
 const App: React.FC = () => {
@@ -53,6 +59,8 @@ const App: React.FC = () => {
 
     { path: "/TopGainers", label: "Top Gainers New" },
     { path: "/CandleScreener2", label: "Screener 2" },
+{ path: "/LightweightMultiPaneChart2", label: "Lightweight MultiPaneChart2" },
+
 //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
@@ -196,6 +204,7 @@ const App: React.FC = () => {
 <Route path="/LiveTracker" element={<LiveTracker />} />
 <Route path="/TopGainers" element={<TopGainers />} />
 <Route path="/chart/:symbol" element={<ChartModal />} />
+<Route path="/LightweightMultiPaneChart2/:symbol" element={<LightweightMultiPaneChart2 />} />
 
           </Routes>
         </main>

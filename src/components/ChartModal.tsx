@@ -135,7 +135,7 @@ function calculateMACD(data: { date: string; close: number }[]) {
 //trading-app-server-35kc.onrender.com
 
       //localhost:4000
-      const res = await fetch(`http://localhost:4000/api/screener?${params}`);
+      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/screener?${params}`);
       const data = await res.json();
 
 

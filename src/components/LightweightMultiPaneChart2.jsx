@@ -37,9 +37,10 @@ useEffect(() => {
 
   useEffect(() => {
     if (!symbol) return;
-
+//trading-app-server-35kc.onrender.com
+    //localhost:4000
     async function fetchData() {
-      const res = await fetch(`http://localhost:4000/api/fchart2?symbol=${symbol}`);
+      const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/fchart2?symbol=${symbol}`);
       const data = await res.json();
 
       if (!data.quotes) return;

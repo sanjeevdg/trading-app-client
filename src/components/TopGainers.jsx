@@ -117,6 +117,7 @@ const getZacksRankColor = (rank) => {
 
   return (
     <div style={{ padding: "20px" }}>
+
       <h2>Top Gainers</h2>
 
       {/* Dropdown selector */}
@@ -141,7 +142,7 @@ const getZacksRankColor = (rank) => {
       <button onClick={() => fetchData(index)} > Submit</button>
 
       {/* Loading state */}
-      {loading && <p>Loading data...please be patient</p>}
+      {loading && <p>Loading data...this may take a while ...please be patient</p>}
 
       {/* Error state */}
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -186,6 +187,7 @@ const getZacksRankColor = (rank) => {
                   }}>{item.change_6m_pct}</td>
                <td style={{ padding: "8px" }}>
                   <button onClick={() => {navigate(`/chart/${item.symbol}`)  }}>📈 Chart</button>
+                  <button onClick={() => {navigate(`/LightweightMultiPaneChart2/${item.symbol}`)  }}>📈 Chart2</button>
                 </td>    
               </tr>
             ))}

@@ -59,7 +59,7 @@ const App: React.FC = () => {
 
     { path: "/TopGainers", label: "Top Gainers New" },
     { path: "/CandleScreener2", label: "Screener 2" },
-{ path: "/LightweightMultiPaneChart2", label: "Lightweight MultiPaneChart2" },
+    { path: "/LightweightMultiPaneChart2/AMD", label: "Lightweight MultiPaneChart2" },
 
 //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },

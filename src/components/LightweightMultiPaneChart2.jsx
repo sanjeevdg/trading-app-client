@@ -13,6 +13,7 @@ const LightweightMultiPaneChart2: React.FC = () => {
 const [showRSI, setShowRSI] = useState(true);
 const [showMACD, setShowMACD] = useState(true);
 const [showVolume, setShowVolume] = useState(true);
+const [showAI, setShowAI] = useState(true);
 
 const chartRef = useRef(null);
 
@@ -20,6 +21,46 @@ const { symbol } = useParams();
 
 const handle = useFullScreenHandle();
 const tooltipRef = useRef();
+
+
+function computeATSF(quotes) {
+  const period = 20; // sliding window
+  const out = [];
+
+  for (let i = period; i < quotes.length; i++) {
+    const slice = quotes.slice(i - period, i);
+    const closes = slice.map(p => p.close);
+
+    // Linear regression slope
+    const n = closes.length;
+    const x = [...Array(n).keys()];
+    const meanX = x.reduce((a, b) => a + b) / n;
+    const meanY = closes.reduce((a, b) => a + b) / n;
+
+    const slope =
+      x.reduce((acc, xi, j) => acc + (xi - meanX) * (closes[j] - meanY), 0) /
+      x.reduce((acc, xi) => acc + (xi - meanX) ** 2, 0);
+
+    // Momentum score
+    const momentum = (closes[n - 1] - closes[0]) / closes[0];
+
+    // Volatility penalty
+    const variance =
+      closes.reduce((acc, c) => acc + (c - meanY) ** 2, 0) / n;
+    const volPenalty = Math.sqrt(variance);
+
+    // Normalize AI score from 0-100
+    let score = slope * 1200 + momentum * 100 - volPenalty * 5;
+    score = Math.max(0, Math.min(100, score));
+
+    out.push({
+      time: slice[slice.length - 1].date.split("T")[0],
+      value: parseFloat(score.toFixed(2)),
+    });
+  }
+
+  return out;
+}
 
 useEffect(() => {
   if (!container.current || !tooltipRef.current) return;
@@ -39,7 +80,17 @@ useEffect(() => {
     if (!symbol) return;
 //trading-app-server-35kc.onrender.com
     //localhost:4000
+
+
+
+
     async function fetchData() {
+
+
+let aiPane = null;
+
+
+      
       const res = await fetch(`https://trading-app-server-35kc.onrender.com/api/fchart2?symbol=${symbol}`);
       const data = await res.json();
 
@@ -197,6 +248,7 @@ chart.subscribeCrosshairMove((param) => {
   // VOLUME (series must be OHLC or histogram)
   const volumeVal = volumeSeries ? param.seriesData.get(volumeSeries) : null;
 
+  const aiVal = aiPane ? param.seriesData.get(aiPane) : null;
 
 if (price !== undefined) {
   tooltip.innerHTML = `
@@ -208,6 +260,7 @@ if (price !== undefined) {
     📉 RSI: ${rsiVal.value?.toFixed(2) || "-"}<br/>
     📊 MACD: ${macdVal.value?.toFixed(2) || "-"}<br/>
     🔊 Volume: ${volumeVal.value || "-"}
+    🤖 AI Trend Strength: <b>${aiVal?.value?.toFixed(2) || "-"}</b><br/>
   `;
 
 
@@ -225,7 +278,7 @@ if (price !== undefined) {
 
 //console.log("Tooltip exists:", document.getElementById("chart-tooltip"));
 
-    data.trendlines.forEach((t) => {
+    data.enrichedTrendlines.forEach((t) => {
   const series = chart.addLineSeries({
     color: t.type === "support" ? "#28a745" : "#dc3545",
     lineWidth: 2,
@@ -257,6 +310,22 @@ alert(
 
 
 });
+
+
+
+
+if (showAI && data.ai?.atsf) {
+  aiPane = chart.addLineSeries({
+    priceScaleId: "ai",
+    color: "#6f42c1",        // purple
+    lineWidth: 2,
+    scaleMargins: { top: 0.7, bottom: 0 },
+  });
+
+  aiPane.setData(data.ai.atsf);
+}
+
+
 
 
 }
@@ -297,6 +366,12 @@ useEffect(() => {
   <label><input type="checkbox" checked={showRSI} onChange={() => setShowRSI(!showRSI)} /> RSI</label>
   <label><input type="checkbox" checked={showMACD} onChange={() => setShowMACD(!showMACD)} /> MACD</label>
   <label><input type="checkbox" checked={showVolume} onChange={() => setShowVolume(!showVolume)} /> Volume</label>  
+
+<label>
+  <input type="checkbox" checked={showAI} onChange={() => setShowAI(!showAI)} />
+  AI Trend Strength
+</label>
+
 <button onClick={handle.enter}>
         Enter fullscreen
       </button>

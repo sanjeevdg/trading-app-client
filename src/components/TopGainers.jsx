@@ -175,7 +175,7 @@ const getZacksRankColor = (rank) => {
                     color: item.change_1w_pct >= 0 ? "green" : "red",
                   }}>{item.change_1w_pct}</td>
 
-                  <td style={{ padding: "8px", color: getZacksRankColor(zacksInfo[item.symbol].zacksRank) }}>{zacksInfo[item.symbol].zacksRankText} </td>
+                  <td style={{ padding: "8px", color: getZacksRankColor(zacksInfo[item.symbol]?.zacksRank) }}>{zacksInfo[item.symbol]?.zacksRankText} </td>
 
                   <td style={{
                     padding: "8px",

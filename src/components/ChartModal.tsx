@@ -11,6 +11,19 @@ import {
   type SeriesMarkerShape,
 } from "lightweight-charts";
 
+
+import {
+   CandlestickSeries,
+  HistogramSeries,HistogramData,
+  LineSeries,LineData,createSeriesMarkers,
+    CrosshairMode,CandlestickData, 
+  SeriesMarkerPosition,
+  
+  
+} from 'lightweight-charts';
+
+
+
 type Pattern = {
   name: string;
   type: "bullish" | "bearish" | "neutral";
@@ -167,8 +180,8 @@ const stockInfo: StockInfo = {
   floatShares: 125000000,  // example
 };
 
-
-const chart = createChart(chartContainerRef.current, {
+let chart, candleSeries, volumeSeries, macdHistogram, rsiSeries;
+chart = createChart(chartContainerRef.current, {
   width: chartContainerRef.current.clientWidth,
   height: 400, // ⬆ taller for 3 panes
   layout: { background: { color: "#ffffff" }, textColor: "#333" },
@@ -200,10 +213,27 @@ chart.priceScale('macd').applyOptions({
 // =============================================================
 // 1️⃣ PRICE PANE  (Top)  → occupies TOP 60% of screen
 // =============================================================
+ candleSeries = chart.addSeries(
+      CandlestickSeries,
+      {
+        upColor: '#26a69a',
+        downColor: '#ef5350',
+        wickUpColor: '#26a69a',
+        wickDownColor: '#ef5350',
+        borderVisible: false,
+      },
+      0
+    );
+ candleSeries.priceScale().applyOptions({
+  scaleMargins: { top: 0.05, bottom: 0.25 },
+});
+
+/*
 const candleSeries = chart.addCandlestickSeries({ priceScaleId: 'price' });
 chart.priceScale('price').applyOptions({
   scaleMargins: { top: 0, bottom: 0.50 },  // 👈 Leaves space for next panes
 });
+*/
 candleSeries.setData(chartCandles.map(c => ({
   time: c.date,
   open: c.open,
@@ -214,27 +244,11 @@ candleSeries.setData(chartCandles.map(c => ({
 })));
 
 
-//console.log("chartCandles[0]==", chartCandles[0]);
-/*
-  // 👉 DO NOT CHECK length === 0
-  if (chartCandles.length > 0) {
-    candleSeries.setData(
-      chartCandles.map((c) => ({
-        time: c.date,
-        open: c.open,
-        high: c.high,
-        low: c.low,
-        close: c.close,
-        volume:c.volume
-      }))
-    );
-    console.log('SET DATA SUCCESS');
-  }
-*/
   // Set markers after data loads
   if (chartPatterns.length > 0) {
-    candleSeries.setMarkers(
-      chartPatterns.map((p) => ({        
+    /*
+const markers = chartPatterns.map((p) => ({      
+
         time: p.date.split("T")[0],
        position:
             p.type === "bullish" ? "aboveBar" : p.type === "bearish" ? "belowBar" : "aboveBar",
@@ -251,8 +265,44 @@ candleSeries.setData(chartCandles.map(c => ({
               ? "#ef4444"
               : "#fbbf24",
         text: p.name,
-      }))
-    );
+      }));*/
+
+const markers: SeriesMarker<Time>[] = chartPatterns.map((p) => ({
+  time: p.date.split('T')[0], // YYYY-MM-DD
+
+  position:
+    p.type === 'bullish'
+      ? 'aboveBar'
+      : p.type === 'bearish'
+      ? 'belowBar'
+      : 'aboveBar',
+
+  shape:
+    p.type === 'bullish'
+      ? 'arrowUp'
+      : p.type === 'bearish'
+      ? 'arrowDown'
+      : 'square',
+
+  color:
+    p.type === 'bullish'
+      ? '#22c55e'
+      : p.type === 'bearish'
+      ? '#ef4444'
+      : '#fbbf24',
+
+  text: p.name,
+}));
+
+//candleSeries.setMarkers(markers);
+
+
+
+createSeriesMarkers(candleSeries, markers);
+  // Candles (main pane)
+candleSeries.priceScale().applyOptions({
+  scaleMargins: { top: 0.05, bottom: 0.25 },
+});
   }
 
 
@@ -316,9 +366,12 @@ candleSeries.setData(chartCandles.map(c => ({
 
 if (showRSI) {
 // ---- ADD RSI SERIES ----
-const rsiSeries = chart.addLineSeries({ color: 'purple', lineWidth: 1 });
+rsiSeries = chart.addSeries(LineSeries, { color: 'purple', lineWidth: 1 });
 const rsiData = calculateRSI(chartCandles);
 rsiSeries.setData(rsiData);
+rsiSeries?.priceScale().applyOptions({
+  scaleMargins: { top: 0.55, bottom: 0.10 },
+});
 }
 /*
 
@@ -551,18 +604,36 @@ chart.subscribeCrosshairMove((param: any) => {
 `;
     chartContainerRef.current.appendChild(legend);
 
+/*
+
+const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
+const chart = createChart(document.getElementById('container'), chartOptions);
+const histogramSeries = chart.addSeries(HistogramSeries, { color: '#26a69a' });
+
+const data = [{ value: 1, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922, color: 'red' }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722, color: 'red' }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922, color: 'red' }];
+
+histogramSeries.setData(data);
+
+chart.timeScale().fitContent();
+*/
 
 
 // =============================================================
 // 2️⃣ VOLUME PANE  (Middle) → takes 20% of height
 // =============================================================
     if (showVolume) {
+/*
 const volumeSeries = chart.addHistogramSeries({
   priceScaleId: 'volume',
+}); */
+volumeSeries = chart.addSeries(HistogramSeries, { color: '#26a69a' });
+volumeSeries.priceScale().applyOptions({
+  scaleMargins: { top: 0.65, bottom: 0.25 },
 });
+/*
 chart.priceScale('volume').applyOptions({
   scaleMargins: { top: 0.65, bottom: 0.25 }, // between price & MACD
-});
+});*/
 volumeSeries.applyOptions({ priceFormat: { type: 'volume' } });
 volumeSeries.setData(
   chartCandles.map(c => ({
@@ -571,27 +642,48 @@ volumeSeries.setData(
     color: c.close > c.open ? '#4caf50' : '#ff5252',
   }))
 );
+// Volume pane
 
+volumeSeries?.priceScale().applyOptions({
+  scaleMargins: { top: 0.7, bottom: 0.05 },
+});
 }
 
 // =============================================================
 // 3️⃣ MACD PANE  (Bottom) → takes last 20% of screen
 // =============================================================
 
+/*
+
+const chartOptions = { layout: { textColor: 'black', background: { type: 'solid', color: 'white' } } };
+const chart = createChart(document.getElementById('container'), chartOptions);
+const lineSeries = chart.addSeries(LineSeries, { color: '#2962FF' });
+
+const data = [{ value: 0, time: 1642425322 }, { value: 8, time: 1642511722 }, { value: 10, time: 1642598122 }, { value: 20, time: 1642684522 }, { value: 3, time: 1642770922 }, { value: 43, time: 1642857322 }, { value: 41, time: 1642943722 }, { value: 43, time: 1643030122 }, { value: 56, time: 1643116522 }, { value: 46, time: 1643202922 }];
+
+lineSeries.setData(data);
+
+chart.timeScale().fitContent();
+
+
+*/
+
 
 if (showMACD) {
 
 // MACD LINE
-const macdLine = chart.addLineSeries({ priceScaleId: 'macd', lineWidth: 2 });
-
-chart.priceScale('macd').applyOptions({
+//const macdLine = chart.addLineSeries({ priceScaleId: 'macd', lineWidth: 2 });
+const macdLine = chart.addSeries(LineSeries, { color: '#2962FF' });
+macdLine.priceScale().applyOptions({
   scaleMargins: { top: 0.85, bottom: 0 }, // 👈 bottom-most pane
 });
 
 // MACD SIGNAL
-const macdSignal = chart.addLineSeries({ priceScaleId: 'macd', lineWidth: 1 });
+//{ priceScaleId: 'macd', lineWidth: 1 }
+const macdSignal = chart.addSeries(LineSeries, { color: '#29620F' });
 // HISTOGRAM
-const macdHistogram = chart.addHistogramSeries({ priceScaleId: 'macd' });
+// { priceScaleId: 'macd' }
+macdHistogram = chart.addSeries(HistogramSeries, { color: '#12f090' });
 
 const macdData = calculateMACD(chartCandles);
 macdLine.setData(macdData.map(d => ({ time: d.time, value: d.macd })));
@@ -605,8 +697,16 @@ macdHistogram.setData(
     color: d.hist >= 0 ? 'green' : 'red',
   }))
 );
-
+// MACD pane
+macdHistogram?.priceScale().applyOptions({
+  scaleMargins: { top: 0.55, bottom: 0.10 },
+});
 }
+
+
+
+
+
 
 /*
 // ---------------- Volume Pane (NEW) ----------------
@@ -652,6 +752,14 @@ chartContainerRef.current.style.position = "relative";  // REQUIRED
 }
 
 
+
+
+
+
+
+
+
+// RSI pane
 
 
 

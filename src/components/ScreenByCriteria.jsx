@@ -137,9 +137,9 @@ const [chartSymbol, setChartSymbol] = useState("");
           !loading && <p className="mt-4 text-gray-600">No results to display.</p>
         )}
 
-{chartSymbol && (
+{ chartSymbol && (
         <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol(null)} />
-      )}
+      ) }
 
       </div>
     </div>

@@ -26,6 +26,7 @@ const [zacksInfo , setZacksInfo] = useState([]);
 
   // candlestick-screener.onrender.com
   //localhost:5000
+//192.168.150.105:5000
 const ENDPOINTS = {
   sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
   nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
@@ -62,6 +63,7 @@ async function fetchSymbols() {
      // setLoading(true);
       setError("");
 //candlestick-screener.onrender.com
+      //192.168.150.105:5000
       const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
       if (!res.ok) throw new Error("Failed to fetch data");
 
@@ -186,8 +188,8 @@ const getZacksRankColor = (rank) => {
                     color: item.change_6m_pct >= 0 ? "green" : "red",
                   }}>{item.change_6m_pct}</td>
                <td style={{ padding: "8px" }}>
-                  <button onClick={() => {navigate(`/chart/${item.symbol}`)  }}>📈 Chart</button>
-                  <button onClick={() => {navigate(`/LightweightMultiPaneChart2/${item.symbol}`)  }}>📈 Chart2</button>
+                  <button onClick={() => {navigate(`/PatternCandleChart/${item.symbol}`)  }}>📈 Chart</button>
+                  <button onClick={() => {navigate(`/MultiPaneChartWeb/${item.symbol}`)  }}>📈 Chart2</button>
                 </td>    
               </tr>
             ))}

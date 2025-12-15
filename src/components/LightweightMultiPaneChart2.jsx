@@ -98,12 +98,7 @@ let aiPane = null;
       container.current.innerHTML = ""; // clear chart on symbol change
 
       // --- CHART BASE ---
-      /*
-      const chart = createChart(container.current, {
-        height: 800,
-        layout: { textColor: "#fff", background: { color: "#111" } },
-        crosshair: { mode: CrosshairMode.Normal },
-      }); */
+     
 chartRef.current = createChart(container.current, {
   height: 700,
   layout: {

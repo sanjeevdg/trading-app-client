@@ -17,13 +17,18 @@ import LiveScreener from "./components/LiveScreener";
 
 import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
 
+import PatternCandleChart from './components/PatternCandleChart';
+
+import MultiPaneChartWeb from './components/MultiPaneChartWeb';
 
 import LiveTracker from "./components/LiveTracker";
 
-import ChartModal from "./components/ChartModal";
+//import ChartModal from "./components/ChartModal";
 
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
+
+
 
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
@@ -59,9 +64,7 @@ const App: React.FC = () => {
 
     { path: "/TopGainers", label: "Top Gainers New" },
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/LightweightMultiPaneChart2/AMD", label: "Lightweight MultiPaneChart2" },
-
-//    { path: "/MostActiveStocks", label: "Screen by category" },
+    //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
@@ -203,8 +206,13 @@ const App: React.FC = () => {
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
 <Route path="/TopGainers" element={<TopGainers />} />
-<Route path="/chart/:symbol" element={<ChartModal />} />
+<Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
+
+<Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />
+
 <Route path="/LightweightMultiPaneChart2/:symbol" element={<LightweightMultiPaneChart2 />} />
+
+
 
           </Routes>
         </main>

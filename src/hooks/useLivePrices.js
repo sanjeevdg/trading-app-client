@@ -3,9 +3,9 @@ import { io } from "socket.io-client";
 
 export function useLivePrices(setPrices, positions) {
   const socketRef = useRef(null);
-
+//localhost:4000
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000");
+    socketRef.current = io("https://trading-app-server-35kc.onrender.com");
 
     socketRef.current.on("price:update", ({ symbol, price }) => {
       setPrices(prev => ({

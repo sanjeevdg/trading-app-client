@@ -6,7 +6,8 @@ export function usePositionsSocket(setPositions) {
 
   useEffect(() => {
     // Connect to backend Socket.IO
-    socketRef.current = io("http://localhost:4000", {
+    //localhost:4000
+    socketRef.current = io("https://trading-app-server-35kc.onrender.com", {
       transports: ["websocket"],
     });
 

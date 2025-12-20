@@ -4,11 +4,12 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 //import reportWebVitals from './reportWebVitals';
-import { registerLicense } from '@syncfusion/ej2-base';
+//import { registerLicense } from '@syncfusion/ej2-base';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
+/*
 registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH9cdHVUR2hZV0RwV0FWYUo=');
-
+*/
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter>

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 //import ChartModal from "./ChartModal";
 import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+import { Modal, Button, Form } from "react-bootstrap";
+import TradeOrderModal from './TradeOrderModal';
+
 //https://candlestick-screener.onrender.com
 //http://localhost:5000
 
@@ -23,6 +28,11 @@ const [symbols,setSymbols] = useState("");
 
 const [zacksInfo , setZacksInfo] = useState([]);
 
+const [positions, setPositions] = useState([]);
+
+const [showTradeModal, setShowTradeModal] = useState(false);
+
+const [mysymbol, setMySymbol] = useState('');
 
   // candlestick-screener.onrender.com
   //localhost:5000
@@ -36,7 +46,10 @@ const ENDPOINTS = {
 
 async function getZacksBulk(symbolsString) {
 
-const symbols = symbolsString.split(",").map(s => s.replace(/"/g, "").trim());
+//const symbols = symbolsString.split(",").map(s => s.replace(/"/g, "").trim());
+
+console.log('symbolsString',typeof symbolsString);
+
 
 //trading-app-server-35kc.onrender.com
 //localhost:4000
@@ -44,7 +57,7 @@ const symbols = symbolsString.split(",").map(s => s.replace(/"/g, "").trim());
       const res = await fetch("https://trading-app-server-35kc.onrender.com/api/zacks/bulk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(symbols),
+        body: JSON.stringify(symbolsString),
       });
       const data = await res.json();
       console.log('zacksinfo',data);
@@ -67,10 +80,10 @@ async function fetchSymbols() {
       const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
       if (!res.ok) throw new Error("Failed to fetch data");
 
-      const json = await res.json();
-      console.log('fetched symbols===', json.symbols);
-      setSymbols(json.symbols);
-      await getZacksBulk(json.symbols);
+      const myres = await res.json();
+      console.log('fetched symbols===', myres);
+      setSymbols(myres);
+      await getZacksBulk(myres);
     } catch (err) {
       setError(err.error || "Something went wrong");
     } finally {
@@ -104,6 +117,13 @@ async function fetchSymbols() {
   useEffect(() => {
     fetchData(index);
   }, [index]);
+
+const fetchPositions = async () => {
+    const res = await axios.get(`https://trading-app-server-35kc.onrender.com/api/positions`);
+    setPositions(res.data);
+  };
+
+ 
 
 
 const getZacksRankColor = (rank) => {
@@ -161,17 +181,28 @@ const getZacksRankColor = (rank) => {
           <thead>
             <tr>
               <th style={thStyle}>Symbol</th>
+              <th style={thStyle}>Price</th>
+              <th style={thStyle}>1W Price</th>
+              <th style={thStyle}>3M Price</th>
+
               <th style={thStyle}>1W Change (%)</th>
               <th style={thStyle}>ZacksRank</th>
               <th style={thStyle}>3M Change (%)</th>
-              <th style={thStyle}>6M Change (%)</th>
               <th style={thStyle}>Chart</th>
+              <th style={thStyle}>Sell/Buy</th>
             </tr>
           </thead>
+          
+
           <tbody>
             {data.map((item) => (
               <tr key={item.symbol}>
-                <td style={tdStyle}>{item.symbol}</td>                
+                <td style={tdStyle}>{item.symbol}</td> 
+                <td style={tdStyle}>${item.current_price?.toFixed(2)}</td>
+                <td style={tdStyle}>${item.base_price_1w?.toFixed(2)}</td>
+                <td style={tdStyle}>${item.base_price_3m?.toFixed(2)}</td>
+
+               
                   <td style={{
                     padding: "8px",
                     color: item.change_1w_pct >= 0 ? "green" : "red",
@@ -188,9 +219,14 @@ const getZacksRankColor = (rank) => {
                     color: item.change_6m_pct >= 0 ? "green" : "red",
                   }}>{item.change_6m_pct}</td>
                <td style={{ padding: "8px" }}>
-                  <button onClick={() => {navigate(`/PatternCandleChart/${item.symbol}`)  }}>📈 Chart</button>
-                  <button onClick={() => {navigate(`/MultiPaneChartWeb/${item.symbol}`)  }}>📈 Chart2</button>
+                  <button onClick={() => {navigate(`/MultiPaneChartWeb/${item.symbol}`)  }}>📈Chart</button>
                 </td>    
+                <td style={{ padding: "8px" }}>
+                     <button onClick={() => {setMySymbol(item.symbol);setShowTradeModal(true); } }>
+                      Buy
+                    </button>
+                   
+                </td>
               </tr>
             ))}
           </tbody>
@@ -198,6 +234,20 @@ const getZacksRankColor = (rank) => {
          
       )}
 
+
+
+<TradeOrderModal
+  show={showTradeModal}
+  onClose={() => setShowTradeModal(false)}
+  symbol={mysymbol}
+  side="buy"
+  onSubmit={async (orderPayload) => {
+    
+    console.log('from inside Submit tom component tags')
+  //  await placeOrder(orderPayload);
+    
+  }}
+/>
 
 {/* chartSymbol && (
         <ChartModal symbol={chartSymbol} onClose={() => setChartSymbol(null)} />

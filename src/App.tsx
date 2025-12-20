@@ -14,7 +14,7 @@ import CandleScreener2 from "./components/CandleScreener2";
 import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
-
+import AlpacaDashboard from './components/AlpacaDashboard';
 import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
 
 import PatternCandleChart from './components/PatternCandleChart';
@@ -22,6 +22,7 @@ import PatternCandleChart from './components/PatternCandleChart';
 import MultiPaneChartWeb from './components/MultiPaneChartWeb';
 
 import LiveTracker from "./components/LiveTracker";
+import LivePrices from "./components/LivePrices";
 
 //import ChartModal from "./components/ChartModal";
 
@@ -63,6 +64,11 @@ const App: React.FC = () => {
 
 
     { path: "/TopGainers", label: "Top Gainers New" },
+    
+    { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
+{ path: "/LivePrices", label: "Live Prices" },
+
+
     { path: "/CandleScreener2", label: "Screener 2" },
     //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
@@ -206,6 +212,11 @@ const App: React.FC = () => {
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
 <Route path="/TopGainers" element={<TopGainers />} />
+
+<Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+<Route path="/LivePrices" element={<LivePrices />} />
+
+
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 
 <Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />

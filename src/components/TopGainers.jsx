@@ -117,7 +117,8 @@ async function fetchSymbols() {
   useEffect(() => {
     fetchData(index);
   }, [index]);
-
+//trading-app-server-35kc.onrender.com
+//  192.168.150.105:4000
 const fetchPositions = async () => {
     const res = await axios.get(`https://trading-app-server-35kc.onrender.com/api/positions`);
     setPositions(res.data);
@@ -188,6 +189,8 @@ const getZacksRankColor = (rank) => {
               <th style={thStyle}>1W Change (%)</th>
               <th style={thStyle}>ZacksRank</th>
               <th style={thStyle}>3M Change (%)</th>
+              <th style={thStyle}>Market</th>
+              <th style={thStyle}>Tradable</th>
               <th style={thStyle}>Chart</th>
               <th style={thStyle}>Sell/Buy</th>
             </tr>
@@ -214,10 +217,17 @@ const getZacksRankColor = (rank) => {
                     padding: "8px",
                     color: item.change_3m_pct >= 0 ? "green" : "red",
                   }}>{item.change_3m_pct}</td>
-                <td style={{
-                    padding: "8px",
-                    color: item.change_6m_pct >= 0 ? "green" : "red",
-                  }}>{item.change_6m_pct}</td>
+                
+                  <td style={tdStyle}>
+  {item.market?.is_open ? "🟢 Open" : "🔴 Closed"}
+</td>
+
+<td style={{
+  ...tdStyle,
+  color: item.asset?.tradable ? "green" : "gray"
+}}>
+  {item.asset?.tradable ? "Yes" : "No"}
+</td>
                <td style={{ padding: "8px" }}>
                   <button onClick={() => {navigate(`/MultiPaneChartWeb/${item.symbol}`)  }}>📈Chart</button>
                 </td>    

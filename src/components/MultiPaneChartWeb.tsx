@@ -35,9 +35,10 @@ useEffect(() => {
 
   let cancelled = false;
 //192.168.150.105:4000
+  //trading-app-server-35kc.onrender.com
   async function load() {
     try {
-      const url = `http://192.168.150.105:4000/api/fchart2?symbol=${symbol}`;
+      const url = `https://trading-app-server-35kc.onrender.com/api/fchart2?symbol=${symbol}`;
       const res = await fetch(url);
       const json = await res.json();
 

@@ -38,8 +38,8 @@ const [mysymbol, setMySymbol] = useState('');
   //localhost:5000
 //192.168.150.105:5000
 const ENDPOINTS = {
-  sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
-  nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
+  sp500: `http://192.168.150.105:5000/api/top_gainers_sp500?force=${force ? 1 : 0}`,
+  nasdaq100: `http://192.168.150.105:5000/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,
 };
 
 //        -H "Content-Type: application/json"         -d '["AAPL","TSLA","ADI","CNC","IR","EMR","GLW","CPAY","FCX","NXPI","ALLE","BBY","MRNA","COO","TSN","JBHT","ARE","ELV","ALB","BKNG","AMD"]'
@@ -54,7 +54,7 @@ console.log('symbolsString',typeof symbolsString);
 //trading-app-server-35kc.onrender.com
 //localhost:4000
  try {
-      const res = await fetch("https://trading-app-server-35kc.onrender.com/api/zacks/bulk", {
+      const res = await fetch("http://192.168.150.105:4000/api/zacks/bulk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(symbolsString),
@@ -77,7 +77,7 @@ async function fetchSymbols() {
       setError("");
 //candlestick-screener.onrender.com
       //192.168.150.105:5000
-      const res = await fetch("https://candlestick-screener.onrender.com/api/symbol_list_sp500");
+      const res = await fetch("http://192.168.150.105:5000/api/symbol_list_sp500");
       if (!res.ok) throw new Error("Failed to fetch data");
 
       const myres = await res.json();
@@ -104,7 +104,7 @@ async function fetchSymbols() {
       if (!res.ok) throw new Error("Failed to fetch data");
 
       const json = await res.json();
-      setData(json);
+      setData(json.data || []);
       await fetchSymbols();
       console.log('mydata====',json);
     } catch (err) {
@@ -120,7 +120,7 @@ async function fetchSymbols() {
 //trading-app-server-35kc.onrender.com
 //  192.168.150.105:4000
 const fetchPositions = async () => {
-    const res = await axios.get(`https://trading-app-server-35kc.onrender.com/api/positions`);
+    const res = await axios.get(`http://192.168.150.105:4000/api/positions`);
     setPositions(res.data);
   };
 

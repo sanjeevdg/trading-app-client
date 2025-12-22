@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-
-const socket = io("http://localhost:4000");
+//http://localhost:4000
+const socket = io("https://trading-app-server-35kc.onrender.com",{
+  transports: ["websocket"], // IMPORTANT for Render
+  withCredentials: true
+});
 
 export default function LivePrices() {
   const [prices, setPrices] = useState({});

@@ -6,6 +6,8 @@ import "../styles/Dashboard.css";
 import {usePositionsSocket} from '../hooks/usePositionsSocket';
 import {useLivePrices} from '../hooks/useLivePrices';
 import { Modal, Button, Form } from "react-bootstrap";
+
+
 //localhost:4000
 const API = "https://trading-app-server-35kc.onrender.com/api";
 
@@ -17,21 +19,23 @@ export default function AlpacaDashboard() {
 
 const [positions, setPositions] = useState([]);
 
-
+const [account,setAccount] = useState([]);
 
 
 usePositionsSocket(setPositions);
 
 
   const loadAll = async () => {
-    const [a, p, o] = await Promise.all([
+    const [a, p, o, b] = await Promise.all([
       axios.get(`${API}/assets`),
       axios.get(`${API}/positions`),
-      axios.get(`${API}/orders`)
+      axios.get(`${API}/orders`),
+      axios.get(`${API}/account`)
     ]);
     setAssets(a.data);
     setPositions(p.data);
     setOrders(o.data);
+    setAccount(b.data);
     
     setLoading(false);
   };
@@ -57,6 +61,7 @@ usePositionsSocket(setPositions);
       <h2>📊 Alpaca Trading Dashboard</h2>
 
    {/*   <AssetsTable assets={assets} onTrade={placeOrder} /> */}
+      <AccountTable account={account} />
       <PositionsTable positions={positions} />
       <OrdersTable orders={orders} />
     </div>
@@ -95,6 +100,40 @@ function AssetsTable({ assets, onTrade }) {
               </td>
             </tr>
           ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
+
+function AccountTable({ account }) {
+  return (
+    <>
+      <h4>My Account</h4>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Status</th><td><b>{account.status}</b></td>
+          </tr><tr>
+            <th>Cash</th><td><b>{account.cash}</b></td>
+            </tr><tr>
+            <th>Equity</th><td>{account.equity}</td>
+            </tr><tr>
+            <th>Buying Power</th><td>{account.buying_power}</td>
+            </tr><tr>
+            <th>Portfolio Value</th><td>{account.portfolio_value}</td>
+          </tr>
+          
+        </thead>
+        <tbody>
+          
+            
+              
+              
+              
+              
+            
+          
         </tbody>
       </table>
     </>
@@ -168,7 +207,7 @@ const closePosition = async (symbol) => {
       <td>{qty}</td>
       <td>{avg.toFixed(2)}</td>
       <td>{livePrice.toFixed(2)}</td>
-      <td className={pl >= 0 ? "up" : "down"}>
+      <td style={{color:pl >= 0 ? '#2e7d32':'#c62828' }}>
         {pl.toFixed(2)}
       </td>
       <td>

@@ -1,0 +1,184 @@
+
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import {
+  Box,
+  Card,
+  CardContent,
+  Button,
+  Select,
+  MenuItem,
+  TextField,
+  FormControl,
+  InputLabel,
+  Typography,
+  Switch,
+  FormControlLabel
+} from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+
+export default function TvStockScreener() {
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Filters
+  const [strategy, setStrategy] = useState("rsi_oversold");
+  const [topGainers, setTopGainers] = useState(false);
+  const [minPrice, setMinPrice] = useState(5);
+  const [maxPrice, setMaxPrice] = useState(500);
+  const [minVolume, setMinVolume] = useState(1000000);
+
+  const fetchStocks = async () => {
+    setLoading(true);
+    try {
+      const params = {
+        strategy,
+        min_price: minPrice,
+        max_price: maxPrice,
+        min_volume: minVolume,
+        top_gainers: topGainers ? 1 : 0
+      };
+
+      const res = await axios.get("http://192.168.150.105:5000/api/scan_top_gainers", { params });
+
+      const formatted = (res.data.data || []).map((row, idx) => ({
+        id: idx,
+        ...row
+      }));
+
+      setRows(formatted);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStocks();
+  }, []);
+
+  const columns = [
+    { field: "ticker", headerName: "Ticker", width: 130 },
+    { field: "name", headerName: "Name", flex: 1 },
+    {
+      field: "close",
+      headerName: "Price",
+      type: "number",
+      width: 110,
+      valueFormatter: (params) => params.value?.toFixed(2)
+    },
+    {
+      field: "volume",
+      headerName: "Volume",
+      type: "number",
+      width: 140,
+      valueFormatter: (params) => params.value?.toLocaleString()
+    },
+    {
+      field: "RSI",
+      headerName: "RSI",
+      type: "number",
+      width: 100,
+      valueFormatter: (params) => params.value?.toFixed(1)
+    },
+    {
+      field: "change",
+      headerName: "Change %",
+      type: "number",
+      width: 120,
+      cellClassName: (params) =>
+        params.value > 0 ? "cell-green" : "cell-red",
+      valueFormatter: (params) => `${params.value?.toFixed(2)}%`
+    }
+  ];
+
+  return (
+    <Box p={3}>
+      <Typography variant="h5" gutterBottom>
+        📊 Stock Screener
+      </Typography>
+
+      
+      <Card sx={{ mb: 3 }}>
+        <CardContent
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 2
+          }}
+        >
+          <FormControl fullWidth>
+            <InputLabel>Strategy</InputLabel>
+            <Select
+              value={strategy}
+              label="Strategy"
+              onChange={(e) => setStrategy(e.target.value)}
+            >
+              <MenuItem value="rsi_oversold">RSI Oversold</MenuItem>
+              <MenuItem value="rsi_overbought">RSI Overbought</MenuItem>
+              <MenuItem value="momentum">Momentum</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            label="Min Price"
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          />
+          <TextField
+            label="Max Price"
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          />
+          <TextField
+            label="Min Volume"
+            type="number"
+            value={minVolume}
+            onChange={(e) => setMinVolume(e.target.value)}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={topGainers}
+                onChange={() => setTopGainers(!topGainers)}
+              />
+            }
+            label="Top Gainers"
+          />
+        </CardContent>
+      </Card>
+
+      <Button
+        variant="contained"
+        onClick={fetchStocks}
+        disabled={loading}
+        sx={{ mb: 2 }}
+      >
+        {loading ? "Scanning..." : "Scan Stocks"}
+      </Button>
+
+      
+      <Box sx={{ height: 520, width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          loading={loading}
+          pageSizeOptions={[10, 25, 50]}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 25, page: 0 }
+            },
+            sorting: {
+              sortModel: [{ field: topGainers ? "change" : "RSI", sort: "desc" }]
+            }
+          }}
+          disableRowSelectionOnClick
+        />
+      </Box>
+    </Box>
+  );
+}

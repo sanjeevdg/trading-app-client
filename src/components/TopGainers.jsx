@@ -37,6 +37,7 @@ const [mysymbol, setMySymbol] = useState('');
   // candlestick-screener.onrender.com
   //localhost:5000
 //192.168.150.105:5000
+//10.36.127.120
 const ENDPOINTS = {
   sp500: `https://candlestick-screener.onrender.com/api/top_gainers_sp500?force=${force ? 1 : 0}`,
   nasdaq100: `https://candlestick-screener.onrender.com/api/top_gainers_nasdaq100?force=${force ? 1 : 0}`,

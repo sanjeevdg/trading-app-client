@@ -15,6 +15,7 @@ import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
 import AlpacaDashboard from './components/AlpacaDashboard';
+
 import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
 
 import PatternCandleChart from './components/PatternCandleChart';
@@ -29,7 +30,9 @@ import LivePrices from "./components/LivePrices";
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
 
+//import TvScreener from './components/TvScreener';
 
+import TvStockScreener from './components/TvStockScreener';
 
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
@@ -63,12 +66,10 @@ const App: React.FC = () => {
 
 
 
-    { path: "/TopGainers", label: "Top Gainers New" },
-    
+    { path: "/TopGainers", label: "Top Gainers" },
+    { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
 { path: "/LivePrices", label: "Live Prices" },
-
-
     { path: "/CandleScreener2", label: "Screener 2" },
     //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
@@ -214,7 +215,10 @@ const App: React.FC = () => {
 <Route path="/TopGainers" element={<TopGainers />} />
 
 <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+
 <Route path="/LivePrices" element={<LivePrices />} />
+
+<Route path="/TvStockScreener" element={<TvStockScreener />} />
 
 
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 

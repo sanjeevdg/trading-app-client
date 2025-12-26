@@ -12,7 +12,7 @@ registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHV
 */
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/trading-app-client">
     <App />
   </BrowserRouter>
 );

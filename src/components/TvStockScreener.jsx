@@ -68,7 +68,7 @@ const [mysymbol, setMySymbol] = useState(null);
   };
 
   useEffect(() => {
-    fetchStocks();
+   // fetchStocks();
   }, []);
 
   // -----------------------------

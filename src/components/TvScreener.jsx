@@ -23,7 +23,7 @@ const [chartSymbol, setChartSymbol] = useState("");
     setParams((prev) => ({ ...prev, [name]: value }));
   };
 
-
+//http://10.36.127.120:5000/api/tvscreener?min_price=100&max_price=500&min_eodvolume=1000&min_rsi=10&max_rsi=90
 
   async function fetchResults() {
     const query = new URLSearchParams(params);  

@@ -113,17 +113,18 @@ const [paginationModel, setPaginationModel] = useState({
     const fetchData = async () => {
     setLoading(true);
     const { page, pageSize } = paginationModel;
+//192.168.150.105:5000
 
     let endpoint = "";
     switch (type) {
       case "top-gainers":
-        endpoint = "http://192.168.150.105:5000/api/tv/top-gainers";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/top-gainers";
         break;
       case "volume-leaders":
-        endpoint = "http://192.168.150.105:5000/api/tv/volume-leaders";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/volume-leaders";
         break;
       case "best-performing":
-        endpoint = "http://192.168.150.105:5000/api/tv/best-performing";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/best-performing";
         break;
       default:
         console.error("Unknown type:", type);

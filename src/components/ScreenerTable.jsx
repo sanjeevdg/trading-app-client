@@ -28,14 +28,14 @@ const [paginationModel, setPaginationModel] = useState({
   pageSize: 50
 });
 
-
-
-
   // Dynamically define columns based on type
   const getColumns = (type) => {
     const baseColumns = [
       { field: "ticker", headerName: "Symbol", width: 130 },
-      { field: "AnalystRating", headerName: "Analyst Rating", width: 130 },
+      { field: "AnalystRating", headerName: "Analyst Rating", width: 130, cellClassName: (params) =>
+        (params.value === 'Buy' || params.value ==='StrongBuy') 
+      ? "cell-green"
+      : "cell-red", },
       { field: "change", headerName: "Change %", width: 110, cellClassName: (params) =>
         Number.isFinite(params.value) && params.value >= 0
       ? "cell-green"
@@ -114,7 +114,7 @@ const [paginationModel, setPaginationModel] = useState({
     setLoading(true);
     const { page, pageSize } = paginationModel;
 //192.168.150.105:5000
-
+//candlestick-screener.onrender.com
     let endpoint = "";
     switch (type) {
       case "top-gainers":
@@ -126,6 +126,9 @@ const [paginationModel, setPaginationModel] = useState({
       case "best-performing":
         endpoint = "https://candlestick-screener.onrender.com/api/tv/best-performing";
         break;
+      case "small-cap":
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/small-cap";
+        break;  
       default:
         console.error("Unknown type:", type);
         return;
@@ -178,6 +181,7 @@ const [paginationModel, setPaginationModel] = useState({
         <MenuItem value="top-gainers">Top Gainers</MenuItem>
         <MenuItem value="volume-leaders">Volume Leaders</MenuItem>
         <MenuItem value="best-performing">Best Performing (1Y)</MenuItem>
+        <MenuItem value="small-cap">Small Cap</MenuItem>
       </Select>
 
       <DataGrid

@@ -89,7 +89,10 @@ const [mysymbol, setMySymbol] = useState(null);
 
   const columns: GridColDef[] = [
     { field: "ticker", headerName: "Ticker", width: 140 },
-    { field: "name", headerName: "Name", width: 90 },
+    { field: "AnalystRating", headerName: "Analyst Rating", width: 130, cellClassName: (params) =>
+        (params.value === 'Buy' || params.value ==='StrongBuy') 
+      ? "cell-green"
+      : "cell-red", },
     {
   field: "close",
   headerName: "Price",

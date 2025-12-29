@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 //import reportWebVitals from './reportWebVitals';
@@ -10,13 +10,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 /*
 registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH9cdHVUR2hZV0RwV0FWYUo=');
 */
-
+/*
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <BrowserRouter basename="/trading-app-client">
     <App />
   </BrowserRouter>
 );
-
+*/
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <HashRouter>
+    <App />
+  </HashRouter>
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -93,7 +93,7 @@ const fetchTechnicalAnalysis = async (symbol) => {
   try {
     setLoadingTech(true);
 
-    const res = await axios.get("http://192.168.150.105:5000/api/technical-analysis", {
+    const res = await axios.get("https://candlestick-screener.onrender.com/api/technical-analysis", {
       params: {
         symbol,
         exchange: "NASDAQ",
@@ -116,7 +116,7 @@ const openNewsModal = async (symbol) => {
   setNewsOpen(true);
 
   const res = await axios.get(
-    `http://192.168.150.105:5000/api/tv/news/${symbol}`
+    `https://candlestick-screener.onrender.com/api/tv/news/${symbol}`
   );
 
   setNewsData(res.data.data || []);
@@ -125,9 +125,9 @@ const openNewsModal = async (symbol) => {
 const openIndicatorsModal = async (symbol) => {
   setMySymbol(symbol);
   setIndOpen(true);
-
+//192.168.150.105:5000
   const res = await axios.get(
-    `http://192.168.150.105:5000/api/tv/indicators/${symbol}?timeframe=1d`
+    `https://candlestick-screener.onrender.com/api/tv/indicators/${symbol}?timeframe=1d`
   );
 
   console.log('res==full>>>>',res.data);
@@ -283,16 +283,16 @@ const indicatorColor = (value) => {
     let endpoint = "";
     switch (type) {
       case "top-gainers":
-        endpoint = "http://192.168.150.105:5000/api/tv/top-gainers";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/top-gainers";
         break;
       case "volume-leaders":
-        endpoint = "http://192.168.150.105:5000/api/tv/volume-leaders";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/volume-leaders";
         break;
       case "best-performing":
-        endpoint = "http://192.168.150.105:5000/api/tv/best-performing";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/best-performing";
         break;
       case "small-cap":
-        endpoint = "http://192.168.150.105:5000/api/tv/small-cap";
+        endpoint = "https://candlestick-screener.onrender.com/api/tv/small-cap";
         break;  
       default:
         console.error("Unknown type:", type);

@@ -15,6 +15,10 @@ import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
 import AlpacaDashboard from './components/AlpacaDashboard';
+import PriceRangeScreener from './components/PriceRangeScreener';
+import MarketMoversGrid from './components/MarketMoversGrid';
+
+
 
 import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
 
@@ -70,6 +74,10 @@ const App: React.FC = () => {
 
     
     { path: "/ScreenerTable", label: "Preset Screeners" },    
+    
+    { path: "/PriceRangeScreener", label: "Price range Screener" },    
+    { path: "/MarketMoversGrid", label: "Market Movers" },    
+    
     { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
     { path: "/TopGainers", label: "Top Gainers" },
@@ -224,6 +232,9 @@ const App: React.FC = () => {
 
 <Route path="/TvStockScreener" element={<TvStockScreener />} />
 <Route path="/ScreenerTable" element={<ScreenerTable />} />
+<Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
+<Route path="/MarketMoversGrid" element={<MarketMoversGrid />} />
+
 
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 

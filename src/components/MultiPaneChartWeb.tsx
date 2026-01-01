@@ -28,7 +28,8 @@ const encoded = encodeURIComponent(`${symbol}`);
 console.log('entered tv chrt comp',symbol);
 const [force, setForce] = useState(true);
 
-
+const [loading, setLoading] = useState(true);
+const [notFound, setNotFound] = useState(false);
 
 useEffect(() => {
   if (!symbol) return;
@@ -44,9 +45,23 @@ useEffect(() => {
 
       if (cancelled) return;
       console.log('server returned>>>',json);
+       if (
+        !json ||
+        !json.quotes ||
+        !Array.isArray(json.quotes) ||
+        json.quotes.length === 0
+      ) {
+        setNotFound(true);
+        setData(null);
+        return;
+      }
       setData(json);
-    } catch (e) {
-      console.warn('chart fetch error', e);
+    }  catch (e) {
+      console.warn("chart fetch error", e);
+      setNotFound(true);
+      setData(null);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -266,7 +281,17 @@ const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
   useEffect(() => {
     
 
-    if ((data.length===0) || !seriesRef.current.candles) return;
+ //   if ((data.length===0) || !seriesRef.current.candles) return;
+    if (
+  !data ||
+  !data.quotes ||
+  data.quotes.length === 0 ||
+  !seriesRef.current.candles
+) {
+  return;
+}
+
+if (!data.indicators) return;
 
 console.log('data===',seriesRef.current.candles);
 
@@ -326,9 +351,41 @@ console.log('macd', data.indicators?.macd?.length);
     chartRef.current.timeScale().fitContent();
   }, [data]);
 
+
+if (loading) {
+  return (
+    <div style={{ height: "100vh", display: "grid", placeItems: "center" }}>
+      <h2>Loading chart…</h2>
+    </div>
+  );
+}
+
+if (notFound) {
+  return (
+    <div
+      style={{
+        height: "100vh",
+        display: "grid",
+        placeItems: "center",
+        background: "#fafafa",
+        color: "#666",
+        textAlign: "center",
+      }}
+    >
+      <div>
+        <h2>📉 Symbol not found</h2>
+        <p>
+          <b>{symbol}</b> has no available market data.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+
   return (
     <div style={{ position: 'relative', height: '100vh' }}>
-      {/* Legend */}
+      
       <div
         style={{
           position: 'absolute',

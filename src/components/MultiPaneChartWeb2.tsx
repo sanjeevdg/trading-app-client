@@ -32,7 +32,8 @@ export default function MultiPaneChartWeb2() {
   useEffect(() => {
     if (!symbol) return;
     let cancelled = false;
-
+//candlestick-screener.onrender.com
+    //192.168.150.105:5000
     async function load() {
       try {
         const url = `https://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;

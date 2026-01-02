@@ -39,7 +39,7 @@ useEffect(() => {
   //trading-app-server-35kc.onrender.com
   async function load() {
     try {
-      const url = `https://trading-app-server-35kc.onrender.com/api/fchart2?symbol=${symbol}`;
+      const url = `https://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;
       const res = await fetch(url);
       const json = await res.json();
 
@@ -82,6 +82,9 @@ useEffect(() => {
 
     if (!containerRef.current) return;
 
+
+    if (chartRef.current) return;
+
     /* ---------------- CHART ---------------- */
     const chart = createChart(containerRef.current, {
       layout: {
@@ -107,11 +110,10 @@ useEffect(() => {
       handleScale: true,
     });
 
+  
+
     chartRef.current = chart;
 
-    /* ---------------- SERIES ---------------- */
-
-    // Pane 0 – Candles
     const candles = chart.addSeries(
       CandlestickSeries,
       {
@@ -195,27 +197,17 @@ rsi.priceScale().applyOptions({
   scaleMargins: { top: 0.55, bottom: 0.10 },
 });
 
-    /* ---------------- PANE HEIGHTS ---------------- */
-    const h = containerRef.current.clientHeight;
-
-
-
-
-
-
-  //  chart.setRowHeight(0, Math.floor(h * 0.55));
-  //  chart.setRowHeight(1, Math.floor(h * 0.12));
-  //  chart.setRowHeight(2, Math.floor(h * 0.16));
-  //  chart.setRowHeight(3, Math.floor(h * 0.17));
-
+ 
     /* ---------------- TOOLTIP ---------------- */
     chart.subscribeCrosshairMove((param) => {
+
+console.log('MYPRAAM==',param);
+
       if (!param.time || !param.point) {
         tooltipRef.current!.style.display = 'none';
         return;
       }
 
-//      const candle = param.seriesData.get(candles);
       const candle = param.seriesData.get(candles) as CandlestickData<Time> | undefined;
 
       if (!candle) return;
@@ -239,15 +231,14 @@ if (typeof param.time === 'string') {
 const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
   const rsiVal = param.seriesData.get(rsi) as LineData<Time> | undefined;
   const macdVal = param.seriesData.get(macdLine) as LineData<Time> | undefined;
-  const sigVal = param.seriesData.get(signalLine) as LineData<Time> | undefined;
-  const histVal = param.seriesData.get(macdHist) as HistogramData<Time> | undefined;
+        console.log('macdVal',macdVal);
 
-/*      const vol = param.seriesData.get(volume);
-      const rsiVal = param.seriesData.get(rsi);
-      const macdVal = param.seriesData.get(macdLine);
-      const sigVal = param.seriesData.get(signalLine);
-      const histVal = param.seriesData.get(macdHist);
-*/
+  const sigVal = param.seriesData.get(signalLine) as LineData<Time> | undefined;
+      console.log('sigVal',sigVal);
+
+  const histVal = param.seriesData.get(macdHist) as HistogramData<Time> | undefined;
+      console.log('histVal',histVal);
+
       legendPriceRef.current!.textContent =
     candle.close.toFixed(2) + ' ' + data?.meta?.currency;
 
@@ -274,14 +265,22 @@ const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
 
     });
 
-    return () => chart.remove();
+
+    return () => {
+    chart.remove();
+    chartRef.current = null;
+  };
+
   }, []);
 
   /* ---------------- DATA ---------------- */
   useEffect(() => {
     
 
- //   if ((data.length===0) || !seriesRef.current.candles) return;
+    if ((data.length===0) || !seriesRef.current.candles) return;
+
+/*
+
     if (
   !data ||
   !data.quotes ||
@@ -290,15 +289,15 @@ const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
 ) {
   return;
 }
+*/
+//if (!data.indicators) return;
 
-if (!data.indicators) return;
-
-console.log('data===',seriesRef.current.candles);
+//console.log('data===',seriesRef.current.candles);
 
     legendSymbolRef.current!.textContent =
       data?.meta?.longName || data?.meta?.symbol;
     legendPriceRef.current!.textContent =
-      data?.meta?.regularMarketPrice.toFixed(2) +
+      data?.meta?.regularMarketPrice?.toFixed(2) +
       ' ' +
       data?.meta?.currency;
 

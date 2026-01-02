@@ -25,6 +25,7 @@ import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2'
 import PatternCandleChart from './components/PatternCandleChart';
 
 import MultiPaneChartWeb from './components/MultiPaneChartWeb';
+import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 
 import LiveTracker from "./components/LiveTracker";
 import LivePrices from "./components/LivePrices";
@@ -237,8 +238,8 @@ const App: React.FC = () => {
 
 
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
-
 <Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />
+<Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
 
 <Route path="/LightweightMultiPaneChart2/:symbol" element={<LightweightMultiPaneChart2 />} />
 

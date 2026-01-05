@@ -120,7 +120,7 @@ const volumeSeriesRef = useRef<any>(null);
       color: "#26a69a",     
     },
       1);
-/*
+
     const macdLine = chart.addSeries(LineSeries, {
       color: '#2962ff',
       lineWidth: 1,
@@ -142,7 +142,7 @@ const volumeSeriesRef = useRef<any>(null);
       lineWidth: 1,
       priceScaleId: '',
     },3);
-*/
+
 // Candles (main pane)
 candles.priceScale().applyOptions({
   scaleMargins: { top: 0.05, bottom: 0.25 },
@@ -152,7 +152,7 @@ candles.priceScale().applyOptions({
 volume.priceScale().applyOptions({
   scaleMargins: { top: 0.7, bottom: 0.05 },
 });
-/*
+
 // MACD pane
 macdHist.priceScale().applyOptions({
   scaleMargins: { top: 0.55, bottom: 0.10 },
@@ -164,16 +164,13 @@ rsi.priceScale().applyOptions({
 });
 
 
- macdLine,
-      signalLine,
-      macdHist,
-      rsi,
-
-*/
-
     seriesRef.current = {
       candles,
-      volume     
+      volume,
+      macdLine,
+      signalLine,
+      macdHist,
+      rsi
     };
 
     // ---------------- TOOLTIP ----------------
@@ -194,7 +191,7 @@ rsi.priceScale().applyOptions({
       legendPriceRef.current!.textContent = candle.close.toFixed(2) + ' ' + data?.meta?.currency;
 
       const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
-    /*
+    
       const rsiVal = param.seriesData.get(rsi) as LineData<Time> | undefined;
       const macdVal = param.seriesData.get(macdLine) as LineData<Time> | undefined;
       console.log('macdVal',macdVal);
@@ -205,19 +202,6 @@ rsi.priceScale().applyOptions({
       console.log('histVal',histVal);
 
 
-
-
- <b>RSI</b>: ${rsiVal?.value?.toFixed(2) ?? '-'}<br/>
-        <hr/>
-        <b>MACD</b><br/>
-        MACD: ${macdVal?.value?.toFixed(2) ?? '-'}<br/>
-        Signal: ${sigVal?.value?.toFixed(2) ?? '-'}<br/>
-        Hist: ${histVal?.value?.toFixed(2) ?? '-'}
-
-
-
-
-      */
       let date = '';
       if (typeof param.time === 'number') {
         date = new Date(param.time * 1000).toISOString().slice(0, 10);
@@ -236,6 +220,12 @@ rsi.priceScale().applyOptions({
         C: ${candle.close.toFixed(2)}<br/>
         <hr/>
         <b>Volume</b>: ${vol?.value ?? '-'}<br/>       
+        <b>RSI</b>: ${rsiVal?.value?.toFixed(2) ?? '-'}<br/>
+        <hr/>
+        <b>MACD</b><br/>
+        MACD: ${macdVal?.value?.toFixed(2) ?? '-'}<br/>
+        Signal: ${sigVal?.value?.toFixed(2) ?? '-'}<br/>
+        Hist: ${histVal?.value?.toFixed(2) ?? '-'}
       `;
 
       // Simple positioning inside container
@@ -254,10 +244,8 @@ rsi.priceScale().applyOptions({
    candleSeriesRef.current = candles;
   volumeSeriesRef.current = volume;
  
-
-
-
     return () => chart.remove();
+
   }, [data]);
 
   /* ---------------- SET DATA ---------------- */
@@ -287,21 +275,17 @@ rsi.priceScale().applyOptions({
     );
 
     // RSI
- /*
+ 
     rsi.setData(data.indicators.rsi);
 
     // MACD
     macdLine.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.macd })));
     signalLine.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.signal })));
     macdHist.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.hist })));
-*/
+
     chartRef?.current?.timeScale().fitContent();
+
   }, [data]);
-
-
-
-
-
 
 
 
@@ -325,15 +309,8 @@ socket.on("realtime_bar", bar => {
   });
 
   chartRef?.current?.timeScale().scrollToRealTime();
+
 });
-
-
-
-
-
-
-
-
 
 
 

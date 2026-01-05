@@ -3,8 +3,11 @@ import {
   createChart,
   CandlestickSeries,
   HistogramSeries,
-  LineSeries,
+  LineSeries,AreaSeries,
   ColorType,
+  IChartApi,
+  ISeriesApi,
+  AreaData,
   CrosshairMode,
   CandlestickData,
   HistogramData,
@@ -12,11 +15,23 @@ import {
   Time,
 } from 'lightweight-charts';
 import { useParams } from 'react-router-dom';
+import { io } from "socket.io-client";
+
+const socket = io("http://192.168.150.105:5000");
 
 export default function MultiPaneChartWeb2() {
   const containerRef = useRef<HTMLDivElement | null>(null);
+ 
+
+const chartRef = useRef<IChartApi | null>(null);
+const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+/*
   const chartRef = useRef<any>(null);
 
+const candleSeriesRef = useRef<any>(null);
+const volumeSeriesRef = useRef<any>(null);
+*/
   const legendSymbolRef = useRef<HTMLDivElement | null>(null);
   const legendPriceRef = useRef<HTMLDivElement | null>(null);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
@@ -34,6 +49,7 @@ export default function MultiPaneChartWeb2() {
     let cancelled = false;
 //candlestick-screener.onrender.com
     //192.168.150.105:5000
+
     async function load() {
       try {
         const url = `https://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;
@@ -71,17 +87,21 @@ export default function MultiPaneChartWeb2() {
         background: { type: ColorType.Solid, color: '#fafafa' },
         textColor: '#222',
         fontSize: 12,
+         panes: {
+            separatorColor: '#f22c3d',
+            separatorHoverColor: 'rgba(255, 0, 0, 0.1)',
+            // setting this to false will disable the resize of the panes by the user
+            enableResize: false,
+        },
       },
       grid: {
         vertLines: { color: 'rgba(0,0,0,0.05)' },
         horzLines: { color: 'rgba(0,0,0,0.05)' },
-      },
+      },      
       crosshair: { mode: CrosshairMode.Normal },
       rightPriceScale: { scaleMargins: { top: 0.1, bottom: 0.1 } },
       timeScale: { timeVisible: true, secondsVisible: false },
     });
-
-    chartRef.current = chart;
 
     // ---------------- SERIES ----------------
     const candles = chart.addSeries(CandlestickSeries, {
@@ -93,13 +113,14 @@ export default function MultiPaneChartWeb2() {
     },
       0);
 
+
     const volume = chart.addSeries(HistogramSeries, {
       priceFormat: { type: 'volume' },
       priceScaleId: '', // secondary scale
-      color: '#26a69a',
+      color: "#26a69a",     
     },
       1);
-
+/*
     const macdLine = chart.addSeries(LineSeries, {
       color: '#2962ff',
       lineWidth: 1,
@@ -121,7 +142,7 @@ export default function MultiPaneChartWeb2() {
       lineWidth: 1,
       priceScaleId: '',
     },3);
-
+*/
 // Candles (main pane)
 candles.priceScale().applyOptions({
   scaleMargins: { top: 0.05, bottom: 0.25 },
@@ -131,7 +152,7 @@ candles.priceScale().applyOptions({
 volume.priceScale().applyOptions({
   scaleMargins: { top: 0.7, bottom: 0.05 },
 });
-
+/*
 // MACD pane
 macdHist.priceScale().applyOptions({
   scaleMargins: { top: 0.55, bottom: 0.10 },
@@ -143,20 +164,22 @@ rsi.priceScale().applyOptions({
 });
 
 
-
-    seriesRef.current = {
-      candles,
-      volume,
-      macdLine,
+ macdLine,
       signalLine,
       macdHist,
       rsi,
+
+*/
+
+    seriesRef.current = {
+      candles,
+      volume     
     };
 
     // ---------------- TOOLTIP ----------------
     chart.subscribeCrosshairMove((param) => {
 
-      console.log('MYPARAM===',param);
+      
 
       if (!param.time || !param.point) {
         tooltipRef.current!.style.display = 'none';
@@ -167,9 +190,11 @@ rsi.priceScale().applyOptions({
       if (!candle) return;
 
       legendSymbolRef.current!.textContent = data?.meta?.longName || symbol;
+      
       legendPriceRef.current!.textContent = candle.close.toFixed(2) + ' ' + data?.meta?.currency;
 
       const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
+    /*
       const rsiVal = param.seriesData.get(rsi) as LineData<Time> | undefined;
       const macdVal = param.seriesData.get(macdLine) as LineData<Time> | undefined;
       console.log('macdVal',macdVal);
@@ -178,6 +203,21 @@ rsi.priceScale().applyOptions({
 
       const histVal = param.seriesData.get(macdHist) as HistogramData<Time> | undefined;
       console.log('histVal',histVal);
+
+
+
+
+ <b>RSI</b>: ${rsiVal?.value?.toFixed(2) ?? '-'}<br/>
+        <hr/>
+        <b>MACD</b><br/>
+        MACD: ${macdVal?.value?.toFixed(2) ?? '-'}<br/>
+        Signal: ${sigVal?.value?.toFixed(2) ?? '-'}<br/>
+        Hist: ${histVal?.value?.toFixed(2) ?? '-'}
+
+
+
+
+      */
       let date = '';
       if (typeof param.time === 'number') {
         date = new Date(param.time * 1000).toISOString().slice(0, 10);
@@ -195,13 +235,7 @@ rsi.priceScale().applyOptions({
         L: ${candle.low.toFixed(2)}<br/>
         C: ${candle.close.toFixed(2)}<br/>
         <hr/>
-        <b>Volume</b>: ${vol?.value ?? '-'}<br/>
-        <b>RSI</b>: ${rsiVal?.value?.toFixed(2) ?? '-'}<br/>
-        <hr/>
-        <b>MACD</b><br/>
-        MACD: ${macdVal?.value?.toFixed(2) ?? '-'}<br/>
-        Signal: ${sigVal?.value?.toFixed(2) ?? '-'}<br/>
-        Hist: ${histVal?.value?.toFixed(2) ?? '-'}
+        <b>Volume</b>: ${vol?.value ?? '-'}<br/>       
       `;
 
       // Simple positioning inside container
@@ -215,6 +249,13 @@ rsi.priceScale().applyOptions({
       tooltipRef.current!.style.display = 'block';
       */
     });
+
+   chartRef.current = chart;
+   candleSeriesRef.current = candles;
+  volumeSeriesRef.current = volume;
+ 
+
+
 
     return () => chart.remove();
   }, [data]);
@@ -246,15 +287,56 @@ rsi.priceScale().applyOptions({
     );
 
     // RSI
+ /*
     rsi.setData(data.indicators.rsi);
 
     // MACD
     macdLine.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.macd })));
     signalLine.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.signal })));
     macdHist.setData(data.indicators.macd.map((m: any) => ({ time: m.time, value: m.hist })));
-
-    chartRef.current.timeScale().fitContent();
+*/
+    chartRef?.current?.timeScale().fitContent();
   }, [data]);
+
+
+
+
+
+
+
+
+socket.emit("subscribe", {
+  symbol: symbol
+});
+
+socket.on("realtime_bar", bar => {
+  candleSeriesRef?.current?.update({
+    time: bar.time,
+    open: bar.open,
+    high: bar.high,
+    low: bar.low,
+    close: bar.close,
+  });
+
+  volumeSeriesRef?.current?.update({
+    time: bar.time,
+    value: bar.volume,
+    color: bar.close >= bar.open ? 'green' : 'red'
+  });
+
+  chartRef?.current?.timeScale().scrollToRealTime();
+});
+
+
+
+
+
+
+
+
+
+
+
 
   if (loading) return <div style={{ height: '100vh', display: 'grid', placeItems: 'center' }}><h2>Loading chart…</h2></div>;
   if (notFound) return (
@@ -265,7 +347,7 @@ rsi.priceScale().applyOptions({
   );
 
   return (
-    <div style={{ position: 'relative', height: '100vh' }}>
+    <div style={{ position: 'relative', height: '80vh' }}>
       <div style={{ position: 'absolute', top: 8, left: 10, zIndex: 10, background: 'rgba(255,255,255,0.9)', borderRadius: 6, padding: '6px 10px', display: 'flex', gap: 12, fontSize: 20, fontWeight: 600 }}>
         <div ref={legendSymbolRef} />
         <div ref={legendPriceRef} />
@@ -273,7 +355,7 @@ rsi.priceScale().applyOptions({
 
       <div ref={tooltipRef} style={{ position: 'absolute', display: 'none', background: 'rgba(255,255,255,0.95)', borderRadius: 6, padding: 10, fontSize: 14, pointerEvents: 'none', zIndex: 20, boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
 
-      <div ref={containerRef} style={{ height: '600px' }} />
+      <div ref={containerRef} style={{ height: '400px' }} />
     </div>
   );
 }

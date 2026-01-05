@@ -214,7 +214,7 @@ const openIndicatorsModal = async (symbol) => {
       size="small"
       variant="text"
       onClick={() =>
-        navigate(`/MultiPaneChartWeb2/${params.row.symbol}`)
+        navigate(`/MultiPaneChartWeb2/${params.row.name}`)
       }
     >
       📈

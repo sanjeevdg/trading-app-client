@@ -18,6 +18,8 @@ import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
 import MarketMoversGrid from './components/MarketMoversGrid';
 
+import Watchlist from './components/Watchlist';
+
 
 
 import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
@@ -81,6 +83,7 @@ const App: React.FC = () => {
     
     { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
+    { path: "/Watchlist", label: "My Watchlist" },    
     { path: "/TopGainers", label: "Top Gainers" },
     { path: "/LivePrices", label: "Live Prices" },
     { path: "/CandleScreener2", label: "Screener 2" },
@@ -235,7 +238,7 @@ const App: React.FC = () => {
 <Route path="/ScreenerTable" element={<ScreenerTable />} />
 <Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
 <Route path="/MarketMoversGrid" element={<MarketMoversGrid />} />
-
+<Route path="/Watchlist" element={<Watchlist />} />
 
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 <Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />

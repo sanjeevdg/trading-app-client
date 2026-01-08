@@ -111,6 +111,18 @@ const fetchTechnicalAnalysis = async (symbol) => {
   }
 };
 
+
+const addToWatchlist = async (symbol) => {
+  await axios.post(
+    "http://192.168.150.105:5000/api/watchlist",
+    { symbol },
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+  );
+};
 const openNewsModal = async (symbol) => {
   setMySymbol(symbol);
   setNewsOpen(true);
@@ -167,6 +179,20 @@ const openIndicatorsModal = async (symbol) => {
       }
     >
       📈
+    </Button>
+  )
+},
+{
+  field: "watch",
+  headerName: "Watch",
+  width: 120,
+  sortable: false,
+  renderCell: (params) => (
+    <Button
+      size="small"
+      onClick={() => addToWatchlist(params.row.ticker)}
+    >
+      ⭐ Add
     </Button>
   )
 },

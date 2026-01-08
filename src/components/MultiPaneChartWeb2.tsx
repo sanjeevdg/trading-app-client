@@ -26,6 +26,9 @@ export default function MultiPaneChartWeb2() {
 const chartRef = useRef<IChartApi | null>(null);
 const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
 const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
+
+const [indicator, setIndicator] = useState<'rsi' | 'macd'>('rsi');  
+
 /*
   const chartRef = useRef<any>(null);
 
@@ -113,6 +116,12 @@ const volumeSeriesRef = useRef<any>(null);
     },
       0);
 
+    const smaSeries = chart.addSeries(LineSeries, {
+    color: '#2962FF',
+    lineWidth: 1,
+    priceLineVisible: false,
+    crosshairMarkerVisible: false,
+}, 0);
 
     const volume = chart.addSeries(HistogramSeries, {
       priceFormat: { type: 'volume' },
@@ -165,7 +174,7 @@ rsi.priceScale().applyOptions({
 
 
     seriesRef.current = {
-      candles,
+      candles,smaSeries,
       volume,
       macdLine,
       signalLine,
@@ -191,7 +200,8 @@ rsi.priceScale().applyOptions({
       legendPriceRef.current!.textContent = candle.close.toFixed(2) + ' ' + data?.meta?.currency;
 
       const vol = param.seriesData.get(volume) as HistogramData<Time> | undefined;
-    
+      const smaVal = param.seriesData.get(smaSeries) as LineData<Time> | undefined;
+
       const rsiVal = param.seriesData.get(rsi) as LineData<Time> | undefined;
       const macdVal = param.seriesData.get(macdLine) as LineData<Time> | undefined;
       console.log('macdVal',macdVal);
@@ -218,6 +228,7 @@ rsi.priceScale().applyOptions({
         H: ${candle.high.toFixed(2)}<br/>
         L: ${candle.low.toFixed(2)}<br/>
         C: ${candle.close.toFixed(2)}<br/>
+        <b>SMA(20)</b>: ${smaVal?.value?.toFixed(2) ?? '-'}<br/>
         <hr/>
         <b>Volume</b>: ${vol?.value ?? '-'}<br/>       
         <b>RSI</b>: ${rsiVal?.value?.toFixed(2) ?? '-'}<br/>
@@ -252,7 +263,7 @@ rsi.priceScale().applyOptions({
   useEffect(() => {
     if (!data || !data.quotes || !seriesRef.current.candles) return;
 
-    const { candles, volume, rsi, macdLine, signalLine, macdHist } = seriesRef.current;
+    const { candles,smaSeries ,volume, rsi, macdLine, signalLine, macdHist } = seriesRef.current;
 
     // Candles
     candles.setData(
@@ -265,6 +276,13 @@ rsi.priceScale().applyOptions({
       }))
     );
 
+
+     smaSeries.setData(
+    data.indicators.sma.data.map((d: any) => ({
+        time: d.time,
+        value: d.value,
+    }))
+);
     // Volume
     volume.setData(
       data.quotes.map((q: any) => ({
@@ -331,7 +349,7 @@ socket.on("realtime_bar", bar => {
       </div>
 
       <div ref={tooltipRef} style={{ position: 'absolute', display: 'none', background: 'rgba(255,255,255,0.95)', borderRadius: 6, padding: 10, fontSize: 14, pointerEvents: 'none', zIndex: 20, boxShadow: '0 2px 6px rgba(0,0,0,0.15)' }} />
-
+      
       <div ref={containerRef} style={{ height: '400px' }} />
     </div>
   );

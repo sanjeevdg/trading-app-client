@@ -20,9 +20,7 @@ import MarketMoversGrid from './components/MarketMoversGrid';
 
 import Watchlist from './components/Watchlist';
 
-
-
-import LightweightMultiPaneChart2 from './components/LightweightMultiPaneChart2';
+import StockChart from './components/StockChart';
 
 import PatternCandleChart from './components/PatternCandleChart';
 
@@ -30,9 +28,14 @@ import MultiPaneChartWeb from './components/MultiPaneChartWeb';
 import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 
 import LiveTracker from "./components/LiveTracker";
-import LivePrices from "./components/LivePrices";
+
+import LivePrices2 from "./components/LivePrices2";
+//import LivePrices from "./components/LivePrices";
 
 //import ChartModal from "./components/ChartModal";
+import TestTradingView from './components/TestTradingView';
+
+
 
 import StockPatternChecker from './components/StockPatternChecker';
 import PatternsChecker from './components/PatternsChecker';
@@ -45,10 +48,7 @@ import TvStockScreener from './components/TvStockScreener';
 
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import SmaScreener from './components/SmaScreener';
-//import TrendingSymbols from './components/TrendingSymbols';
-//import SmallCapGainers from './components/SmallCapGainers';
-//import MostActiveStocks from './components/MostActiveStocks';
-import TopGainers from './components/TopGainers';
+
 import { useLocation } from "react-router-dom";
 
 
@@ -77,16 +77,16 @@ const App: React.FC = () => {
 
     
     { path: "/ScreenerTable", label: "Preset Screeners" },    
-    
+    { path: "/TestTradingView", label: "Test Trading View" },    
     { path: "/PriceRangeScreener", label: "Price range Screener" },    
     { path: "/MarketMoversGrid", label: "Market Movers" },    
     
     { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
     { path: "/Watchlist", label: "My Watchlist" },    
-    { path: "/TopGainers", label: "Top Gainers" },
-    { path: "/LivePrices", label: "Live Prices" },
     { path: "/CandleScreener2", label: "Screener 2" },
+    { path: "/LivePrices2", label: "Live Prices2" },
+    
     //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     { path: "/LiveTracker", label: "Live Tracker" },    
@@ -228,23 +228,22 @@ const App: React.FC = () => {
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
-<Route path="/TopGainers" element={<TopGainers />} />
+<Route path="/LivePrices2" element={<LivePrices2 />} />
 
 <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
-
-<Route path="/LivePrices" element={<LivePrices />} />
 
 <Route path="/TvStockScreener" element={<TvStockScreener />} />
 <Route path="/ScreenerTable" element={<ScreenerTable />} />
 <Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
 <Route path="/MarketMoversGrid" element={<MarketMoversGrid />} />
 <Route path="/Watchlist" element={<Watchlist />} />
-
+<Route path="/TestTradingView" element={<TestTradingView />} />
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 <Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />
 <Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
+<Route path="/StockChart/:symbol" element={<StockChart />} />
 
-<Route path="/LightweightMultiPaneChart2/:symbol" element={<LightweightMultiPaneChart2 />} />
+
 
 
 

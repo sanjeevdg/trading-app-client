@@ -15,9 +15,8 @@ import {
   Time,
 } from 'lightweight-charts';
 import { useParams } from 'react-router-dom';
-import { io } from "socket.io-client";
+import { socket } from "../utils/socket";
 
-const socket = io("http://192.168.150.105:5000");
 
 export default function MultiPaneChartWeb2() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -55,7 +54,7 @@ const volumeSeriesRef = useRef<any>(null);
 
     async function load() {
       try {
-        const url = `https://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;
+        const url = `http://192.168.150.102:5000/api/fchart2?symbol=${symbol}`;
         const res = await fetch(url);
         const json = await res.json();
 
@@ -325,6 +324,8 @@ socket.on("realtime_bar", bar => {
     value: bar.volume,
     color: bar.close >= bar.open ? 'green' : 'red'
   });
+
+console.log('CHART PDATED IN REAL TIME at',bar.time);
 
   chartRef?.current?.timeScale().scrollToRealTime();
 

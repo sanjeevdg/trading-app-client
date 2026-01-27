@@ -18,7 +18,14 @@ import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
 import MarketMoversGrid from './components/MarketMoversGrid';
 
+//import PositionsPage from './components/PositionsPage';
+
+
 import Watchlist from './components/Watchlist';
+
+import StrategyRSI from './components/StrategyRSI';
+
+import TQQQPatterns from './components/TQQQPatterns';
 
 import StockChart from './components/StockChart';
 
@@ -27,6 +34,9 @@ import PatternCandleChart from './components/PatternCandleChart';
 import MultiPaneChartWeb from './components/MultiPaneChartWeb';
 import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 
+import MatplotlibChart from './components/MatplotlibChart';
+
+
 import LiveTracker from "./components/LiveTracker";
 
 import LivePrices2 from "./components/LivePrices2";
@@ -34,7 +44,7 @@ import LivePrices2 from "./components/LivePrices2";
 
 //import ChartModal from "./components/ChartModal";
 import TestTradingView from './components/TestTradingView';
-
+import TradingViewAdvancedChart2 from './components/TradingViewAdvancedChart2';
 
 
 import StockPatternChecker from './components/StockPatternChecker';
@@ -76,8 +86,12 @@ const App: React.FC = () => {
 
 
     
-    { path: "/ScreenerTable", label: "Preset Screeners" },    
+    { path: "/ScreenerTable", label: "Preset Screeners" }, 
+    { path: "/StrategyRSI", label: "Preset StrategyRSI" }, 
+    { path: "/TQQQPatterns", label: "TQQQPatterns" },
+    { path: "/MatplotlibChart", label: "MatplotlibChart" },    
     { path: "/TestTradingView", label: "Test Trading View" },    
+    { path: "/TradingViewAdvancedChart2", label: "TradingViewAdvancedChart2" },    
     { path: "/PriceRangeScreener", label: "Price range Screener" },    
     { path: "/MarketMoversGrid", label: "Market Movers" },    
     
@@ -229,8 +243,20 @@ const App: React.FC = () => {
 
 <Route path="/LiveTracker" element={<LiveTracker />} />
 <Route path="/LivePrices2" element={<LivePrices2 />} />
+<Route path="/TQQQPatterns" element={<TQQQPatterns />} />
+
+
+<Route path="/MatplotlibChart" element={<MatplotlibChart />} />
+<Route path="/StrategyRSI" element={<StrategyRSI />} />
+
+
+
+
+
+
 
 <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+<Route path="/TradingViewAdvancedChart2" element={<TradingViewAdvancedChart2 />} />
 
 <Route path="/TvStockScreener" element={<TvStockScreener />} />
 <Route path="/ScreenerTable" element={<ScreenerTable />} />

@@ -3,8 +3,8 @@ import axios from "axios";
 import "../styles/Dashboard.css";
 
 
-import {usePositionsSocket} from '../hooks/usePositionsSocket';
-import {useLivePrices} from '../hooks/useLivePrices';
+//import {usePositionsSocket} from '../hooks/usePositionsSocket';
+//import {useLivePrices} from '../hooks/useLivePrices';
 import { Modal, Button, Form } from "react-bootstrap";
 
 
@@ -22,7 +22,7 @@ const [positions, setPositions] = useState([]);
 const [account,setAccount] = useState([]);
 
 
-usePositionsSocket(setPositions);
+//usePositionsSocket(setPositions);
 
 
   const loadAll = async () => {
@@ -152,7 +152,7 @@ const [popupType, setPopupType] = useState(""); // "success" | "error"
 const [showPopup, setShowPopup] = useState(false);
 
 
-    useLivePrices(setPrices, positions);
+   // useLivePrices(setPrices, positions);
 
 const closePosition = async (symbol) => {
   try {

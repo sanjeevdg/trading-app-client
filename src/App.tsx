@@ -21,7 +21,7 @@ import MarketMoversGrid from './components/MarketMoversGrid';
 //import PositionsPage from './components/PositionsPage';
 
 
-import Watchlist from './components/Watchlist';
+//import Watchlist from './components/Watchlist';
 
 import StrategyRSI from './components/StrategyRSI';
 
@@ -37,9 +37,9 @@ import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 import MatplotlibChart from './components/MatplotlibChart';
 
 
-import LiveTracker from "./components/LiveTracker";
+//import LiveTracker from "./components/LiveTracker";
 
-import LivePrices2 from "./components/LivePrices2";
+//import LivePrices2 from "./components/LivePrices2";
 //import LivePrices from "./components/LivePrices";
 
 //import ChartModal from "./components/ChartModal";
@@ -98,13 +98,13 @@ const App: React.FC = () => {
     
     { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
-    { path: "/Watchlist", label: "My Watchlist" },    
+    
     { path: "/CandleScreener2", label: "Screener 2" },
-    { path: "/LivePrices2", label: "Live Prices2" },
+    
     
     //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
-    { path: "/LiveTracker", label: "Live Tracker" },    
+    
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },            
@@ -242,8 +242,7 @@ const App: React.FC = () => {
 {/*<Route path="/MostActiveStocks" element={<MostActiveStocks />} />*/} 
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 
-<Route path="/LiveTracker" element={<LiveTracker />} />
-<Route path="/LivePrices2" element={<LivePrices2 />} />
+
 <Route path="/TQQQPatterns" element={<TQQQPatterns />} />
 
 
@@ -263,7 +262,7 @@ const App: React.FC = () => {
 <Route path="/ScreenerTable" element={<ScreenerTable />} />
 <Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
 <Route path="/MarketMoversGrid" element={<MarketMoversGrid />} />
-<Route path="/Watchlist" element={<Watchlist />} />
+
 <Route path="/TestTradingView" element={<TestTradingView />} />
 <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 <Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />

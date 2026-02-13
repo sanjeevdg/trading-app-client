@@ -15,7 +15,7 @@ import {
   Time,
 } from 'lightweight-charts';
 import { useParams } from 'react-router-dom';
-import { socket } from "../utils/socket";
+//import { socket } from "../utils/socket";
 
 
 export default function MultiPaneChartWeb2() {
@@ -306,30 +306,6 @@ rsi.priceScale().applyOptions({
 
 
 
-socket.emit("subscribe", {
-  symbol: symbol
-});
-
-socket.on("realtime_bar", bar => {
-  candleSeriesRef?.current?.update({
-    time: bar.time,
-    open: bar.open,
-    high: bar.high,
-    low: bar.low,
-    close: bar.close,
-  });
-
-  volumeSeriesRef?.current?.update({
-    time: bar.time,
-    value: bar.volume,
-    color: bar.close >= bar.open ? 'green' : 'red'
-  });
-
-console.log('CHART PDATED IN REAL TIME at',bar.time);
-
-  chartRef?.current?.timeScale().scrollToRealTime();
-
-});
 
 
 

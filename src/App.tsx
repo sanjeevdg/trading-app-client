@@ -87,13 +87,14 @@ const App: React.FC = () => {
 
     
     { path: "/ScreenerTable", label: "Preset Screeners" }, 
+    { path: "/MarketMoversGrid", label: "Market Movers" },
     { path: "/StrategyRSI", label: "Preset StrategyRSI" }, 
     { path: "/TQQQPatterns", label: "TQQQPatterns" },
     { path: "/MatplotlibChart", label: "MatplotlibChart" },    
     { path: "/TestTradingView", label: "Test Trading View" },    
     { path: "/TradingViewAdvancedChart2", label: "TradingViewAdvancedChart2" },    
     { path: "/PriceRangeScreener", label: "Price range Screener" },    
-    { path: "/MarketMoversGrid", label: "Market Movers" },    
+        
     
     { path: "/TvStockScreener", label: "Tv Stock Screener" },    
     { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },

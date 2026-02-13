@@ -54,7 +54,7 @@ const volumeSeriesRef = useRef<any>(null);
 
     async function load() {
       try {
-        const url = `http://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;
+        const url = `https://candlestick-screener.onrender.com/api/fchart2?symbol=${symbol}`;
         const res = await fetch(url);
         const json = await res.json();
 

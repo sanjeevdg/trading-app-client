@@ -14,7 +14,7 @@ import CandleScreener2 from "./components/CandleScreener2";
 import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
-//import AlpacaDashboard from './components/AlpacaDashboard';
+import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
 import MarketMoversGrid from './components/MarketMoversGrid';
 
@@ -96,7 +96,7 @@ const App: React.FC = () => {
     { path: "/TradingViewAdvancedChart2", label: "TradingViewAdvancedChart2" },    
     { path: "/PriceRangeScreener", label: "Price range Screener" },    
         
-    
+    { path: "/AlpacaDashboard", label: "AlpacaDashboard 2" },
       
     
     
@@ -239,6 +239,7 @@ const App: React.FC = () => {
 
 {/*<Route path="/MostActiveStocks" element={<MostActiveStocks />} />*/} 
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
+<Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
 
 
 <Route path="/TQQQPatterns" element={<TQQQPatterns />} />

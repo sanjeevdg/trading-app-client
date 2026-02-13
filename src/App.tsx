@@ -14,7 +14,7 @@ import CandleScreener2 from "./components/CandleScreener2";
 import ScreenByCriteria from "./components/ScreenByCriteria";
 
 import LiveScreener from "./components/LiveScreener";
-import AlpacaDashboard from './components/AlpacaDashboard';
+//import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
 import MarketMoversGrid from './components/MarketMoversGrid';
 
@@ -88,6 +88,7 @@ const App: React.FC = () => {
     
     { path: "/ScreenerTable", label: "Preset Screeners" }, 
     { path: "/MarketMoversGrid", label: "Market Movers" },
+    { path: "/TvStockScreener", label: "Tv Stock Screener" },  
     { path: "/StrategyRSI", label: "Preset StrategyRSI" }, 
     { path: "/TQQQPatterns", label: "TQQQPatterns" },
     { path: "/MatplotlibChart", label: "MatplotlibChart" },    
@@ -96,23 +97,20 @@ const App: React.FC = () => {
     { path: "/PriceRangeScreener", label: "Price range Screener" },    
         
     
-    { path: "/TvStockScreener", label: "Tv Stock Screener" },    
-    { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
+      
+    
     
     { path: "/CandleScreener2", label: "Screener 2" },
     
     
-    //    { path: "/MostActiveStocks", label: "Screen by category" },
     { path: "/ScreenByCriteria", label: "Screen By Criteria" },
     
     { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
     { path: "/SmaScreener", label: "Sma Screener" },
     { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },            
-    // { path: "/ChartModal", label: "Chart Modal" },
-  //  { path: "/CandlestickScreener", label: "Screener 3" },
     { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
   ];
-//<Router>
+
   return (
     
       <>
@@ -255,7 +253,7 @@ const App: React.FC = () => {
 
 
 
-<Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+
 <Route path="/TradingViewAdvancedChart2" element={<TradingViewAdvancedChart2 />} />
 
 <Route path="/TvStockScreener" element={<TvStockScreener />} />

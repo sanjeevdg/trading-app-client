@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import "../styles/Dashboard.css";
 
 const API = "https://candlestick-screener.onrender.com/api";
-//http://10.39.27.120:8000/api
-//https://candlestick-screener.onrender.com/api
-// for local dev:
-// const API = "http://localhost:4000/api";
-
+//http://127.0.0.1:8000
 export default function AlpacaDashboard() {
   const [assets, setAssets] = useState([]);
   const [positions, setPositions] = useState([]);
@@ -16,7 +12,10 @@ export default function AlpacaDashboard() {
   const [account, setAccount] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const loadAll = async () => {
+  /* =========================
+     LOAD DASHBOARD DATA
+  ========================= */
+  const loadAll = useCallback(async () => {
     try {
       const [a, p, o, acc] = await Promise.all([
         axios.get(`${API}/assets`),
@@ -34,17 +33,31 @@ export default function AlpacaDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadAll();
-  }, []);
+  }, [loadAll]);
 
-  const placeOrder = async (symbol, side) => {
-    await axios.post(`${API}/order`, { symbol, qty: 1, side });
-    loadAll();
-  };
+ // AlpacaDashboard.jsx
+  /*
+const loadAll = async () => {
+  await Promise.all([
+    loadAccount(),
+    loadPositions(),
+    loadOrders()
+  ]);
+};*/
 
+const placeOrder = async (orderPayload) => {
+  try {
+    await axios.post(`${API}/order`, orderPayload);
+    await loadAll();
+  } catch (err) {
+    console.error("Order failed:", err);
+    throw err; // important for modal
+  }
+};
   if (loading) return <p>Loading dashboard…</p>;
 
   return (
@@ -52,7 +65,11 @@ export default function AlpacaDashboard() {
       <h2>📊 Alpaca Trading Dashboard</h2>
 
       <AccountTable account={account} />
-      <PositionsTable positions={positions} reload={loadAll} />
+      <PositionsTable
+        positions={positions}
+        reload={loadAll}
+        placeOrder={placeOrder}
+      />
       <OrdersTable orders={orders} />
     </div>
   );
@@ -83,7 +100,7 @@ function AccountTable({ account }) {
 /* =========================
    POSITIONS
 ========================= */
-function PositionsTable({ positions, reload }) {
+function PositionsTable({ positions, reload, placeOrder }) {
   const [popup, setPopup] = useState(null);
 
   const closePosition = async (symbol) => {
@@ -134,6 +151,18 @@ function PositionsTable({ positions, reload }) {
                   {pl.toFixed(2)}
                 </td>
                 <td>
+                  <button
+                    className="btn btn-success btn-sm me-1"
+                    onClick={() => placeOrder(p.symbol, "buy")}
+                  >
+                    Buy
+                  </button>
+                  <button
+                    className="btn btn-warning btn-sm me-1"
+                    onClick={() => placeOrder(p.symbol, "sell")}
+                  >
+                    Sell
+                  </button>
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => closePosition(p.symbol)}
@@ -198,7 +227,11 @@ function OrdersTable({ orders }) {
               <td>{o.qty}</td>
               <td>{o.type}</td>
               <td>{o.status}</td>
-              <td>{new Date(o.submitted_at).toLocaleTimeString()}</td>
+              <td>
+                {o.submitted_at
+                  ? new Date(o.submitted_at).toLocaleTimeString()
+                  : "-"}
+              </td>
             </tr>
           ))}
         </tbody>

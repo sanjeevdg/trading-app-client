@@ -25,8 +25,15 @@ export default function TradeOrderModal({ show, onClose, symbol, side = "buy", o
 
   const [errorMessage, setErrorMessage] = useState(false);
 const [isSubmitting, setIsSubmitting] = useState(false);
-
-
+/*
+const handleSubmit = () => {
+  onSubmit({
+    symbol,
+    side,
+    qty
+  });
+};
+*/
   const handleSubmit = async () => {
   const orderPayload = {
     symbol,
@@ -48,15 +55,14 @@ const [isSubmitting, setIsSubmitting] = useState(false);
   };
 
   try {
-    await placeOrder(orderPayload);
-    onSubmit?.(orderPayload);
-    onClose(); // ✅ close only on success
+    await onSubmit(orderPayload);   // ✅ parent handles API
+    onClose();                      // ✅ close only on success
   } catch (err) {
-    setErrorMessage(err.message); // ✅ stay open
+    setErrorMessage(err.message);   // ✅ modal stays open
   }
 };
 
-
+/*
 const placeOrder = async (payload) => {
   try {
     setIsSubmitting(true);
@@ -79,7 +85,7 @@ const placeOrder = async (payload) => {
     setIsSubmitting(false);
   }
 };
-
+*/
 
 
 

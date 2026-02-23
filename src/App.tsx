@@ -12,7 +12,7 @@ import StockDashboardTradingView from "./components/StockDashboardTradingView";
 import CandleScreener2 from "./components/CandleScreener2";
 
 import ScreenByCriteria from "./components/ScreenByCriteria";
-
+import CandleChart from './components/CandleChart';
 import LiveScreener from "./components/LiveScreener";
 import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
@@ -36,6 +36,7 @@ import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 
 import MatplotlibChart from './components/MatplotlibChart';
 
+import BarsTable from './components/BarsTable';
 
 //import LiveTracker from "./components/LiveTracker";
 
@@ -88,7 +89,11 @@ const App: React.FC = () => {
     
     { path: "/ScreenerTable", label: "Preset Screeners" }, 
     { path: "/MarketMoversGrid", label: "Market Movers" },
-    { path: "/TvStockScreener", label: "Tv Stock Screener" },  
+    { path: "/TvStockScreener", label: "Tv Stock Screener" }, 
+    { path: "/BarsTable", label: "Bars Table" }, 
+    { path: "/CandleChart", label: "Candle Chart" }, 
+
+
     { path: "/StrategyRSI", label: "Preset StrategyRSI" }, 
     { path: "/TQQQPatterns", label: "TQQQPatterns" },
     { path: "/MatplotlibChart", label: "MatplotlibChart" },    
@@ -240,6 +245,8 @@ const App: React.FC = () => {
 {/*<Route path="/MostActiveStocks" element={<MostActiveStocks />} />*/} 
 <Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
 <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+<Route path="/BarsTable" element={<BarsTable />} />
+<Route path="/CandleChart" element={<CandleChart />} />
 
 
 <Route path="/TQQQPatterns" element={<TQQQPatterns />} />

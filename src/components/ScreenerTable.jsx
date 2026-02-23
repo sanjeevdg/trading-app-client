@@ -299,7 +299,25 @@ const indicatorColor = (value) => {
   return "warning";
 };
 
-
+const placeOrder = async ({ symbol, side, qty = 1 }) => {
+  try {
+    await axios.post(`https://candlestick-screener.onrender.com/api/order`, {
+      symbol,
+      qty,
+      side
+    });
+  //  loadAll();
+  } catch (err) {
+    console.error("Order failed:", err);
+  }
+};
+const handleBuy = async (symbol) => {
+  await placeOrder({
+    symbol,
+    side: "buy",
+    qty: 1
+  });
+};
   useEffect(() => {
     const fetchData = async () => {
     setLoading(true);
@@ -412,13 +430,9 @@ const isNumber = (v) => typeof v === "number" && !Number.isNaN(v);
   onClose={() => setShowTradeModal(false)}
   symbol={mysymbol}
   side="buy"
-  onSubmit={async (orderPayload) => {
-    
-    console.log('from inside Submit tom component tags')
-  //  await placeOrder(orderPayload);
-    
-  }}
+  onSubmit={placeOrder}   // ✅ single source of truth
 />
+
 
 <Modal open={openTech} onClose={handleCloseTechModal}>
   <Box sx={modalStyle}>

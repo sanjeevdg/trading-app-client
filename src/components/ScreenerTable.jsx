@@ -114,7 +114,7 @@ const fetchTechnicalAnalysis = async (symbol) => {
 
 const addToWatchlist = async (symbol) => {
   await axios.post(
-    "http://192.168.150.105:5000/api/watchlist",
+    "https://candlestick-screener.onrender.com/api/watchlist",
     { symbol },
     {
       headers: {
@@ -299,18 +299,25 @@ const indicatorColor = (value) => {
   return "warning";
 };
 
-const placeOrder = async ({ symbol, side, qty = 1 }) => {
+const placeOrder = async ({ symbol, side, qty }) => {
   try {
-    await axios.post(`https://candlestick-screener.onrender.com/api/order`, {
-      symbol,
-      qty,
-      side
-    });
-  //  loadAll();
+    const res = await axios.post(
+      "https://candlestick-screener.onrender.com/api/order",
+      { symbol, qty, side }
+    );
+
+    return {
+      success: ["accepted", "filled", "partially_filled"].includes(res.data.status),
+      data: res.data
+    };
   } catch (err) {
-    console.error("Order failed:", err);
+    return {
+      success: false,
+      error: err.response?.data?.message || "Order failed"
+    };
   }
 };
+
 const handleBuy = async (symbol) => {
   await placeOrder({
     symbol,

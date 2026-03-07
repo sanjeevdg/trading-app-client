@@ -2,9 +2,12 @@ import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import "../styles/Dashboard.css";
+import TradeOrderModal from './TradeOrderModal';
+
+
 
 const API = "https://candlestick-screener.onrender.com/api";
-//http://127.0.0.1:8000
+//"http://127.0.0.1:8000/api"
 //http://127.0.0.1:8000
 export default function AlpacaDashboard() {
   const [assets, setAssets] = useState([]);
@@ -40,15 +43,15 @@ export default function AlpacaDashboard() {
     loadAll();
   }, [loadAll]);
 
- // AlpacaDashboard.jsx
-  /*
+ 
+  /**
 const loadAll = async () => {
   await Promise.all([
     loadAccount(),
     loadPositions(),
     loadOrders()
   ]);
-};*/
+};
 
 const placeOrder = async (orderPayload) => {
   try {
@@ -59,6 +62,29 @@ const placeOrder = async (orderPayload) => {
     throw err; // important for modal
   }
 };
+**/
+
+
+const placeOrder = async ({ symbol, side, qty }) => {
+  try {
+    const res = await axios.post(
+      "https://candlestick-screener.onrender.com/api/order",
+      { symbol, qty, side }
+    );
+
+    return {
+      success: ["accepted", "filled", "partially_filled"].includes(res.data.status),
+      data: res.data
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.message || "Order failed"
+    };
+  }
+};
+
+
   if (loading) return <p>Loading dashboard…</p>;
 
   return (
@@ -103,6 +129,9 @@ function AccountTable({ account }) {
 ========================= */
 function PositionsTable({ positions, reload, placeOrder }) {
   const [popup, setPopup] = useState(null);
+const [showTradeModal, setShowTradeModal] = useState(false);
+const [mysymbol, setMySymbol] = useState(null);
+
 
   const closePosition = async (symbol) => {
     try {
@@ -119,6 +148,13 @@ function PositionsTable({ positions, reload, placeOrder }) {
 
   return (
     <>
+       <TradeOrderModal
+  show={showTradeModal}
+  onClose={() => setShowTradeModal(false)}
+  symbol={mysymbol}
+  side="buy"
+  onSubmit={placeOrder}   // ✅ single source of truth
+/>
       <h4>Positions</h4>
       <table className="table">
         <thead>
@@ -154,16 +190,11 @@ function PositionsTable({ positions, reload, placeOrder }) {
                 <td>
                   <button
                     className="btn btn-success btn-sm me-1"
-                    onClick={() => placeOrder(p.symbol, "buy")}
+                    onClick={() => { setMySymbol(p.symbol); setShowTradeModal(true)}}
                   >
                     Buy
                   </button>
-                  <button
-                    className="btn btn-warning btn-sm me-1"
-                    onClick={() => placeOrder(p.symbol, "sell")}
-                  >
-                    Sell
-                  </button>
+                  
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => closePosition(p.symbol)}
@@ -176,6 +207,9 @@ function PositionsTable({ positions, reload, placeOrder }) {
           })}
         </tbody>
       </table>
+
+
+     
 
       <Modal show={!!popup} onHide={() => setPopup(null)} centered>
         <Modal.Header closeButton>

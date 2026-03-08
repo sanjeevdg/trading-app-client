@@ -66,7 +66,24 @@ const [mysymbol, setMySymbol] = useState(null);
       setLoading(false);
     }
   };
+  const placeOrder = async ({ symbol, side, qty }) => {
+  try {
+    const res = await axios.post(
+      "https://candlestick-screener.onrender.com/api/order",
+      { symbol, qty, side }
+    );
 
+    return {
+      success: ["accepted", "filled", "partially_filled"].includes(res.data.status),
+      data: res.data
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.message || "Order failed"
+    };
+  }
+};
   useEffect(() => {
    // fetchStocks();
   }, []);
@@ -251,12 +268,7 @@ const [mysymbol, setMySymbol] = useState(null);
   onClose={() => setShowTradeModal(false)}
   symbol={mysymbol}
   side="buy"
-  onSubmit={async (orderPayload) => {
-    
-    console.log('from inside Submit tom component tags')
-  //  await placeOrder(orderPayload);
-    
-  }}
+  onSubmit={placeOrder} 
 />
 
 

@@ -48,18 +48,18 @@ const modalStyle = {
   p: 3
 };
 
-
+/*
 const handleOpenTechModal = (symbol) => {
   setMySymbol(symbol);
   setOpenTech(true);
   fetchTechnicalAnalysis(symbol);
 };
-
+*/
 const handleCloseTechModal = () => {
   setOpenTech(false);
   setTechData(null);
 };
-
+/*
 const fetchTechnicalAnalysis = async (symbol) => {
   try {
     setLoadingTech(true);
@@ -82,6 +82,29 @@ const fetchTechnicalAnalysis = async (symbol) => {
   }
 };
 
+
+
+{
+    field: "tech",
+    headerName: "Technical",
+    width: 80,
+    sortable: false,
+    filterable: false,
+    renderCell: (params) => (
+      <Button
+        size="small"
+        variant="outlined"
+        onClick={() => handleOpenTechModal(params.row.name)}
+      >
+        TA
+      </Button>
+    )
+  },
+
+
+
+
+*/
 const openNewsModal = async (symbol) => {
   setMySymbol(symbol);
   setNewsOpen(true);
@@ -106,6 +129,25 @@ const openIndicatorsModal = async (symbol) => {
   setIndicatorData(res.data.data.data || {});
 };
 
+
+const placeOrder = async ({ symbol, side, qty }) => {
+  try {
+    const res = await axios.post(
+      "https://candlestick-screener.onrender.com/api/order",
+      { symbol, qty, side }
+    );
+
+    return {
+      success: ["accepted", "filled", "partially_filled"].includes(res.data.status),
+      data: res.data
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err.response?.data?.message || "Order failed"
+    };
+  }
+};
 
 
   const fetchData = async () => {
@@ -242,22 +284,6 @@ const openIndicatorsModal = async (symbol) => {
     </Button>
   )
 },
-{
-    field: "tech",
-    headerName: "Technical",
-    width: 80,
-    sortable: false,
-    filterable: false,
-    renderCell: (params) => (
-      <Button
-        size="small"
-        variant="outlined"
-        onClick={() => handleOpenTechModal(params.row.name)}
-      >
-        TA
-      </Button>
-    )
-  },
   {
     field: "news",
     headerName: "News",
@@ -347,12 +373,7 @@ const openIndicatorsModal = async (symbol) => {
   onClose={() => setShowTradeModal(false)}
   symbol={mysymbol}
   side="buy"
-  onSubmit={async (orderPayload) => {
-    
-    console.log('from inside Submit tom component tags')
-  //  await placeOrder(orderPayload);
-    
-  }}
+  onSubmit={placeOrder}
 />
 
 <Modal open={openTech} onClose={handleCloseTechModal}>

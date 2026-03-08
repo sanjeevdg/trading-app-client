@@ -77,18 +77,18 @@ const [techData, setTechData] = useState(null);
 const [loadingTech, setLoadingTech] = useState(false);
 
 
-
+/*
 const handleOpenTechModal = (symbol) => {
   setMySymbol(symbol);
   setOpenTech(true);
   fetchTechnicalAnalysis(symbol);
 };
-
+*/
 const handleCloseTechModal = () => {
   setOpenTech(false);
   setTechData(null);
 };
-
+/*
 const fetchTechnicalAnalysis = async (symbol) => {
   try {
     setLoadingTech(true);
@@ -111,6 +111,31 @@ const fetchTechnicalAnalysis = async (symbol) => {
   }
 };
 
+
+
+
+{
+    field: "tech",
+    headerName: "Technical",
+    width: 80,
+    sortable: false,
+    filterable: false,
+    renderCell: (params) => (
+      <Button
+        size="small"
+        variant="outlined"
+        onClick={() => handleOpenTechModal(params.row.name)}
+      >
+        TA
+      </Button>
+    )
+  },
+
+
+
+
+
+*/
 
 const addToWatchlist = async (symbol) => {
   await axios.post(
@@ -137,6 +162,7 @@ const openNewsModal = async (symbol) => {
 const openIndicatorsModal = async (symbol) => {
   setMySymbol(symbol);
   setIndOpen(true);
+  
 //192.168.150.105:5000
   const res = await axios.get(
     `https://candlestick-screener.onrender.com/api/tv/indicators/${symbol}?timeframe=1d`
@@ -183,20 +209,6 @@ const openIndicatorsModal = async (symbol) => {
   )
 },
 {
-  field: "watch",
-  headerName: "Watch",
-  width: 120,
-  sortable: false,
-  renderCell: (params) => (
-    <Button
-      size="small"
-      onClick={() => addToWatchlist(params.row.ticker)}
-    >
-      ⭐ Add
-    </Button>
-  )
-},
-{
   field: "trade",
   headerName: "Trade",
   width: 80,
@@ -217,22 +229,6 @@ const openIndicatorsModal = async (symbol) => {
     </Button>
   )
 },
-{
-    field: "tech",
-    headerName: "Technical",
-    width: 80,
-    sortable: false,
-    filterable: false,
-    renderCell: (params) => (
-      <Button
-        size="small"
-        variant="outlined"
-        onClick={() => handleOpenTechModal(params.row.name)}
-      >
-        TA
-      </Button>
-    )
-  },
   {
     field: "news",
     headerName: "News",

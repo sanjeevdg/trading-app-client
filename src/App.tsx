@@ -1,67 +1,26 @@
 import React, { useState,useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 
-import BestDayTradingDeals from "./components/BestDayTradingDeals";
-import StockAnalyzer from "./components/StockAnalyzer";
-import StockDashboard from "./components/StockDashboard";
-//import StockDashboardCandlestick from "./components/StockDashboardCandlestick";
-import StockDashboardSyncfusion from "./components/StockDashboardSyncfusion";
-import StockDashboardRfc from "./components/StockDashboardRfc";
-import StockDashboardTradingView from "./components/StockDashboardTradingView";
-//import CandlestickScreener from "./components/CandlestickScreener";
-import CandleScreener2 from "./components/CandleScreener2";
-
-import ScreenByCriteria from "./components/ScreenByCriteria";
-import CandleChart from './components/CandleChart';
-import LiveScreener from "./components/LiveScreener";
 import AlpacaDashboard from './components/AlpacaDashboard';
 import PriceRangeScreener from './components/PriceRangeScreener';
-import MarketMoversGrid from './components/MarketMoversGrid';
-
-//import PositionsPage from './components/PositionsPage';
-
-
-//import Watchlist from './components/Watchlist';
 
 import StrategyRSI from './components/StrategyRSI';
-
 import TQQQPatterns from './components/TQQQPatterns';
 
-import StockChart from './components/StockChart';
-
 import PatternCandleChart from './components/PatternCandleChart';
-
-import MultiPaneChartWeb from './components/MultiPaneChartWeb';
 import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
-
 import MatplotlibChart from './components/MatplotlibChart';
 
-import BarsTable from './components/BarsTable';
 
-//import LiveTracker from "./components/LiveTracker";
-
-//import LivePrices2 from "./components/LivePrices2";
-//import LivePrices from "./components/LivePrices";
-
-//import ChartModal from "./components/ChartModal";
 import TestTradingView from './components/TestTradingView';
-import TradingViewAdvancedChart2 from './components/TradingViewAdvancedChart2';
 
-
-import StockPatternChecker from './components/StockPatternChecker';
-import PatternsChecker from './components/PatternsChecker';
 
 import ScreenerTable from './components/ScreenerTable';
-
-//import TvScreener from './components/TvScreener';
-
 import TvStockScreener from './components/TvStockScreener';
-
 import TradingScreenerWidget from './components/TradingScreenerWidget';
-import SmaScreener from './components/SmaScreener';
+
 
 import { useLocation } from "react-router-dom";
-
 
 
 
@@ -79,42 +38,37 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
 
-
-
-  const sidebarLinks = [
-
-
-
-
-    
-    { path: "/ScreenerTable", label: "Preset Screeners" }, 
-    { path: "/MarketMoversGrid", label: "Market Movers" },
-    { path: "/TvStockScreener", label: "Tv Stock Screener" }, 
-    { path: "/BarsTable", label: "Bars Table" }, 
-    { path: "/CandleChart", label: "Candle Chart" }, 
-
-
-    { path: "/StrategyRSI", label: "Preset StrategyRSI" }, 
-    { path: "/TQQQPatterns", label: "TQQQPatterns" },
-    { path: "/MatplotlibChart", label: "MatplotlibChart" },    
-    { path: "/TestTradingView", label: "Test Trading View" },    
-    { path: "/TradingViewAdvancedChart2", label: "TradingViewAdvancedChart2" },    
-    { path: "/PriceRangeScreener", label: "Price range Screener" },    
-        
-    { path: "/AlpacaDashboard", label: "AlpacaDashboard 2" },
-      
-    
-    
-    { path: "/CandleScreener2", label: "Screener 2" },
-    
-    
-    { path: "/ScreenByCriteria", label: "Screen By Criteria" },
-    
-    { path: "/PatternsChecker", label: "Breakout Pattern Checker" },    
-    { path: "/SmaScreener", label: "Sma Screener" },
-    { path: "/StockPatternChecker", label: "Breakout Pattern Checker2" },            
-    { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
-  ];
+const sidebarLinks = [
+  {
+    label: "Screeners",
+    children: [
+      { path: "/ScreenerTable", label: "Preset Screeners" },
+      { path: "/PriceRangeScreener", label: "Price Range Screener" },      
+      { path: "/TvStockScreener", label: "TV Stock Screener" },
+      { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
+    ]
+  },
+  {
+    label: "Charts",
+    children: [      
+      { path: "/TestTradingView", label: "Test Trading View" },
+    ]
+  },
+  {
+    label: "Matplotlib Charts",
+    children: [
+      { path: "/MatplotlibChart", label: "Matplotlib Chart" },
+      { path: "/StrategyRSI", label: "Preset Strategy RSI" },
+      { path: "/TQQQPatterns", label: "TQQQ Patterns" },
+    ]
+  },
+  {
+    label: "Trading",
+    children: [
+      { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
+    ]
+  }
+];
 
   return (
     
@@ -188,27 +142,50 @@ const App: React.FC = () => {
                   gap: "0.5rem",
                 }}
               >
-                {sidebarLinks.map((link) => <Link
-                    key={link.path}
-                    to={link.path}
-                    style={{
-                      padding: "0.5rem 0.75rem",
-                      borderRadius: "8px",
-                      color: "#1e3a8a",
-                      textDecoration: "none",
-                      fontWeight: 500,
-                      transition: "background 0.2s ease",
-                    }}
-                    onMouseOver={(e) => {
-                      (e.target as HTMLElement).style.background = "#e0e7ff";
-                    }}
-                    onMouseOut={(e) => {
-                      (e.target as HTMLElement).style.background = "transparent";
-                    }}
-                  >
-                    {link.label}
-                  </Link> 
-                )}
+                {sidebarLinks.map((section) => (
+  <div key={section.label} style={{ marginBottom: "1rem" }}>
+    
+    {/* Section Title */}
+    <div
+      style={{
+        fontWeight: 700,
+        fontSize: "0.9rem",
+        color: "#6b7280",
+        marginBottom: "0.4rem",
+        paddingLeft: "4px"
+      }}
+    >
+      {section.label}
+    </div>
+
+    {/* Submenu Items */}
+    {section.children.map((link) => (
+      <Link
+        key={link.path}
+        to={link.path}
+        style={{
+          display: "block",
+          padding: "0.5rem 0.75rem",
+          borderRadius: "8px",
+          color: "#1e3a8a",
+          textDecoration: "none",
+          fontWeight: 500,
+          marginLeft: "8px",
+          transition: "background 0.2s ease",
+        }}
+        onMouseOver={(e) => {
+          (e.target as HTMLElement).style.background = "#e0e7ff";
+        }}
+        onMouseOut={(e) => {
+          (e.target as HTMLElement).style.background = "transparent";
+        }}
+      >
+        {link.label}
+      </Link>
+    ))}
+
+  </div>
+))}
               </nav>
             </>
           )}
@@ -225,61 +202,34 @@ const App: React.FC = () => {
           }}
         >
           <Routes>
-          {/*  <Route
-              path="/CandlestickScreener"
-              element={
-                <CandlestickScreener backendUrl="https://trading-app-server-35kc.onrender.com/api/screen" />
-              }
-            />*/}
-            <Route path="/PatternsChecker" element={<PatternsChecker />} />            
-            <Route path="/StockPatternChecker" element={<StockPatternChecker />} />            
-            <Route path="/CandleScreener2" element={<CandleScreener2 />} />
-            
-              <Route path="/TradingScreenerWidget" element={<TradingScreenerWidget
+              
+    
+    
+    <Route path="/TradingScreenerWidget" element={<TradingScreenerWidget
         height={700}
         colorTheme="light"
          market="america"
       />} />
-         <Route path="/SmaScreener" element={<SmaScreener />} />
+    
+    <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
+    
+    
+    
+    <Route path="/TQQQPatterns" element={<TQQQPatterns />} />
+    <Route path="/MatplotlibChart" element={<MatplotlibChart />} />
+    <Route path="/StrategyRSI" element={<StrategyRSI />} />
+    <Route path="/TvStockScreener" element={<TvStockScreener />} />
 
-{/*<Route path="/MostActiveStocks" element={<MostActiveStocks />} />*/} 
-<Route path="/ScreenByCriteria" element={<ScreenByCriteria />} />
-<Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
-<Route path="/BarsTable" element={<BarsTable />} />
-<Route path="/CandleChart" element={<CandleChart />} />
+    <Route path="/ScreenerTable" element={<ScreenerTable />} />
+    <Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
+    
+    <Route path="/TestTradingView" element={<TestTradingView />} />
+    <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 
+    <Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
+    
+    </Routes>
 
-<Route path="/TQQQPatterns" element={<TQQQPatterns />} />
-
-
-<Route path="/MatplotlibChart" element={<MatplotlibChart />} />
-<Route path="/StrategyRSI" element={<StrategyRSI />} />
-
-
-
-
-
-
-
-
-<Route path="/TradingViewAdvancedChart2" element={<TradingViewAdvancedChart2 />} />
-
-<Route path="/TvStockScreener" element={<TvStockScreener />} />
-<Route path="/ScreenerTable" element={<ScreenerTable />} />
-<Route path="/PriceRangeScreener" element={<PriceRangeScreener />} />
-<Route path="/MarketMoversGrid" element={<MarketMoversGrid />} />
-
-<Route path="/TestTradingView" element={<TestTradingView />} />
-<Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
-<Route path="/MultiPaneChartWeb/:symbol" element={<MultiPaneChartWeb />} />
-<Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
-<Route path="/StockChart/:symbol" element={<StockChart />} />
-
-
-
-
-
-          </Routes>
         </main>
       </div>
     </>

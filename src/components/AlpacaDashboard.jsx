@@ -6,11 +6,11 @@ import TradeOrderModal from './TradeOrderModal';
 
 
 
-const API = "https://candlestick-screener.onrender.com/api";
+const API = "http://127.0.0.1:8000/api";
 //"http://127.0.0.1:8000/api"
 //http://127.0.0.1:8000
 export default function AlpacaDashboard() {
-  const [assets, setAssets] = useState([]);
+ // const [assets, setAssets] = useState([]);
   const [positions, setPositions] = useState([]);
   const [orders, setOrders] = useState([]);
   const [account, setAccount] = useState(null);
@@ -21,14 +21,14 @@ export default function AlpacaDashboard() {
   ========================= */
   const loadAll = useCallback(async () => {
     try {
-      const [a, p, o, acc] = await Promise.all([
-        axios.get(`${API}/assets`),
+      const [ p, o, acc] = await Promise.all([
+      //  axios.get(`${API}/assets`),
         axios.get(`${API}/positions`),
         axios.get(`${API}/orders`),
         axios.get(`${API}/account`)
       ]);
 
-      setAssets(a.data);
+    //  setAssets(a.data);
       setPositions(p.data);
       setOrders(o.data);
       setAccount(acc.data);

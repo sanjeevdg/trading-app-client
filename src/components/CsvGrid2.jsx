@@ -7,7 +7,7 @@ export default function CsvGrid2() {
   const [visibilityModel, setVisibilityModel] = useState({});
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/csv")
+    fetch("https://candlestick-screener.onrender.com/api/csv")
       .then((res) => res.json())
       .then((data) => {
 

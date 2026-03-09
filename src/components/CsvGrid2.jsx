@@ -28,8 +28,8 @@ const preferredOrder = [
   "ADX",
   "C-O"
 ];
-
-    fetch("http://127.0.0.1:8000/api/csv")
+//127.0.0.1:8000
+    fetch("https://candlestick-screener.onrender.com/api/csv")
       .then((res) => res.json())
       .then((data) => {
 

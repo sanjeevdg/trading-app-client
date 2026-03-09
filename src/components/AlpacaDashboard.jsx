@@ -6,7 +6,7 @@ import TradeOrderModal from './TradeOrderModal';
 
 
 
-const API = "http://127.0.0.1:8000/api";
+const API = "https://candlestick-screener.onrender.com/api";
 //"http://127.0.0.1:8000/api"
 //http://127.0.0.1:8000
 export default function AlpacaDashboard() {

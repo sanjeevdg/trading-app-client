@@ -11,13 +11,13 @@ import PatternCandleChart from './components/PatternCandleChart';
 import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 import MatplotlibChart from './components/MatplotlibChart';
 
-
 import TestTradingView from './components/TestTradingView';
 
 
 import ScreenerTable from './components/ScreenerTable';
 import TvStockScreener from './components/TvStockScreener';
 import TradingScreenerWidget from './components/TradingScreenerWidget';
+import CsvGrid2 from './components/CsvGrid2';
 
 
 import { useLocation } from "react-router-dom";
@@ -46,6 +46,12 @@ const sidebarLinks = [
       { path: "/PriceRangeScreener", label: "Price Range Screener" },      
       { path: "/TvStockScreener", label: "TV Stock Screener" },
       { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
+    ]
+  },
+  {
+    label: "Csv Grid",
+    children: [      
+       { path: "/CsvGrid2", label: "Csv Grid 2" },  
     ]
   },
   {
@@ -212,7 +218,7 @@ const sidebarLinks = [
       />} />
     
     <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
-    
+    <Route path="/CsvGrid2" element={<CsvGrid2 />} />
     
     
     <Route path="/TQQQPatterns" element={<TQQQPatterns />} />

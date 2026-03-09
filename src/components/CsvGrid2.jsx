@@ -6,8 +6,30 @@ export default function CsvGrid2() {
   const [columns, setColumns] = useState([]);
   const [visibilityModel, setVisibilityModel] = useState({});
 
+//candlestick-screener.onrender.com
+
   useEffect(() => {
-    fetch("https://candlestick-screener.onrender.com/api/csv")
+
+const preferredOrder = [
+  "timestamp",
+  "symbol",
+  "open",
+  "high",
+  "low",
+  "close",
+  "pct_change",
+  "range",
+  "body",
+  "volume",
+  "ROC",
+  "Histogram",
+  "MACD",
+  "Signal",
+  "ADX",
+  "C-O"
+];
+
+    fetch("http://127.0.0.1:8000/api/csv")
       .then((res) => res.json())
       .then((data) => {
 
@@ -44,11 +66,7 @@ export default function CsvGrid2() {
         headerName: "Range",
         type: "number",
         flex: 1,
-       valueGetter: (value, row) => {
-          if (!row) return null;
-          
-          return row.high - row.low;
-        },
+       
         valueFormatter: ({ value }) => value?.toFixed(2),
       });
 
@@ -57,11 +75,7 @@ export default function CsvGrid2() {
           headerName: "Body",
           type: "number",
           flex: 1,
-       valueGetter: (value, row) => {
-          if (!row) return null;
-          return Math.abs(row.close - row.open);
-       },
-         
+        
           valueFormatter: (value) => value?.toFixed(2),
         });
 
@@ -70,21 +84,47 @@ export default function CsvGrid2() {
         headerName: "% Change",
         type: "number",
         flex: 1,
-        valueGetter: (value, row) => {
-          if (!row) return null;
-          
-          return ((row.close - row.open) / row.open) * 100;
-        },
-        valueFormatter: ({ value }) =>
-          value ? `${value.toFixed(2)}%` : "",
-        cellClassName: ({ value }) =>
-          value >= 0 ? "price-up" : "price-down",
+        valueFormatter: (value) =>
+          value != null ? `${value.toFixed(2)}%` : "",
+        cellClassName: (params) =>
+          params.value >= 0 ? "price-up" : "price-down",
       });
-        const rws = data.map((row, i) => ({
+        const rws = data.map((row, i) => {
+        const open = Number(row.open);
+        const close = Number(row.close);
+        const high = Number(row.high);
+        const low = Number(row.low);
+
+        return {
           id: i,
           ...row,
-        }));
 
+          range:
+            !isNaN(high) && !isNaN(low)
+              ? high - low
+              : null,
+
+          pct_change:
+            !isNaN(open) && !isNaN(close) && open !== 0
+              ? ((close - open) / open) * 100
+              : null,
+
+          body:
+            !isNaN(open) && !isNaN(close)
+              ? Math.abs(close - open)
+              : null,
+        };
+      });
+        cols.sort((a, b) => {
+        const aIndex = preferredOrder.indexOf(a.field);
+        const bIndex = preferredOrder.indexOf(b.field);
+
+        if (aIndex === -1 && bIndex === -1) return 0;
+        if (aIndex === -1) return 1;
+        if (bIndex === -1) return -1;
+
+        return aIndex - bIndex;
+        });
         setColumns(cols);
         setRows(rws);
       });
@@ -107,7 +147,7 @@ export default function CsvGrid2() {
         ADX: false,
       },
     },
-    pinnedColumns: { left: ["timestamp"] },
+     pinnedColumns: { left: ["timestamp"] },
         }}
         sx={{
   "& .MuiDataGrid-cell.price-up": {

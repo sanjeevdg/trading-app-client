@@ -18,7 +18,9 @@ import ScreenerTable from './components/ScreenerTable';
 import TvStockScreener from './components/TvStockScreener';
 import TradingScreenerWidget from './components/TradingScreenerWidget';
 import CsvGrid2 from './components/CsvGrid2';
+import WatchlistPage from './components/WatchlistPage';
 
+import BacktestDashboard from './components/BacktestDashboard';
 
 import { useLocation } from "react-router-dom";
 
@@ -71,6 +73,8 @@ const sidebarLinks = [
   {
     label: "Trading",
     children: [
+      { path: "/BacktestDashboard", label: "Backtest Dashboard" },
+      { path: "/WatchlistPage", label: "Watchlist Page" },
       { path: "/AlpacaDashboard", label: "Alpaca Dashboard" },
     ]
   }
@@ -219,7 +223,8 @@ const sidebarLinks = [
     
     <Route path="/AlpacaDashboard" element={<AlpacaDashboard />} />
     <Route path="/CsvGrid2" element={<CsvGrid2 />} />
-    
+    <Route path="/WatchlistPage" element={<WatchlistPage />} />
+    <Route path="/BacktestDashboard" element={<BacktestDashboard />} />
     
     <Route path="/TQQQPatterns" element={<TQQQPatterns />} />
     <Route path="/MatplotlibChart" element={<MatplotlibChart />} />

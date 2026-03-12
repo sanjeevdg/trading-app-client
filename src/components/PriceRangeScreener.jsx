@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import TradeOrderModal from './TradeOrderModal';
 import { useNavigate } from "react-router-dom";
+import WatchlistButton from "./WatchlistButton";
+import { getSymbol } from "../utils/tickerUtils";
 
 //192.168.150.105:5000
 const API_URL = "https://candlestick-screener.onrender.com/api/stocks/price-range";
@@ -261,6 +263,16 @@ const placeOrder = async ({ symbol, side, qty }) => {
     >
       📈
     </Button>
+  )
+},
+{
+  field: "watch",
+  headerName: "Watch",
+  width: 120,
+  sortable: false,
+  renderCell: (params) => (
+     <WatchlistButton symbol={getSymbol(params.row.ticker)} />
+      
   )
 },
 {

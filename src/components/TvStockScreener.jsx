@@ -14,7 +14,7 @@ import {
   Switch,Stack,
   FormControlLabel
 } from "@mui/material";
-
+import WatchlistButton from "./WatchlistButton";
 
 
 import { useNavigate } from "react-router-dom";
@@ -175,6 +175,16 @@ const [mysymbol, setMySymbol] = useState(null);
     >
       📈
     </Button>
+  )
+},
+{
+  field: "watch",
+  headerName: "Watch",
+  width: 120,
+  sortable: false,
+  renderCell: (params) => (
+     <WatchlistButton symbol={params.row.ticker.split(":")[1]} />
+      
   )
 },
 {

@@ -6,9 +6,9 @@ import "./index.css";
 //import reportWebVitals from './reportWebVitals';
 //import { registerLicense } from '@syncfusion/ej2-base';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { WatchlistProvider } from "./context/WatchlistContext";
 /*
-registerLicense('Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH9cdHVUR2hZV0RwV0FWYUo=');
+registerLicense('Ngo9BigBOggjHTQxAR8/V1sNHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdmWH9cdHVUR2hZV0RwV0FWYUo=');
 */
 /*
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
@@ -18,9 +18,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 );
 */
 ReactDOM.createRoot(document.getElementById("root")!).render(
+<WatchlistProvider>
   <HashRouter>
     <App />
   </HashRouter>
+  </WatchlistProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

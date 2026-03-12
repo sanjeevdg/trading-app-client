@@ -13,8 +13,8 @@ import {
   DialogTitle,
   DialogContent
 } from "@mui/material";
-
-
+import WatchlistButton from "./WatchlistButton";
+import { getSymbol } from "../utils/tickerUtils";
 
 const ScreenerTable = () => {
 
@@ -206,6 +206,16 @@ const openIndicatorsModal = async (symbol) => {
     >
       📈
     </Button>
+  )
+},
+{
+  field: "watch",
+  headerName: "Watch",
+  width: 120,
+  sortable: false,
+  renderCell: (params) => (
+     <WatchlistButton symbol={getSymbol(params.row.ticker)} />
+      
   )
 },
 {

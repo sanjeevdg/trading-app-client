@@ -6,7 +6,7 @@ const API = "https://candlestick-screener.onrender.com/api";
 //127.0.0.1:8000
 export default function BacktestDashboard() {
 
-  const { watchlist } = useWatchlist();
+  const { watchlist,clearWatchlist,addMultiple } = useWatchlist();
 
   const [symbols, setSymbols] = useState(
     "AAPL,TSLA"
@@ -17,34 +17,95 @@ export default function BacktestDashboard() {
   const [result, setResult] = useState(null);
   const [status, setStatus] = useState("");
 
-
+console.log('typeof watchlist', typeof watchlist);
+console.log('watchlist', watchlist);
 
   useEffect(() => {
     setSymbols(watchlist);
     console.log('setted  symbols',watchlist);
   }, [watchlist]);
 
+  async function runBot() {
+  const payload = {
+    symbols: watchlist,    
+  };
+//http://127.0.0.1:8000/api
+  const res = await fetch("https://candlestick-screener.onrender.com/api/run-bot", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+  console.log(data);
+  }
 
    const fetchBars = async () => {
     try {
       setLoadingBars(true);
       setStatus("Fetching bars from server...");
       setResult(null);
-      console.log('symbols=====',symbols);
+      let symbolParam;
+
+    if (Array.isArray(symbols)) {
+      symbolParam = symbols.join(",");
+    } else if (typeof symbols === "string") {
+      symbolParam = symbols
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean)
+        .join(",");
+    } else {
+      throw new Error("Invalid symbols format");
+    }
+
+    console.log("symbols=====", symbolParam);
+
       const res = await axios.get(`${API}/bars`, {
-        params: { symbols: symbols.join(","), tf: "5Min" },
+        params: { symbols: symbolParam, tf: "5Min" },
       });
 
       setStatus(
         `File generated: ${res.data.filename || "bars_5Min.csv"}`
       );
     } catch (err) {
-      setStatus("Error fetching bars.");
-      console.error(err);
+      const msg =
+      err.response?.data?.error ||   // Flask {"error": "..."}
+      err.message ||                 // axios error message
+      "Unknown error";
+
+    setStatus("Error fetching bars: " + msg);
+    console.error("API error:", err.response?.data || err);
     } finally {
       setLoadingBars(false);
     }
   };
+
+  function rankStocks(results) {
+  return results
+    .map((r) => {
+      const win = r.win_rate_pct / 100;
+      const avgWin = r.average_win_pct;
+      const avgLoss = r.average_loss_pct;
+
+      const expectancy = win * avgWin + (1 - win) * avgLoss;
+
+      const reliability = Math.min(r.trades / 20, 1);
+
+      const riskPenalty = Math.abs(r.max_drawdown_pct) / 10;
+
+      const score = expectancy * r.profit_factor * reliability - riskPenalty;
+
+      return {
+        ...r,
+        expectancy,
+        score,
+      };
+    })
+    .sort((a, b) => b.score - a.score);
+}
 
   const runBacktest = async () => {
     try {
@@ -60,6 +121,16 @@ export default function BacktestDashboard() {
       });
 
       setResult(res.data);
+      const ranked = rankStocks(res.data.results);
+
+      const top3 = ranked.slice(0, 5);
+
+      const symbols = top3.map(r => r.symbol);
+      clearWatchlist();
+        setTimeout(() => addMultiple(symbols), 50);
+
+      console.log('mMYTOPTHREE===',top3);
+      //setRows(top3);
       setStatus("Backtest completed.");
     } catch (err) {
       setStatus("Backtest failed.");
@@ -99,6 +170,7 @@ export default function BacktestDashboard() {
           >
             {loadingBacktest ? "Running..." : "Run Backtest"}
           </button>
+          <button style={styles.button } onClick={runBot}>Start Bot</button>
         </div>
 
         {status && <p style={styles.status}>{status}</p>}
@@ -165,6 +237,7 @@ const styles = {
     background: "#16a34a",
     color: "white",
     cursor: "pointer",
+    marginRight:10
   },
 
   status: {

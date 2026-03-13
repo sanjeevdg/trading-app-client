@@ -21,7 +21,7 @@ import CsvGrid2 from './components/CsvGrid2';
 import WatchlistPage from './components/WatchlistPage';
 
 import BacktestDashboard from './components/BacktestDashboard';
-
+import StrongBuyGainersGrid from './components/StrongBuyGainersGrid';
 import { useLocation } from "react-router-dom";
 
 
@@ -47,6 +47,8 @@ const sidebarLinks = [
       { path: "/ScreenerTable", label: "Preset Screeners" },
       { path: "/PriceRangeScreener", label: "Price Range Screener" },      
       { path: "/TvStockScreener", label: "TV Stock Screener" },
+      { path: "/StrongBuyGainersGrid", label: "Strong Buy Gainers Grid" },
+      
       { path: "/TradingScreenerWidget", label: "Trading Screener Widget" },
     ]
   },
@@ -238,7 +240,11 @@ const sidebarLinks = [
     <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
 
     <Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
-    
+    <Route path="/StrongBuyGainersGrid" element={<StrongBuyGainersGrid />} />
+
+
+
+
     </Routes>
 
         </main>

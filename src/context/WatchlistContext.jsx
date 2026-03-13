@@ -23,13 +23,30 @@ export function WatchlistProvider({ children }) {
     });
   };
 
+    const addMultiple = (symbols) => {
+    setWatchlist((prev) => {
+      const merged = new Set([...prev, ...symbols]);
+      return Array.from(merged);
+    });
+  };
+  
+    const clearWatchlist = () => {
+    setWatchlist([]);
+  };
+
   const removeSymbol = (symbol) => {
     setWatchlist((prev) => prev.filter((s) => s !== symbol));
   };
 
   return (
     <WatchlistContext.Provider
-      value={{ watchlist, addSymbol, removeSymbol }}
+      value={{ 
+            watchlist, 
+            addSymbol, 
+            addMultiple, 
+            removeSymbol, 
+            clearWatchlist 
+          }}
     >
       {children}
     </WatchlistContext.Provider>

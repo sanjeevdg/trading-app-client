@@ -4,7 +4,7 @@ import { Shredder } from "lucide-react";
 
 
 export default function WatchlistPage() {
-  const { watchlist, removeSymbol } = useWatchlist();
+  const { watchlist, clearWatchlist, removeSymbol } = useWatchlist();
 
   return (
     <div style={{ padding: "20px" }}>
@@ -36,7 +36,7 @@ export default function WatchlistPage() {
 >
 <Shredder size={14} color="red" />
 </button>
-
+ 
         </div>
       ))}
     </div>

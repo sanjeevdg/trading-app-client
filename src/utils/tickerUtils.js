@@ -28,3 +28,36 @@ export function parseTicker(ticker) {
     symbol: ticker,
   };
 }
+
+// convert anything to array
+function toArray(input) {
+  if (!input) return [];
+
+  if (Array.isArray(input)) return input;
+
+  return input
+    .split(/[\s,]+/) // split by comma, space, newline
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+
+
+// strip exchanges from many tickers
+export function stripExchanges(input) {
+  const arr = toArray(input);
+  return arr.map(getSymbol);
+}
+
+
+// return only exchanges
+export function extractExchanges(input) {
+  const arr = toArray(input);
+  return arr.map(getExchange);
+}
+
+
+// return parsed objects
+export function parseTickers(input) {
+  const arr = toArray(input);
+  return arr.map(parseTicker);
+}

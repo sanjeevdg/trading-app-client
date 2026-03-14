@@ -3,7 +3,8 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useWatchlist } from "../context/WatchlistContext";
-  
+import { getSymbol ,stripExchanges} from "../utils/tickerUtils";
+
 const API = "http://127.0.0.1:8000";
 //https://candlestick-screener.onrender.com
 export default function StrongBuyGrid() {
@@ -65,7 +66,7 @@ export default function StrongBuyGrid() {
 
         // clear and repopulate watchlist
         clearWatchlist();
-        setTimeout(() => addMultiple(symbols), 50);
+        setTimeout(() => addMultiple(stripExchanges(symbols)), 50);
 
         setRows(merged);  
         //setRows([...strongScan, ...strongTV]);

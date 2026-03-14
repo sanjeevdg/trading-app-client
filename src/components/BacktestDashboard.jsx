@@ -16,7 +16,7 @@ export default function BacktestDashboard() {
   const [loadingBacktest, setLoadingBacktest] = useState(false);
   const [result, setResult] = useState(null);
   const [status, setStatus] = useState("");
-
+//<button style={styles.button } onClick={runBot}>Start Bot</button>
 console.log('typeof watchlist', typeof watchlist);
 console.log('watchlist', watchlist);
 
@@ -170,7 +170,7 @@ console.log('watchlist', watchlist);
           >
             {loadingBacktest ? "Running..." : "Run Backtest"}
           </button>
-          <button style={styles.button } onClick={runBot}>Start Bot</button>
+          
         </div>
 
         {status && <p style={styles.status}>{status}</p>}

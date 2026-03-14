@@ -5,8 +5,9 @@ import { Box } from "@mui/material";
 import { useWatchlist } from "../context/WatchlistContext";
 import { getSymbol ,stripExchanges} from "../utils/tickerUtils";
 
-const API = "http://127.0.0.1:8000";
+const API = "https://candlestick-screener.onrender.com";
 //https://candlestick-screener.onrender.com
+//http://127.0.0.1:8000
 export default function StrongBuyGrid() {
 
   const { clearWatchlist, addMultiple } = useWatchlist();

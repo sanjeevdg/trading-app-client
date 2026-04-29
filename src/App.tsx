@@ -7,7 +7,7 @@ import AlpacaDashboard from './components/AlpacaDashboard';
 import StrategyRSI from './components/StrategyRSI';
 import TQQQPatterns from './components/TQQQPatterns';
 
-import PatternCandleChart from './components/PatternCandleChart';
+
 import MultiPaneChartWeb2 from './components/MultiPaneChartWeb2';
 import MatplotlibChart from './components/MatplotlibChart';
 
@@ -236,7 +236,7 @@ const sidebarLinks = [
     
     
     <Route path="/TestTradingView" element={<TestTradingView />} />
-    <Route path="/PatternCandleChart/:symbol" element={<PatternCandleChart />} /> 
+    
 
     <Route path="/MultiPaneChartWeb2/:symbol" element={<MultiPaneChartWeb2 />} />
     <Route path="/StrongBuyGainersGrid" element={<StrongBuyGainersGrid />} />

@@ -1,11 +1,14 @@
-import React, { useEffect, useRef,useState } from 'react';
+import { useEffect, useRef,useState } from 'react';
 import {
    createChart,
   CandlestickSeries,
   HistogramSeries,
+  Time,
+  CandlestickData,
+  HistogramData,
+  SeriesMarker,
   createSeriesMarkers,
 } from 'lightweight-charts';
-import type { Time, SeriesMarker, CandlestickData,HistogramData } from 'lightweight-charts'
 import { useParams } from "react-router-dom";
 
 type Pattern = {

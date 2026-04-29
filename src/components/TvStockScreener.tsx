@@ -11,7 +11,7 @@ import {
   FormControl,
   InputLabel,
   Typography,
-  Switch,Stack,
+  Switch,
   FormControlLabel
 } from "@mui/material";
 import WatchlistButton from "./WatchlistButton";
@@ -26,6 +26,29 @@ import TradeOrderModal from './TradeOrderModal';
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
+
+
+export interface StockRow {
+  ticker: string;
+  name: string;
+  close: number;
+  volume: number;
+  EMA5: number;
+  EMA20: number;
+  type: string;
+  RSI: number;
+  change: number;
+  change_abs: number;
+  market_cap_basic: number;
+  relative_volume_10d_calc: number;
+  "Value.Traded": number;
+  AnalystRating: string;
+  "Recommend.All": number;
+}
+
+
+
+
 const TvStockScreener: React.FC = () => {
 
 
@@ -34,7 +57,7 @@ const navigate = useNavigate();
 const [showTradeModal, setShowTradeModal] = useState(false);
 const [mysymbol, setMySymbol] = useState(null);
 
-  const [rawRows, setRawRows] = useState([]);
+  const [rawRows, setRawRows] = useState<StockRow[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Filters (client + server)
@@ -63,7 +86,7 @@ const [mysymbol, setMySymbol] = useState(null);
       const data = Array.isArray(res.data?.data) ? res.data.data : [];
 
       // Assign stable IDs
-      const withIds = data.map((row, idx) => ({ id: idx, ...row }));
+      const withIds = data.map((row:any, idx:number) => ({ id: idx, ...row }));
       setRawRows(withIds);
     } catch (err) {
       console.error(err);
@@ -71,7 +94,7 @@ const [mysymbol, setMySymbol] = useState(null);
       setLoading(false);
     }
   };
-  const placeOrder = async ({ symbol, side, qty }) => {
+  const placeOrder = async ( { symbol, side, qty }: { symbol: string; side: string; qty: number }) => {
   try {
     const res = await axios.post(
       `${API_BASE}/api/order`,
@@ -83,11 +106,12 @@ const [mysymbol, setMySymbol] = useState(null);
       data: res.data
     };
   } catch (err) {
+    if (axios.isAxiosError(err)) {
     return {
       success: false,
       error: err.response?.data?.message || "Order failed"
     };
-  }
+  }}
 };
   useEffect(() => {
    // fetchStocks();
@@ -120,15 +144,15 @@ const [mysymbol, setMySymbol] = useState(null);
   headerName: "Price",
   width: 110,
   type: "number",
-  valueFormatter: (value) =>
+  valueFormatter: (value?: number) =>
     value != null && isFinite(value) ? value.toFixed(2) : "--"
 },
-   {
+{
   field: "volume",
   headerName: "Volume",
   width: 140,
   type: "number",
-  valueFormatter: (value) =>
+  valueFormatter: (value?: number) =>
     value != null && isFinite(value) ? value.toLocaleString() : "--"
 },
    {
@@ -136,7 +160,7 @@ const [mysymbol, setMySymbol] = useState(null);
   headerName: "RSI",
   width: 90,
   type: "number",
-  valueFormatter: (value) =>
+  valueFormatter: (value?: number) =>
     value != null && isFinite(value) ? value.toFixed(2) : "--"
 },
    {
@@ -145,7 +169,7 @@ const [mysymbol, setMySymbol] = useState(null);
   width: 130,
   type: "number",
   sortable: true,
-  valueGetter: (value, row) => {
+  valueGetter: (row: StockRow) => {
     if (!row) return null;
 
     const close = Number(row.close);
@@ -160,7 +184,7 @@ const [mysymbol, setMySymbol] = useState(null);
   },
   cellClassName: (value) =>
         value.value > 0 ? "cell-green" : "cell-red",
-  valueFormatter: (value) =>
+  valueFormatter: (value:number) =>
     value != null ? `${value.toFixed(2)}%` : "--"
 },
 {
@@ -239,9 +263,9 @@ const [mysymbol, setMySymbol] = useState(null);
             </Select>
           </FormControl>
 
-          <TextField label="Min Price" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.valueAsNumber)} />
-          <TextField label="Max Price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.valueAsNumber)} />
-          <TextField label="Min Volume" type="number" value={minVolume} onChange={(e) => setMinVolume(e.target.valueAsNumber)} />
+          <TextField label="Min Price" type="number" value={minPrice} onChange={(e) => setMinPrice((e.target as HTMLInputElement).valueAsNumber)} />
+          <TextField label="Max Price" type="number" value={maxPrice} onChange={(e) => setMaxPrice((e.target as HTMLInputElement).valueAsNumber)} />
+          <TextField label="Min Volume" type="number" value={minVolume} onChange={(e) => setMinVolume((e.target as HTMLInputElement).valueAsNumber)} />
 
           <FormControlLabel
             control={<Switch checked={topGainers} onChange={() => setTopGainers(!topGainers)} />}

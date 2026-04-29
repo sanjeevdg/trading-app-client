@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   createChart,
   CandlestickSeries,
   HistogramSeries,
-  LineSeries,AreaSeries,
+  LineSeries,
   ColorType,  
   CrosshairMode,  
 } from 'lightweight-charts';
-import type { IChartApi, ISeriesApi,  LineData, AreaData, Time, SeriesMarker, CandlestickData,HistogramData } from 'lightweight-charts'
+import type { IChartApi, ISeriesApi,  LineData, Time, CandlestickData,HistogramData } from 'lightweight-charts'
 import { useParams } from 'react-router-dom';
 //import { socket } from "../utils/socket";
 const API_BASE = import.meta.env.VITE_API_URL;
@@ -20,7 +20,7 @@ const chartRef = useRef<IChartApi | null>(null);
 const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
 const volumeSeriesRef = useRef<ISeriesApi<"Histogram"> | null>(null);
 
-const [indicator, setIndicator] = useState<'rsi' | 'macd'>('rsi');  
+//const [indicator, setIndicator] = useState<'rsi' | 'macd'>('rsi');  
 
 /*
   const chartRef = useRef<any>(null);

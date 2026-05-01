@@ -23,9 +23,9 @@ export default function AlpacaDashboard() {
     try {
       const [ p, o, acc] = await Promise.all([
       //  axios.get(`${API}/assets`),${API_BASE}
-        axios.get(`/api/positions`),
-        axios.get(`/api/orders`),
-        axios.get(`/api/account`)
+        axios.get(`${API_BASE}/api/positions`),
+        axios.get(`${API_BASE}/api/orders`),
+        axios.get(`${API_BASE}/api/account`)
       ]);
 
     //  setAssets(a.data);
